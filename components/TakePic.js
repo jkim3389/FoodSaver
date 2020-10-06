@@ -37,24 +37,40 @@ export default class TakePic extends React.Component {
                 console.log("error occured during reading data", e)
             }
         }
+        const fd = new FormData();
+        var items = {
+            uri: "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items.jpeg",
+            name: "items.jpeg",
+            // uri: "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items2.png",
+            // name: "items2.png",
+            type: "image/jpeg"
+        }
+        fd.append("file", items)
         axios.post(
             apiPath,
-            {
-                url:
-                    "https://images.unsplash.com/photo-1535914254981-b5012eebbd15?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
-            },
+            fd,
+            // {
+            //     data: "/Users/benpooser/Documents/GitHub/FoodSaver/assets/items.jpg"
+            //     // url:
+            //     //     "https://images.unsplash.com/photo-1535914254981-b5012eebbd15?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
+            // },
             {
                 params: {
                     language : "en",
                     visualFeatures: "Objects"
                 },
                 headers : {
-                    "Ocp-Apim-Subscription-Key" : key
+                    "Ocp-Apim-Subscription-Key" : key,
+                    "Content-Type": "multipart/form-data"
                 }
             }
         ).then(({data:{objects}})=>{
             // let items = {}
+            // console.log(objects);
             const res = objects.map(object=>{
+                if (object.object === "Fruit") {
+                    return {key : (Math.random()), productname: object.object, expiredData: 8}
+                }
                 return {key : (Math.random()), productname: object.object, expiredData: 10,
                 }
             })
