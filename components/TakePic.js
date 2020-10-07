@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, Alert, Button, Platform } from "react-native";
 import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
