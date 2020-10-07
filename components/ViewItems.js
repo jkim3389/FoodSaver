@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { ImageBackground, View, Text, FlatList, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
-
+import image from "../assets/background.jpg"
 
 export default function FridgeView(props) {
 
@@ -31,28 +31,19 @@ export default function FridgeView(props) {
         )
     } else {
         return (
-            // <FlatList
-            //     data={data}
-            //     style={styles.flatList}
-            //     renderItem={(item) => (
-            //         <View style={styles.list}>
-            //             <Text>Item : {item.item.productname}</Text>
-            //             <Text>Expires in {item.item.expiredData} days..</Text>
-            //         </View>
-            //     )}
-            //     scrollEnabled={true}
-            // />
-            <FlatList
-                data={data}
-                style={styles.flatList}
-                renderItem={(item) => (
-                    <View style={styles.list}>
-                        <Text>Item : {item.item.productname}</Text>
-                        <Text>Expires in {item.item.expiredData} days..</Text>
-                    </View>
-                )}
-                scrollEnabled={true}
-            />
+            <ImageBackground source={image} style={styles.image}>
+                <FlatList
+                    data={data}
+                    style={styles.flatList}
+                    renderItem={(item) => (
+                        <View style={styles.list}>
+                            <Text>Item : {item.item.productname}</Text>
+                            <Text>Expires in {item.item.expiredData} days..</Text>
+                        </View>
+                    )}
+                    scrollEnabled={true}
+                />
+            </ImageBackground>
         );
     }
 }
@@ -64,12 +55,17 @@ const styles = StyleSheet.create({
         backgroundColor: "red"
     },
     flatList: {
-        backgroundColor: "green",
+        // backgroundColor: "green",
         width: "100%"
     },
+    image: {
+        flex: 1,
+        resizeMode: "cover",
+        justifyContent: "center"
+      },
     list : {
         width: "100%",
-        backgroundColor: "grey",
+        backgroundColor: 'rgba(52, 52, 52, 0.2)',
         marginTop: 20,
         padding: 30,
         alignItems: "center"

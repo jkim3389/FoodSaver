@@ -1,6 +1,7 @@
 import React from "react";
-import { StyleSheet, Text, View, Button, TouchableOpacity, Alert } from "react-native";
+import { ImageBackground, StyleSheet, Text, View, Button, TouchableOpacity, Alert } from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
+import image from "../assets/background.jpg"
 
 export default function HomeScreen(props) {
 
@@ -17,19 +18,13 @@ export default function HomeScreen(props) {
       
     return (
         <View style={styles.container}>
-            <View
-                style={{
-                    height: "100%",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
+                <ImageBackground source={image} style={styles.image}>
                 <TouchableOpacity style={styles.button}>
                     <Button title="View My Fridge" onPress={()=>props.navigation.navigate("ViewItems")} />
                     <Button title="Add Items" onPress={()=>props.navigation.navigate("AddItems")}/>
                     <Button title="Clear Data" onPress={()=>{clearAll()}}/>
                 </TouchableOpacity>
-            </View>
+                </ImageBackground>
         </View>
     );
 }
@@ -37,7 +32,6 @@ export default function HomeScreen(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: "green"
     },
     button: {
         height: "20%",
@@ -46,6 +40,11 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         justifyContent: "space-evenly",
     },
+    image: {
+        flex: 1,
+        resizeMode: "cover",
+        justifyContent: "center"
+      },
     text: {
         marginTop: 30,
         backgroundColor: "red",
