@@ -28,7 +28,6 @@ export default function HomeScreen(props) {
                     <Button title="View My Fridge" onPress={()=>props.navigation.navigate("FridgeView")} />
                     <Button title="Take a pic" onPress={()=>props.navigation.navigate("TakePic")}/>
                     <Button title="Clear Data" onPress={()=>{clearAll()}}/>
-                    <Button title="Camera" onPress={()=>props.navigation.navigate("Camera")}/>
                 </TouchableOpacity>
             </View>
         </View>

@@ -21,7 +21,6 @@ export default function App() {
               <Stack.Screen name="Home2" component={HomeScreen}/>
               <Stack.Screen name="FridgeView" component={FridgeView}/>
               <Stack.Screen name="TakePic" component={TakePic}/>
-              <Stack.Screen name="Camera" component={CameraRoll}/>
             </Stack.Navigator>
             {/* <Tab.Navigator>
                 <Tab.Screen name="Home" component={HomeScreen} />
