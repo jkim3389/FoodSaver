@@ -1,7 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Button, TouchableOpacity, Alert } from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
-import { clockRunning } from "react-native-reanimated";
 
 export default function HomeScreen(props) {
 
@@ -10,11 +9,10 @@ export default function HomeScreen(props) {
           await AsyncStorage.clear()
           const data = await AsyncStorage.getItem('items')
           console.log("after clear : ", data)
+          Alert.alert(`Cleared`)
         } catch(e) {
-          // clear error
+            Alert.alert(`Error`)
         }
-      
-        console.log('Done.')
       }
       
     return (
@@ -30,6 +28,7 @@ export default function HomeScreen(props) {
                     <Button title="View My Fridge" onPress={()=>props.navigation.navigate("FridgeView")} />
                     <Button title="Take a pic" onPress={()=>props.navigation.navigate("TakePic")}/>
                     <Button title="Clear Data" onPress={()=>{clearAll()}}/>
+                    <Button title="Camera" onPress={()=>props.navigation.navigate("Camera")}/>
                 </TouchableOpacity>
             </View>
         </View>

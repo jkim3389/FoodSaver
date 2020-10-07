@@ -5,11 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 // import { v4 as uuidv4 } from 'uuid';
 
 //Currently, with pre-defined pic, it will send http request to azrue and once it successfully get the data response, it will alert dialog to display that it is done
-// export default function TakePic() {
-//     return (
-//         <View></View>
-//     )
-// }
+
 
 export default class TakePic extends React.Component {
     
