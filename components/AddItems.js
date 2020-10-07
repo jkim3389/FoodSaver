@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, Alert, Button, Platform } from "react-native";
 import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
@@ -100,6 +100,8 @@ export default class TakePic extends React.Component {
             })
         .catch((e)=>console.log("error", e));
     }
+
+    // function to bring image from cameraroll
     pickImage = async () => {
         const grant = await ImagePicker.requestCameraRollPermissionsAsync();
         if (grant) {
@@ -109,11 +111,14 @@ export default class TakePic extends React.Component {
             //   aspect: [3, 4],
               quality: 1,
             });
+            // print the information of image
+            console.log(result);
         } else {
             Alert.alert("Need permission for libaray");
         }
     };
     
+    //function to take a picture using default camera
     pickCamera = async () => {  
         const grant = await ImagePicker.requestCameraPermissionsAsync();
         if(grant) {
@@ -123,6 +128,8 @@ export default class TakePic extends React.Component {
                 // aspect: [3, 4],
                 quality: 1,
             });
+            // print the information of image
+            console.log(result);
         } else {
             Alert.alert("Need permission for camera");
         }
