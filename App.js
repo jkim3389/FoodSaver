@@ -7,8 +7,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeScreen from "./components/HomeScreen";
-import FridgeView from "./components/FridgeView";
-import TakePic from "./components/TakePic";
+import ViewItems from "./components/ViewItems";
+import AddItems from "./components/AddItems";
 
 const Tab = createBottomTabNavigator();
 
@@ -17,9 +17,9 @@ export default function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-              <Stack.Screen name="Home2" component={HomeScreen}/>
-              <Stack.Screen name="FridgeView" component={FridgeView}/>
-              <Stack.Screen name="TakePic" component={TakePic}/>
+              <Stack.Screen name="Home" component={HomeScreen}/>
+              <Stack.Screen name="ViewItems" component={ViewItems}/>
+              <Stack.Screen name="AddItems" component={AddItems}/>
             </Stack.Navigator>
             {/* <Tab.Navigator>
                 <Tab.Screen name="Home" component={HomeScreen} />

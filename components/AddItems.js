@@ -38,7 +38,7 @@ export default class TakePic extends React.Component {
         }
         const fd = new FormData();
         var items = {
-            uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
+            uri: "file:///Users/iLuna/Repositories/FoodSaver/assets/items.jpeg",
             
             name: "items.jpeg",
             // uri: "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items2.png",
