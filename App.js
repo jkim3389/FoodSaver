@@ -21,11 +21,6 @@ export default function App() {
               <Stack.Screen name="ViewItems" component={ViewItems}/>
               <Stack.Screen name="AddItems" component={AddItems}/>
             </Stack.Navigator>
-            {/* <Tab.Navigator>
-                <Tab.Screen name="Home" component={HomeScreen} />
-                <Tab.Screen name="Fridge" component={FridgeView}/>
-                <Tab.Screen name="Camera" component={TakePic}/>
-            </Tab.Navigator> */}
         </NavigationContainer>
     );
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
-// import { FlatList } from "react-native-gesture-handler";
+
 
 export default function FridgeView(props) {
 
@@ -31,18 +31,28 @@ export default function FridgeView(props) {
         )
     } else {
         return (
-            // <View style={styles.listContainer}>
-                <FlatList
-                    data={data}
-                    style={styles.flatList}
-                    renderItem={(item) => (
-                        <View style={styles.list}>
-                            <Text>Item : {item.item.productname}</Text>
-                            <Text>Expires in {item.item.expiredData} days..</Text>
-                        </View>
-                    )}
-                />
-            // </View>
+            // <FlatList
+            //     data={data}
+            //     style={styles.flatList}
+            //     renderItem={(item) => (
+            //         <View style={styles.list}>
+            //             <Text>Item : {item.item.productname}</Text>
+            //             <Text>Expires in {item.item.expiredData} days..</Text>
+            //         </View>
+            //     )}
+            //     scrollEnabled={true}
+            // />
+            <FlatList
+                data={data}
+                style={styles.flatList}
+                renderItem={(item) => (
+                    <View style={styles.list}>
+                        <Text>Item : {item.item.productname}</Text>
+                        <Text>Expires in {item.item.expiredData} days..</Text>
+                    </View>
+                )}
+                scrollEnabled={true}
+            />
         );
     }
 }
