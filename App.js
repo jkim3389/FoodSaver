@@ -9,7 +9,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "./components/HomeScreen";
 import FridgeView from "./components/FridgeView";
 import TakePic from "./components/TakePic";
-import CameraRoll from "./components/CameraRoll";
 
 const Tab = createBottomTabNavigator();
 
