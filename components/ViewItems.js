@@ -45,12 +45,11 @@ export default function ViewItems(props) {
             <TouchableHighlight>
                 <View style={styles.rowFront}>
                     <Text style={styles.productname}>{data.item.productname}</Text>
-                    <Text style={styles.expirydate}>Expiration Date: {data.item.expiryDate} days left</Text>
+                    <Text style={styles.expirydate}>Expiry Date: <B>{data.item.expiryDate}</B> days left</Text>
                 </View>
             </TouchableHighlight>
         );
     };
-
     // const renderHiddenItem = (data, rowMap) => {
     //     return (
     //         <HiddenItemWithActions
@@ -61,11 +60,6 @@ export default function ViewItems(props) {
     //         />
     //     )
     // }
-
-
-
-
-
     if (data.length == 0 ) {
         return (
             <ImageBackground source={image} style={styles.image}>
@@ -108,10 +102,6 @@ export default function ViewItems(props) {
 
 
 const styles = StyleSheet.create({
-    listContainer: {
-        alignItems: "center",
-        backgroundColor: "red"
-    },
     flatList: {
         // backgroundColor: "green",
         width: "100%"
@@ -129,7 +119,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     rowFront: {
-        backgroundColor: '#C3BEB1',
+        backgroundColor:'rgba(52, 52, 52, 0.35)',
         borderRadius: 5,
         height: 60,
         margin: 4,
@@ -140,17 +130,18 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 5,
         paddingHorizontal: 10,
+        justifyContent: "center"
 
       },
     productname: {
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 5,
-        color: '#554F41',
+        color: "#f2e6d7"
     },
     expirydate: {
-        fontSize: 20,
-        color: '#554F41',
+        fontSize: 15,
+        color: "#f2e6d7"
     },
     emptyHeader: {
         fontSize: 30,

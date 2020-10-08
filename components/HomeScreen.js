@@ -42,17 +42,18 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     button: {
-        height: "9%",
-        width: "60%",
+        top: -30,
+        height: "5%",
+        width: "45%",
         justifyContent: "space-evenly",
         alignSelf:'center',
-        backgroundColor: '#D8ECCF',
-        marginTop: 8,
+        backgroundColor: 'rgba(190, 223, 83, .5)',
+        marginTop: 15,
         borderRadius: 30,
     },
     buttonText: {
         fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: 15,
         color:'#1D1C1A',
         textAlign: 'center',
         textTransform: 'uppercase'

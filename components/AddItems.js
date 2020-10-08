@@ -57,7 +57,7 @@ export default class AddItems extends React.Component {
         }
         const fd = new FormData();
         var items = {
-            uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
+            uri: "file:///Users/iLuna/Repositories/FoodSaver/assets/items.jpeg",
             
             name: "items.jpeg",
             // uri: "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items2.png",
@@ -189,11 +189,11 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     button: {
-        height: "50%",
-        width: "80%",
+        height: "40%",
+        width: "65%",
         justifyContent: "space-evenly",
         alignSelf:'center',
-        backgroundColor: '#D8ECCF',
+        backgroundColor: 'rgba(190, 223, 83, .5)',
         marginTop: 30,
         marginBottom: 30,
         borderRadius: 20,
