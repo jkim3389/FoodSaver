@@ -1,5 +1,5 @@
 import React from "react";
-import {StatusBar,Image, ImageBackground, StyleSheet, View, Button, TouchableOpacity, Alert } from "react-native";
+import {StatusBar,Image, ImageBackground, StyleSheet, View, Button, TouchableOpacity, Alert, Text} from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
 import image from "../assets/background.jpg"
 import logo from "../assets/logo.png"
@@ -23,10 +23,14 @@ export default function HomeScreen(props) {
             <ImageBackground source={image} style={styles.image}>
                 <StatusBar translucent barStyle="light-content" backgroundColor="transparent"/>
                 <Image source={logo}  style={styles.logo}/>
-                <TouchableOpacity style={styles.button}>
-                    <Button title="View My Fridge" onPress={()=>props.navigation.navigate("My Fridge")} />
-                    <Button title="Add Items" onPress={()=>props.navigation.navigate("Add Items")}/>
-                    <Button title="Clear Data" onPress={()=>{clearAll()}}/>
+                <TouchableOpacity style={styles.button} onPress={()=>props.navigation.navigate("My Fridge")}>
+                    <Text style={styles.buttonText}>View My Fridge</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={()=>props.navigation.navigate("Add Items")}>
+                    <Text style={styles.buttonText} >Add Items</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={()=>{clearAll()}}> 
+                    <Text style={styles.buttonText}>Clear Data</Text>
                 </TouchableOpacity>
             </ImageBackground>
         </View>
@@ -38,22 +42,32 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     button: {
-        marginTop: -20,
-        height: "20%",
-        // borderColor: "white",
-        // borderWidth: 2,
+        height: "9%",
+        width: "60%",
         justifyContent: "space-evenly",
+        alignSelf:'center',
+        backgroundColor: '#D8ECCF',
+        marginTop: 8,
+        borderRadius: 30,
     },
+    buttonText: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        color:'#1D1C1A',
+        textAlign: 'center',
+        textTransform: 'uppercase'
+    }, 
     image: {
         flex: 1,
         resizeMode: "cover",
         justifyContent: "center",
       },
     logo: { 
-        top: -10,
+        top: -30,
         width: 400, 
         height: 400, 
         justifyContent: "center", 
         alignItems: "center",
+        marginBottom: -20,
     }
 });

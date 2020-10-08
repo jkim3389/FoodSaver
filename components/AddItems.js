@@ -1,10 +1,10 @@
 import React from "react";
-import { ImageBackground, View, Text, Alert, Button, Platform, StyleSheet } from "react-native";
-import { ImageEditor, View, Text, Alert, Button, Platform } from "react-native";
+import { ImageBackground, ImageEditor, View, Text, Alert, Button, Platform, StyleSheet } from "react-native";
 import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import image from "../assets/background.jpg"
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 // import { v4 as uuidv4 } from 'uuid';
 
@@ -159,9 +159,13 @@ export default class AddItems extends React.Component {
         // );
         return (
             <ImageBackground source={image} style={styles.image}>
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Button title="Take a picture" onPress={this.pickCamera} />
-                <Button title="Pick an image from camera roll" onPress={this.pickImage} />
+                <View style={styles.container}>
+                    <TouchableOpacity style={styles.button} onPress={this.pickCamera}>
+                        <Text style={styles.buttonText} >Take a picture</Text>  
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={this.pickImage}>
+                        <Text style={styles.buttonText}>Choose from library</Text>
+                    </TouchableOpacity>
                 </View>
             </ImageBackground>
         );
@@ -169,9 +173,32 @@ export default class AddItems extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    container: { 
+        width: '90%',
+        height: '30%',
+        alignSelf: 'center', 
+        justifyContent: 'space-around' 
+    },
     image: {
         flex: 1,
         resizeMode: "cover",
         justifyContent: "center"
     },
+    button: {
+        height: "50%",
+        width: "80%",
+        justifyContent: "space-evenly",
+        alignSelf:'center',
+        backgroundColor: '#D8ECCF',
+        marginTop: 30,
+        marginBottom: 30,
+        borderRadius: 20,
+    },
+    buttonText: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        color:'#1D1C1A',
+        textAlign: 'center',
+        textTransform: 'capitalize'
+    }, 
 });
