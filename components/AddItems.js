@@ -1,5 +1,6 @@
 import React from "react";
 import { ImageBackground, View, Text, Alert, Button, Platform, StyleSheet } from "react-native";
+import { ImageEditor, View, Text, Alert, Button, Platform } from "react-native";
 import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
 import * as ImagePicker from 'expo-image-picker';
@@ -10,7 +11,7 @@ import image from "../assets/background.jpg"
 //Currently, with pre-defined pic, it will send http request to azrue and once it successfully get the data response, it will alert dialog to display that it is done
 
 
-export default class TakePic extends React.Component {
+export default class AddItems extends React.Component {
     
     componentDidMount() {
         const endpoint = `https://foodsaver.cognitiveservices.azure.com/`;
@@ -35,6 +36,22 @@ export default class TakePic extends React.Component {
                 }
             }catch(e){
                 console.log("error occured during reading data", e)
+            }
+        }
+
+        const cropImage = async (object) => {
+            cropData = {
+                offset:{x:object.rectangle.x,y:object.rectangle.y}, 
+                size:{width:object.rectangle.w, height:object.rectangle.h},
+            }
+            try{
+                await ImageEditor.cropImage(items.uri, 
+                    cropData, (successURI) => {object.image = successURI}, 
+                    (error) =>{console.log('cropImage,',error)}
+                )
+            }
+            catch(error){
+                console.log('Error caught in this.cropImage:', error)
             }
         }
         const fd = new FormData();
@@ -70,9 +87,11 @@ export default class TakePic extends React.Component {
             console.log(objects);
             const res = objects.map(object=>{
                 if (object.object === "Fruit") {
-                    return {key : (Math.random()), productname: object.object, expiryDate: 8}
+
+                    // console.debug(object.rectangle.x)
+                    return {key : (Math.random()), productname: object.object, expiredData: 8, image: cropImage(object)}
                 }
-                return {key : (Math.random()), productname: object.object, expiryDate: 10,
+                return {key : (Math.random()), productname: object.object, expiredData: 10,image: cropImage(object)
                 }
             })
 
@@ -94,10 +113,6 @@ export default class TakePic extends React.Component {
                 storeData(listOfObject)
                 Alert.alert(`Items are added to data!`)
             })
-
-
-
-
             })
         .catch((e)=>console.log("error", e));
     }

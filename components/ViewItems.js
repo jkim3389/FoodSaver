@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { ImageBackground, View, Text, FlatList, StyleSheet } from "react-native";
+import { Image, ImageBackground, View, Text, FlatList, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import image from "../assets/background.jpg"
-
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { TouchableHighlight } from "react-native-gesture-handler";
 import { render } from "react-dom";
 
 
-export default function FridgeView(props) {
+export default function ViewItems(props) {
 
     const [data, setData] = useState([]);
+    const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
     useEffect(() => {
         async function readData() {
             try {
@@ -61,6 +61,7 @@ export default function FridgeView(props) {
                         style={styles.flatList}
                         renderItem={(item) => (
                             <View style={styles.list}>
+                                <Image source={{uri: item.item.image}}/>
                                 <Text>Item : {item.item.productname}</Text>
                                 <Text>Expires in {item.item.expiredData} days..</Text>
                             </View>
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
     list : {
         width: "100%",
         backgroundColor: 'rgba(52, 52, 52, 0.2)',
-        marginTop: 20,
+        marginTop: 10,
         padding: 30,
         alignItems: "center"
     },
