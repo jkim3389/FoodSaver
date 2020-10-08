@@ -89,9 +89,9 @@ export default class AddItems extends React.Component {
                 if (object.object === "Fruit") {
 
                     // console.debug(object.rectangle.x)
-                    return {key : (Math.random()), productname: object.object, expiredData: 8, image: cropImage(object)}
+                    return {key : (Math.random()), productname: object.object, expiryDate: 8, image: cropImage(object)}
                 }
-                return {key : (Math.random()), productname: object.object, expiredData: 10,image: cropImage(object)
+                return {key : (Math.random()), productname: object.object, expiryDate: 10,image: cropImage(object)
                 }
             })
 

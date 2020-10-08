@@ -105,37 +105,38 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     rowFront: {
-        backgroundColor: '#FFA07A',
+        backgroundColor: '#C3BEB1',
         borderRadius: 5,
         height: 60,
-        margin: 5,
-        marginBottom: 15,
+        margin: 20,
+        marginBottom: -5,
         shadowColor: '#999',
         shadowOffset: {width: 0, height: 1},
         shadowOpacity: 0.8,
         shadowRadius: 2,
         elevation: 5,
+        paddingHorizontal: 10,
+
       },
-      productname: {
+    productname: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 5,
         color: '#554F41',
-      },
-      expirydate: {
+    },
+    expirydate: {
         fontSize: 20,
         color: '#554F41',
-      },
-      emptyHeader: {
-          fontSize: 30,
-          color: '#5F6A6A',
-      },
-      emptyBody: {
-          fontSize: 20,
-          color: '#5F6A6A',
-      },
-      emptyContainer: {
+    },
+    emptyHeader: {
+        fontSize: 30,
+        color: '#5F6A6A',
+    },
+    emptyBody: {
+        fontSize: 20,
+        color: '#5F6A6A',
+    },
+    emptyContainer: {
         alignItems: "center",
-        
-      }
+    }
 })
