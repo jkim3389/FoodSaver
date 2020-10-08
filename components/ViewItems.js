@@ -32,8 +32,8 @@ export default function FridgeView(props) {
     const renderItem = (data, rowMap) => {
         return (
             <View style={styles.rowFront}>
-                <Text style={styles.productname}>Item: {data.item.productname}</Text>
-                <Text style={styles.expirydate}>Expiration Date: {data.item.expiryDate}</Text>
+                <Text style={styles.productname}>{data.item.productname}</Text>
+                <Text style={styles.expirydate}>Expiration Date: {data.item.expiryDate} days left</Text>
             </View>
         );
     };

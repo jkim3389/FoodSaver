@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, Alert, Button, Platform } from "react-native";
+import { ImageBackground, View, Text, Alert, Button, Platform, StyleSheet } from "react-native";
 import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
 import * as ImagePicker from 'expo-image-picker';
+import image from "../assets/background.jpg"
 
 // import { v4 as uuidv4 } from 'uuid';
 
@@ -142,10 +143,20 @@ export default class TakePic extends React.Component {
         //     </View>
         // );
         return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <Button title="Take a picture" onPress={this.pickCamera} />
-              <Button title="Pick an image from camera roll" onPress={this.pickImage} />
-            </View>
+            <ImageBackground source={image} style={styles.image}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Button title="Take a picture" onPress={this.pickCamera} />
+                <Button title="Pick an image from camera roll" onPress={this.pickImage} />
+                </View>
+            </ImageBackground>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    image: {
+        flex: 1,
+        resizeMode: "cover",
+        justifyContent: "center"
+    },
+});
