@@ -69,9 +69,9 @@ export default class TakePic extends React.Component {
             console.log(objects);
             const res = objects.map(object=>{
                 if (object.object === "Fruit") {
-                    return {key : (Math.random()), productname: object.object, expiredData: 8}
+                    return {key : (Math.random()), productname: object.object, expiryDate: 8}
                 }
-                return {key : (Math.random()), productname: object.object, expiredData: 10,
+                return {key : (Math.random()), productname: object.object, expiryDate: 10,
                 }
             })
 
