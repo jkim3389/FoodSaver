@@ -10,9 +10,10 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 //Currently, with pre-defined pic, it will send http request to azrue and once it successfully get the data response, it will alert dialog to display that it is done
 
+var keyIndex = 0;
 
 export default class AddItems extends React.Component {
-    
+     
     componentDidMount() {
         const endpoint = `https://foodsaver.cognitiveservices.azure.com/`;
         const key = `8962510d94cc4c40aeec29ad416fce1a`;
@@ -86,12 +87,15 @@ export default class AddItems extends React.Component {
             // let items = {}
             console.log(objects);
             const res = objects.map(object=>{
+                
                 if (object.object === "Fruit") {
-
+                    
                     // console.debug(object.rectangle.x)
-                    return {key : (Math.random()), productname: object.object, expiryDate: 8, image: cropImage(object)}
+                    // return {key : (Math.random()), productname: object.object, expiryDate: 8, image: cropImage(object)}
+                    return {key : keyIndex++, productname: object.object, expiryDate: 8, image: cropImage(object)}
                 }
-                return {key : (Math.random()), productname: object.object, expiryDate: 10,image: cropImage(object)
+                // return {key : (Math.random()), productname: object.object, expiryDate: 10,image: cropImage(object)
+                return {key : keyIndex++, productname: object.object, expiryDate: 10,image: cropImage(object)
                 }
             })
 

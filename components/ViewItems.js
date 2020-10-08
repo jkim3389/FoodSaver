@@ -16,7 +16,7 @@ export default function ViewItems(props) {
             try {
                 const data = await AsyncStorage.getItem("items");
                 if (data != null) {
-                    // console.log(JSON.parse(data))
+                    console.log(JSON.parse(data))
                     setData(JSON.parse(data));
                 } else {
                     return setData([]);
@@ -28,19 +28,43 @@ export default function ViewItems(props) {
         readData();
     }, []);
 
+    // const closeRow = (rowMap, rowKey) => {
+    //     if (rowMap[rowKey]) {
+    //         rowMap[rowKey].closeRow();
+    //     }
+    // }
+
+    // const deleteRow = (rowMap, rowKey) => {
+    //     closeRow(rowMap, rowKey);
+    //     const newData = [...data];
+    // }
+
 
     const renderItem = (data, rowMap) => {
         return (
-            <View style={styles.rowFront}>
-                <Text style={styles.productname}>{data.item.productname}</Text>
-                <Text style={styles.expirydate}>Expiration Date: {data.item.expiryDate} days left</Text>
-            </View>
+            <TouchableHighlight>
+                <View style={styles.rowFront}>
+                    <Text style={styles.productname}>{data.item.productname}</Text>
+                    <Text style={styles.expirydate}>Expiration Date: {data.item.expiryDate} days left</Text>
+                </View>
+            </TouchableHighlight>
         );
     };
 
-    // const renderHiddenItem = () => {
-
+    // const renderHiddenItem = (data, rowMap) => {
+    //     return (
+    //         <HiddenItemWithActions
+    //             data = {data}
+    //             rowMap={rowMap}
+    //             closeRow={() => closeRow(rowMap, data.item.key)}
+    //             deleteRow={() => deleteRow(rowMap, data.item.key)}
+    //         />
+    //     )
     // }
+
+
+
+
 
     if (data.length == 0 ) {
         return (
@@ -108,8 +132,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#C3BEB1',
         borderRadius: 5,
         height: 60,
-        margin: 20,
-        marginBottom: -5,
+        margin: 4,
+        marginBottom: 5,
         shadowColor: '#999',
         shadowOffset: {width: 0, height: 1},
         shadowOpacity: 0.8,
