@@ -72,6 +72,7 @@ export default function ViewItems(props) {
                         data={data}
                         style={styles.flatList}
                         renderItem={renderItem}
+                        scrollIndicatorInsets={{right : 1}}
                         // renderHiddenItem={renderHiddenItem}
                     >
                     </SwipeListView>
@@ -126,11 +127,11 @@ const styles = StyleSheet.create({
         color: '#554F41',
       },
       emptyHeader: {
-          fontSize: 48,
+          fontSize: 30,
           color: '#5F6A6A',
       },
       emptyBody: {
-          fontSize: 36,
+          fontSize: 20,
           color: '#5F6A6A',
       },
       emptyContainer: {
