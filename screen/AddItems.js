@@ -1,12 +1,13 @@
 import React from "react";
 import { ImageBackground, ImageEditor, View, Text, Alert, Button, Platform, StyleSheet } from "react-native";
 import axios from "axios";
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
 import * as ImagePicker from 'expo-image-picker';
-import image from "../assets/background.jpg"
+// import image from "../assets/background.jpg"
 import { TouchableOpacity } from "react-native-gesture-handler";
+import {readData, storeData} from '../utils/storageManager'
+import Background from "../components/Background";
 
-// import { v4 as uuidv4 } from 'uuid';
 
 //Currently, with pre-defined pic, it will send http request to azrue and once it successfully get the data response, it will alert dialog to display that it is done
 
@@ -19,26 +20,7 @@ export default class AddItems extends React.Component {
         const key = `8962510d94cc4c40aeec29ad416fce1a`;
         const apiPath = `${endpoint}/vision/v2.0/analyze`;
     
-        const storeData = async (value)=>{
-            try {
-                await AsyncStorage.setItem("items", JSON.stringify(value))
-            } catch(e){
-                console.log("error occured during store data", e)
-            }
-        }
-        const readData = async () => {
-            try {
-                const data = await AsyncStorage.getItem("items")
-                if(data != null){
-                    // console.log(JSON.parse(data))
-                    return JSON.parse(data)
-                } else {
-                    return []
-                }
-            }catch(e){
-                console.log("error occured during reading data", e)
-            }
-        }
+
 
         const cropImage = async (object) => {
             cropData = {
@@ -57,7 +39,7 @@ export default class AddItems extends React.Component {
         }
         const fd = new FormData();
         var items = {
-            uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
+            uri: "file:///Users/juntaekim/Documents/newProject/FoodSaver/assets/items.jpeg",
             
             name: "items.jpeg",
             // uri: "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items2.png",
@@ -68,11 +50,6 @@ export default class AddItems extends React.Component {
         axios.post(
             apiPath,
             fd,
-            // {
-            //     data: "/Users/benpooser/Documents/GitHub/FoodSaver/assets/items.jpg"
-            //     // url:
-            //     //     "https://images.unsplash.com/photo-1535914254981-b5012eebbd15?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
-            // },
             {
                 params: {
                     language : "en",
@@ -85,7 +62,7 @@ export default class AddItems extends React.Component {
             }
         ).then(({data:{objects}})=>{
             // let items = {}
-            console.log(objects);
+
             const res = objects.map(object=>{
                 
                 if (object.object === "Fruit") {
@@ -132,7 +109,7 @@ export default class AddItems extends React.Component {
               quality: 1,
             });
             // print the information of image
-            console.log(result);
+            // console.log(result); 
         } else {
             Alert.alert("Need permission for libaray");
         }
@@ -156,13 +133,9 @@ export default class AddItems extends React.Component {
     };
 
     render() {
-        // return (
-        //     <View>
-        //         <Text>Camera UI will be added here. Currenly online url is used to detect objects</Text>
-        //     </View>
-        // );
         return (
-            <ImageBackground source={image} style={styles.image}>
+            <Background>
+
                 <View style={styles.container}>
                     <TouchableOpacity style={styles.button} onPress={this.pickCamera}>
                         <Text style={styles.buttonText} >Take a picture</Text>  
@@ -171,7 +144,8 @@ export default class AddItems extends React.Component {
                         <Text style={styles.buttonText}>Choose from library</Text>
                     </TouchableOpacity>
                 </View>
-            </ImageBackground>
+
+            </Background>
         );
     }
 }
@@ -183,11 +157,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center', 
         justifyContent: 'space-around' 
     },
-    image: {
-        flex: 1,
-        resizeMode: "cover",
-        justifyContent: "center"
-    },
+    // image: {
+    //     flex: 1,
+    //     resizeMode: "cover",
+    //     justifyContent: "center"
+    // },
     button: {
         height: "50%",
         width: "80%",
