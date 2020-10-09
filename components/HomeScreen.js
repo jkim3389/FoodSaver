@@ -52,16 +52,16 @@ const styles = StyleSheet.create({
         borderRadius: 30,
     },
     buttonText: {
-        fontWeight: 'bold',
-        fontSize: 15,
+        fontSize: 17,
         color:'#1D1C1A',
         textAlign: 'center',
-        textTransform: 'uppercase'
+        textTransform: 'capitalize',
+        fontFamily: 'Arial Rounded MT Bold'
     }, 
     image: {
         flex: 1,
         resizeMode: "cover",
-        justifyContent: "center",
+        justifyContent: "center",   
       },
     logo: { 
         top: -30,

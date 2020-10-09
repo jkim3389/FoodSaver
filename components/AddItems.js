@@ -1,7 +1,8 @@
 import React from "react";
-import { ImageBackground, ImageEditor, View, Text, Alert, Button, Platform, StyleSheet } from "react-native";
+import { ImageBackground, View, Text, Alert, Button, Platform, StyleSheet } from "react-native";
 import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
+import * as ImageManipulator from "expo-image-manipulator";
 import * as ImagePicker from 'expo-image-picker';
 import image from "../assets/background.jpg"
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -26,7 +27,7 @@ export default class AddItems extends React.Component {
                 console.log("error occured during store data", e)
             }
         }
-        const readData = async () => {
+        const readData =  async () => {
             try {
                 const data = await AsyncStorage.getItem("items")
                 if(data != null){
@@ -39,22 +40,27 @@ export default class AddItems extends React.Component {
                 console.log("error occured during reading data", e)
             }
         }
-
         const cropImage = async (object) => {
             cropData = {
-                offset:{x:object.rectangle.x,y:object.rectangle.y}, 
-                size:{width:object.rectangle.w, height:object.rectangle.h},
+                originX:object.rectangle.x,
+                originY:object.rectangle.y,
+                width:object.rectangle.w,
+                height:object.rectangle.h
             }
             try{
-                await ImageEditor.cropImage(items.uri, 
-                    cropData, (successURI) => {object.image = successURI}, 
-                    (error) =>{console.log('cropImage,',error)}
-                )
+                await ImageManipulator.manipulateAsync(items.uri, [{crop:cropData}], {compress: 1})
+                .then(cropped => {
+                    // console.debug(cropped.uri), //ok
+                    object.image = cropped.uri
+                  })
+                  console.debug(object.image)
+                  return object.image
             }
             catch(error){
                 console.log('Error caught in this.cropImage:', error)
             }
         }
+        
         const fd = new FormData();
         var items = {
             uri: "file:///Users/iLuna/Repositories/FoodSaver/assets/items.jpeg",
@@ -85,20 +91,12 @@ export default class AddItems extends React.Component {
             }
         ).then(({data:{objects}})=>{
             // let items = {}
-            console.log(objects);
             const res = objects.map(object=>{
-                
                 if (object.object === "Fruit") {
-                    
-                    // console.debug(object.rectangle.x)
-                    // return {key : (Math.random()), productname: object.object, expiryDate: 8, image: cropImage(object)}
                     return {key : keyIndex++, productname: object.object, expiryDate: 8, image: cropImage(object)}
                 }
-                // return {key : (Math.random()), productname: object.object, expiryDate: 10,image: cropImage(object)
-                return {key : keyIndex++, productname: object.object, expiryDate: 10,image: cropImage(object)
-                }
+                return {key : keyIndex++, productname: object.object, expiryDate: 10, image: cropImage(object)}
             })
-
 
             // items = objects.forEach(element => {
             //     const id = Math.floor(Math.random() * 100)
@@ -115,7 +113,7 @@ export default class AddItems extends React.Component {
             readData().then((data)=>{
                 const listOfObject = [...data, ...res]
                 storeData(listOfObject)
-                Alert.alert(`Items are added to data!`)
+                Alert.alert(`Items are added to My Fridge!`)
             })
             })
         .catch((e)=>console.log("error", e));
@@ -163,6 +161,7 @@ export default class AddItems extends React.Component {
         // );
         return (
             <ImageBackground source={image} style={styles.image}>
+                <Text style={styles.text}>How would you like to add items?</Text>
                 <View style={styles.container}>
                     <TouchableOpacity style={styles.button} onPress={this.pickCamera}>
                         <Text style={styles.buttonText} >Take a picture</Text>  
@@ -179,7 +178,7 @@ export default class AddItems extends React.Component {
 const styles = StyleSheet.create({
     container: { 
         width: '90%',
-        height: '30%',
+        height: '20%',
         alignSelf: 'center', 
         justifyContent: 'space-around' 
     },
@@ -199,10 +198,19 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
     buttonText: {
-        fontWeight: 'bold',
+        fontFamily: 'Arial Rounded MT Bold',
         fontSize: 20,
         color:'#1D1C1A',
         textAlign: 'center',
         textTransform: 'capitalize'
     }, 
+    text: {
+        width: '90%',
+        alignSelf: 'center', 
+        fontSize: 30,
+        color: '#5F6A6A',
+        fontFamily: 'Arial Rounded MT Bold',
+        textAlign: 'center',
+        marginBottom: 40
+    },
 });

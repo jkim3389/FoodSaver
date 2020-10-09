@@ -5,7 +5,7 @@ import image from "../assets/background.jpg"
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { TouchableHighlight } from "react-native-gesture-handler";
 import { render } from "react-dom";
-
+import noItems from "../assets/noItems.png"
 
 export default function ViewItems(props) {
 
@@ -44,6 +44,7 @@ export default function ViewItems(props) {
         return (
             <TouchableHighlight>
                 <View style={styles.rowFront}>
+                    <Image source={data.item.image}/>
                     <Text style={styles.productname}>{data.item.productname}</Text>
                     <Text style={styles.expirydate}>Expiry Date: <B>{data.item.expiryDate}</B> days left</Text>
                 </View>
@@ -64,9 +65,10 @@ export default function ViewItems(props) {
         return (
             <ImageBackground source={image} style={styles.image}>
                 <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyHeader}>No Item</Text>
+                    <Image source={noItems}  style={styles.noItems}/>
+                    <Text style={styles.emptyHeader}>No items..</Text>
                     <Text> </Text>
-                    <Text style={styles.emptyBody}>please add items</Text>
+                    <Text style={styles.emptyBody}>Please add items.</Text>
                 </View>
             </ImageBackground>
         )
@@ -135,9 +137,9 @@ const styles = StyleSheet.create({
       },
     productname: {
         fontSize: 20,
-        fontWeight: 'bold',
         marginBottom: 5,
-        color: "#f2e6d7"
+        color: "#f2e6d7",
+        fontFamily: 'Arial Rounded MT Bold',
     },
     expirydate: {
         fontSize: 15,
@@ -146,12 +148,23 @@ const styles = StyleSheet.create({
     emptyHeader: {
         fontSize: 30,
         color: '#5F6A6A',
+        fontFamily: 'Arial Rounded MT Bold'
     },
     emptyBody: {
+        marginTop:-10,
         fontSize: 20,
         color: '#5F6A6A',
+        fontFamily: 'Arial Rounded MT Bold'
     },
     emptyContainer: {
         alignItems: "center",
+    },
+    noItems: { 
+        top: -30,
+        width: 200, 
+        height: 200, 
+        justifyContent: "center", 
+        alignItems: "center",
+        marginBottom: -20,
     }
 })
