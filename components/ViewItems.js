@@ -3,8 +3,8 @@ import { Image, ImageBackground, View, Text, FlatList, StyleSheet } from "react-
 import AsyncStorage from "@react-native-community/async-storage";
 import image from "../assets/background.jpg"
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { TouchableHighlight } from "react-native-gesture-handler";
-import { render } from "react-dom";
+import { TouchableHighlight, TouchableOpacity } from "react-native-gesture-handler";
+import IconEvilIcons from 'react-native-vector-icons/EvilIcons'
 
 
 export default function ViewItems(props) {
@@ -28,38 +28,74 @@ export default function ViewItems(props) {
         readData();
     }, []);
 
-    // const closeRow = (rowMap, rowKey) => {
-    //     if (rowMap[rowKey]) {
-    //         rowMap[rowKey].closeRow();
-    //     }
-    // }
+    const closeRow = (rowMap, rowKey) => {
+        if (rowMap[rowKey]) {
+            rowMap[rowKey].closeRow();
+        }
+    }
 
-    // const deleteRow = (rowMap, rowKey) => {
-    //     closeRow(rowMap, rowKey);
-    //     const newData = [...data];
-    // }
+    const removeItem = async (key)=>{
+        try {
+            const newData = [...data];
+            const prevIndex = data.findIndex(item => item.key === key);
+            newData.splice(prevIndex,1);
+            setData(newData);
+            await AsyncStorage.setItem("items",JSON.stringify(newData));
+        } catch(e){
+            console.log("error occured during remove item", e)
+        }
+    }
 
+    const deleteRow = (rowMap, rowKey) => {
+        closeRow(rowMap, rowKey);
+        removeItem(rowKey);
+    }
 
-    const renderItem = (data, rowMap) => {
+    const HiddenItemWithActions = props => {
+        const {onEdit, onDelete} = props;
+
         return (
-            <TouchableHighlight>
-                <View style={styles.rowFront}>
-                    <Text style={styles.productname}>{data.item.productname}</Text>
-                    <Text style={styles.expirydate}>Expiry Date: <B>{data.item.expiryDate}</B> days left</Text>
-                </View>
-            </TouchableHighlight>
-        );
-    };
-    // const renderHiddenItem = (data, rowMap) => {
-    //     return (
-    //         <HiddenItemWithActions
-    //             data = {data}
-    //             rowMap={rowMap}
-    //             closeRow={() => closeRow(rowMap, data.item.key)}
-    //             deleteRow={() => deleteRow(rowMap, data.item.key)}
-    //         />
-    //     )
-    // }
+            <View style={styles.rowBack}>
+                <TouchableOpacity style={styles.backRightBtnLeft} onPress = {onEdit}> 
+                <IconEvilIcons name="pencil" size="35"/>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.backRightBtnRight} onPress = {onDelete}>
+                    <IconEvilIcons name="trash" size="35"/>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+    
+    const renderHiddenItem = (data, rowMap) => {
+        return (
+            <HiddenItemWithActions
+            data = {data}
+            rowMap={rowMap}
+            onEdit={() => closeRow(rowMap, data.item.key)}
+            onDelete={() => deleteRow(rowMap, data.item.key)}
+            />
+            )
+        }
+        
+        const VisibleItem = props => {
+            const {data} = props;
+            return (
+                <TouchableHighlight>
+                    <View style={styles.rowFront}>
+                        <Text style={styles.productname}>{data.item.productname}</Text>
+                        <Text style={styles.expirydate}>Expiry Date: <B>{data.item.expiryDate}</B> days left</Text>
+                    </View>
+                </TouchableHighlight>
+            )
+        }
+    
+        const renderItem = (data, rowMap) => {
+            return (
+                <VisibleItem data={data}/>
+            );
+        };
+
     if (data.length == 0 ) {
         return (
             <ImageBackground source={image} style={styles.image}>
@@ -74,24 +110,14 @@ export default function ViewItems(props) {
         return (
             <ImageBackground source={image} style={styles.image}>
                 <View>
-                    {/* <FlatList
-                        data={data}
-                        style={styles.flatList}
-                        renderItem={(item) => (
-                            <View style={styles.list}>
-                                <Image source={{uri: item.item.image}}/>
-                                <Text>Item : {item.item.productname}</Text>
-                                <Text>Expires in {item.item.expiredData} days..</Text>
-                            </View>
-                        )}
-                        scrollEnabled={true}
-                    /> */}
                     <SwipeListView
                         data={data}
                         style={styles.flatList}
                         renderItem={renderItem}
                         scrollIndicatorInsets={{right : 1}}
-                        // renderHiddenItem={renderHiddenItem}
+                        disableRightSwipe
+                        renderHiddenItem={renderHiddenItem}
+                        rightOpenValue = {-115}
                     >
                     </SwipeListView>
                 </View>
@@ -103,26 +129,21 @@ export default function ViewItems(props) {
 
 const styles = StyleSheet.create({
     flatList: {
-        // backgroundColor: "green",
-        width: "100%"
+        width: "100%",
+        height: "95%",
     },
     image: {
         flex: 1,
         resizeMode: "cover",
         justifyContent: "center"
       },
-    list : {
-        width: "100%",
-        backgroundColor: 'rgba(52, 52, 52, 0.2)',
-        marginTop: 10,
-        padding: 30,
-        alignItems: "center"
-    },
     rowFront: {
-        backgroundColor:'rgba(52, 52, 52, 0.35)',
+        // backgroundColor:'rgba(52, 52, 52, 0.1)',
+        flex:1,
+        backgroundColor:'rgb(52, 52, 52)',
         borderRadius: 5,
         height: 60,
-        margin: 4,
+        margin: 5,
         marginBottom: 5,
         shadowColor: '#999',
         shadowOffset: {width: 0, height: 1},
@@ -130,8 +151,6 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 5,
         paddingHorizontal: 10,
-        justifyContent: "center"
-
       },
     productname: {
         fontSize: 20,
@@ -153,5 +172,40 @@ const styles = StyleSheet.create({
     },
     emptyContainer: {
         alignItems: "center",
-    }
+    },
+    rowBack: {
+        alignItems: 'center',
+        // backgroundColor: '#DDD',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        paddingLeft: 15,
+        margin: 5,
+        marginBottom: 5,
+        borderRadius: 5,
+    },
+    backRightBtnLeft: {
+        alignItems: 'center',
+        bottom: 0,
+        justifyContent: 'center',
+        top: 0,
+        width: 50,
+        backgroundColor: '#1f65ff',
+        right: 5,
+        height: 50,
+        borderBottomLeftRadius:5,
+        borderTopLeftRadius: 5,
+    },
+    backRightBtnRight: {
+        alignItems: 'center',
+        bottom: 0,
+        justifyContent: 'center',
+        top: 0,
+        width: 50,
+        backgroundColor: 'red',
+        right: 5,
+        borderTopRightRadius: 5,
+        borderBottomRightRadius: 5,
+        height: 50,
+    },
 })
