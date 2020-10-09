@@ -31,7 +31,7 @@ export async function readData() {
 export async function clearData() {
     try {
         const data = await AsyncStorage.getItem("items");
-        console.log("data" , data)
+        // console.log("data" , data)
         if(data){
             await AsyncStorage.clear();            
             Alert.alert(`Cleared local data`);

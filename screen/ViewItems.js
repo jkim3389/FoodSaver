@@ -13,7 +13,7 @@ export default function ViewItems(props) {
     useEffect(() => {
         async function fetch() {
             const dataFromStorage = await readData();
-            console.log(dataFromStorage);
+            // console.log(dataFromStorage);
             setData(dataFromStorage);
 
             if (dataFromStorage.length !== 0) {
