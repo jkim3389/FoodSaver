@@ -1,71 +1,113 @@
 import React from "react";
-import {View, Text,  StyleSheet, TouchableHighlight} from 'react-native'
-import { SwipeListView } from 'react-native-swipe-list-view';
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { SwipeListView } from "react-native-swipe-list-view";
+import IconMaterialIcons from "react-native-vector-icons/MaterialIcons";
+import HiddenItemWithActions from "./HiddenItemWithActions";
+import VisibleItem from "./VisibleItem";
+
 export default function ItemListView(props) {
-    
-    const renderItem = ({item}, rowMap) => {
+
+
+    const editRow = (rowMap, rowKey) => {
+        if (rowMap[rowKey]) {
+            rowMap[rowKey].closeRow();
+        }
+        if (rowMap[rowKey]) {
+            navigation.navigate("Edit Items", {
+                keyNumber:rowKey,
+            });
+        }
+    }
+    const removeItem = async (key)=>{
+        try {
+            const newData = [...data];
+            const prevIndex = data.findIndex(item => item.key === key);
+            newData.splice(prevIndex,1);
+            setData(newData);
+            await AsyncStorage.setItem("items",JSON.stringify(newData));
+        } catch(e){
+            console.log("error occured during remove item", e)
+        }
+    }
+    const deleteRow = (rowMap, rowKey) => {
+        if (rowMap[rowKey]) {
+            rowMap[rowKey].closeRow();
+        }
+        removeItem(rowKey);
+    }
+
+    const renderItem = ({ item }) => {
+        return <VisibleItem data={item} />;
+    };
+    const renderHiddenItem = ({ item }, rowMap) => {
         return (
-            <TouchableHighlight>
-                <View style={styles.rowFront}>
-                    <Text style={styles.productname}>{item.productname}</Text>
-                    <Text style={styles.expirydate}>Expiration Date: {item.expiryDate} days left</Text>
-                </View>
-            </TouchableHighlight>
+            <HiddenItemWithActions
+                data={item}
+                rowMap={rowMap}
+                onEdit={()=>editRow(rowMap, item.key)}
+                onDelete={()=>deleteRow(rowMap, item.key)}
+            />
         );
     };
+
     return (
-        <View>
+        <View style={styles.flatListView}>
+            <TouchableOpacity
+                style={styles.addItembtn}
+                onPress={() => navigation.navigate("Add Items")}
+            >
+                <IconMaterialIcons name="add" style={styles.addItembtnText} />
+                <Text style={styles.addItembtnText}>Click to add items</Text>
+            </TouchableOpacity>
             <SwipeListView
                 data={props.data}
-                style={{...styles.flatList, ...props.style}}
+                style={{ ...styles.flatList, ...props.style }}
                 renderItem={renderItem}
                 scrollIndicatorInsets={{ right: 1 }}
+                disableRightSwipe
+                renderHiddenItem={renderHiddenItem}
+                rightOpenValue={-115}
                 // renderHiddenItem={renderHiddenItem}
             />
         </View>
     );
 }
 
-
 const styles = StyleSheet.create({
+    flatListView: {
+        width: "100%",
+        height: "100%",
+        backgroundColor: "rgba(236, 227, 207, 0.7)",
+    },
     listContainer: {
         alignItems: "center",
-        backgroundColor: "red"
+        backgroundColor: "red",
     },
+
     flatList: {
         // backgroundColor: "green",
-        width: "100%"
-    },
-    list : {
         width: "100%",
-        backgroundColor: 'rgba(52, 52, 52, 0.2)',
+    },
+    list: {
+        width: "100%",
+        backgroundColor: "rgba(52, 52, 52, 0.2)",
         marginTop: 10,
         padding: 30,
-        alignItems: "center"
+        alignItems: "center",
     },
-    rowFront: {
-        backgroundColor: '#C3BEB1',
+
+    addItembtn: {
+        backgroundColor: "#FBFCFC",
         borderRadius: 5,
         height: 60,
-        margin: 4,
-        marginBottom: 5,
-        shadowColor: '#999',
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 5,
-        paddingHorizontal: 10,
-
-      },
-    productname: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 5,
-        color: '#554F41',
+        margin: 5,
+        flexDirection: "row",
     },
-    expirydate: {
-        fontSize: 20,
-        color: '#554F41',
+    addItembtnText: {
+        alignItems: "center",
+        fontSize: 25,
+        paddingLeft: 10,
+        color: "#797D7F",
+        alignSelf: "center",
     },
-    
-})
+});

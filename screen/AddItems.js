@@ -15,6 +15,7 @@ import * as ImagePicker from "expo-image-picker";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { readData, storeData } from "../utils/storageManager";
 import Background from "../components/Background";
+import * as ImageManipulator from "expo-image-manipulator";
 
 //Currently, with pre-defined pic, it will send http request to azrue and once it successfully get the data response, it will alert dialog to display that it is done
 
@@ -33,6 +34,22 @@ export default function AddItems(props) {
             imageFetching(data);
         });
     };
+
+    const cropImage = async (srcPath, {rectangle}) => {
+        const cropData = {
+            originX:rectangle.x,
+            originY:rectangle.y,
+            width:rectangle.w,
+            height:rectangle.h
+        }
+        try{
+            const cropped = await ImageManipulator.manipulateAsync(srcPath, [{crop:cropData}], {compress: 1})
+            return cropped.uri
+        }
+        catch(error){
+            console.log('Error caught in this.cropImage:', error)
+        }
+    }
 
     const imageFetching = (image) => {
         const endpoint = `https://foodsaver.cognitiveservices.azure.com`;
@@ -59,23 +76,17 @@ export default function AddItems(props) {
             })
             .then(({ data: { objects } }) => {
                 const res = objects.map((object) => {
-                    if (object.object === "Fruit") {
-                        // console.debug(object.rectangle.x)
+                    cropImage(items.uri, object).then(uri=>{
+                        console.log(uri)
                         return {
                             key: keyIndex++,
                             productname: object.object,
-                            expiryDate: 8,
-                            // image: cropImage(object),
+                            expiryDate: 10,
+                            image: uri,
                         };
-                    }
-                    return {
-                        key: keyIndex++,
-                        productname: object.object,
-                        expiryDate: 10,
-                        // image: cropImage(object),
-                    };
+                    })
+                    
                 });
-
                 readData().then((data) => {
                     const listOfObject = [...data, ...res];
                     storeData(listOfObject);
@@ -99,6 +110,7 @@ export default function AddItems(props) {
                     console.log("Error", error.message);
                 }
                 console.log(error.config);
+                Alert.alert(`Fetching Error: ${error.response.data.message}`);
             });
     };
     // function to bring image from cameraroll
@@ -108,11 +120,9 @@ export default function AddItems(props) {
             let result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: false,
-                //   aspect: [3, 4],
                 quality: 1,
             });
-            // print the information of image
-            // console.log(result);
+
             return {
                 uri: result.uri,
                 name: result.uri.replace(/^.*[\\\/]/, ""),
@@ -130,11 +140,8 @@ export default function AddItems(props) {
             let result = await ImagePicker.launchCameraAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: false,
-                // aspect: [3, 4],
                 quality: 1,
             });
-            // print the information of image
-            // this.setState({ image: result.uri });
             return {
                 uri: result.uri,
                 name: result.uri.replace(/^.*[\\\/]/, ""),
