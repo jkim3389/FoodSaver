@@ -3,7 +3,6 @@ import { Image, ImageBackground, View, Text, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import image from "../assets/background.jpg"
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { TouchableHighlight } from "react-native-gesture-handler";
 import noItems from "../assets/noItems.png"
 import { TouchableHighlight, TouchableOpacity } from "react-native-gesture-handler";
 import IconEvilIcons from 'react-native-vector-icons/EvilIcons'
