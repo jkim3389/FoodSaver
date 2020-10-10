@@ -22,7 +22,10 @@ export default class AddItems extends React.Component {
     
         const storeData = async (value)=>{
             try {
+                console.log("Store Data");
+                console.log(value);
                 await AsyncStorage.setItem("items", JSON.stringify(value))
+                console.log("Finish Store Data")
             } catch(e){
                 console.log("error occured during store data", e)
             }
@@ -63,7 +66,7 @@ export default class AddItems extends React.Component {
         
         const fd = new FormData();
         var items = {
-            uri: "file:///Users/iLuna/Repositories/FoodSaver/assets/items.jpeg",
+            uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
             
             name: "items.jpeg",
             // uri: "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items2.png",
@@ -91,6 +94,7 @@ export default class AddItems extends React.Component {
             }
         ).then(({data:{objects}})=>{
             // let items = {}
+            // console.log(objects);
             const res = objects.map(object=>{
                 if (object.object === "Fruit") {
                     return {key : keyIndex++, productname: object.object, expiryDate: 8, image: cropImage(object)}
