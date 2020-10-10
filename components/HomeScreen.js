@@ -3,7 +3,6 @@ import {StatusBar,Image, ImageBackground, StyleSheet, View, Button, TouchableOpa
 import AsyncStorage from '@react-native-community/async-storage';
 import image from "../assets/background.jpg"
 import logo from "../assets/logo.png"
-import { greaterThan } from "react-native-reanimated";
 
 export default function HomeScreen(props) {
 

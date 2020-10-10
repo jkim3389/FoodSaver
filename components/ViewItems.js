@@ -5,12 +5,15 @@ import image from "../assets/background.jpg"
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { TouchableHighlight, TouchableOpacity } from "react-native-gesture-handler";
 import IconEvilIcons from 'react-native-vector-icons/EvilIcons'
+import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import AddItems from "./AddItems";
 
 
 export default function ViewItems(props) {
 
+    const {navigation} = props;
     const [data, setData] = useState([]);
-    const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
+    const BoldText = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
     useEffect(() => {
         async function readData() {
             try {
@@ -31,6 +34,13 @@ export default function ViewItems(props) {
     const closeRow = (rowMap, rowKey) => {
         if (rowMap[rowKey]) {
             rowMap[rowKey].closeRow();
+        }
+    }
+
+    const editRow = (rowMap, rowKey) => {
+        closeRow(rowMap, rowKey);
+        if (rowMap[rowKey]) {
+            navigation.navigate("Edit Items");
         }
     }
 
@@ -56,8 +66,8 @@ export default function ViewItems(props) {
 
         return (
             <View style={styles.rowBack}>
-                <TouchableOpacity style={styles.backRightBtnLeft} onPress = {onEdit}> 
-                <IconEvilIcons name="pencil" size="35"/>
+                <TouchableOpacity style={styles.backRightBtnLeft} onPress = {onEdit} > 
+                    <IconEvilIcons name="pencil" size="35"/>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.backRightBtnRight} onPress = {onDelete}>
                     <IconEvilIcons name="trash" size="35"/>
@@ -72,29 +82,29 @@ export default function ViewItems(props) {
             <HiddenItemWithActions
             data = {data}
             rowMap={rowMap}
-            onEdit={() => closeRow(rowMap, data.item.key)}
+            onEdit={() => editRow(rowMap, data.item.key)}
             onDelete={() => deleteRow(rowMap, data.item.key)}
             />
             )
         }
         
-        const VisibleItem = props => {
-            const {data} = props;
-            return (
-                <TouchableHighlight>
-                    <View style={styles.rowFront}>
-                        <Text style={styles.productname}>{data.item.productname}</Text>
-                        <Text style={styles.expirydate}>Expiry Date: <B>{data.item.expiryDate}</B> days left</Text>
-                    </View>
-                </TouchableHighlight>
-            )
-        }
+    const VisibleItem = props => {
+        const {data} = props;
+        return (
+            <TouchableHighlight>
+                <View style={styles.rowFront}>
+                    <Text style={styles.productname}>{data.item.productname}</Text>
+                    <Text style={styles.expirydate}>Expiry Date: <BoldText>{data.item.expiryDate}</BoldText> days left</Text>
+                </View>
+            </TouchableHighlight>
+        )
+    }
     
-        const renderItem = (data, rowMap) => {
-            return (
-                <VisibleItem data={data}/>
-            );
-        };
+    const renderItem = (data, rowMap) => {
+        return (
+            <VisibleItem data={data}/>
+        );
+    };
 
     if (data.length == 0 ) {
         return (
@@ -109,10 +119,14 @@ export default function ViewItems(props) {
     } else {
         return (
             <ImageBackground source={image} style={styles.image}>
-                <View>
+                <View style={styles.flatListView}>
+                    <TouchableOpacity style={styles.addItembtn} onPress={() => navigation.navigate("Add Items")}>
+                        <IconMaterialIcons name="add" style={styles.addItembtnText}/>
+                        <Text style={styles.addItembtnText}>Click to add items</Text>
+                    </TouchableOpacity>
                     <SwipeListView
                         data={data}
-                        style={styles.flatList}
+                        
                         renderItem={renderItem}
                         scrollIndicatorInsets={{right : 1}}
                         disableRightSwipe
@@ -128,9 +142,10 @@ export default function ViewItems(props) {
 
 
 const styles = StyleSheet.create({
-    flatList: {
+    flatListView: {
         width: "100%",
-        height: "95%",
+        height: "100%",
+        backgroundColor:'rgba(236, 227, 207, 0.7)',
     },
     image: {
         flex: 1,
@@ -151,6 +166,7 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 5,
         paddingHorizontal: 10,
+        justifyContent:'center'
       },
     productname: {
         fontSize: 20,
@@ -208,4 +224,18 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 5,
         height: 50,
     },
+    addItembtn: {
+        backgroundColor: '#FBFCFC',
+        borderRadius: 5,
+        height: 60,
+        margin: 5,
+        flexDirection:'row',
+    },
+    addItembtnText: {
+        alignItems:'center',
+        fontSize:25,
+        paddingLeft:10,
+        color:'#797D7F',
+        alignSelf:'center',
+    }, 
 })
