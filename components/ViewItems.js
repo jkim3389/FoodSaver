@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Image, ImageBackground, View, Text, FlatList, StyleSheet } from "react-native";
+import { Image, ImageBackground, View, Text, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import image from "../assets/background.jpg"
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { TouchableHighlight, TouchableOpacity } from "react-native-gesture-handler";
 import IconEvilIcons from 'react-native-vector-icons/EvilIcons'
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import AddItems from "./AddItems";
-
 
 export default function ViewItems(props) {
 
@@ -40,7 +38,9 @@ export default function ViewItems(props) {
     const editRow = (rowMap, rowKey) => {
         closeRow(rowMap, rowKey);
         if (rowMap[rowKey]) {
-            navigation.navigate("Edit Items");
+            navigation.navigate("Edit Items", {
+                keyNumber:rowKey,
+            });
         }
     }
 
@@ -67,10 +67,10 @@ export default function ViewItems(props) {
         return (
             <View style={styles.rowBack}>
                 <TouchableOpacity style={styles.backRightBtnLeft} onPress = {onEdit} > 
-                    <IconEvilIcons name="pencil" size="35"/>
+                    <IconEvilIcons name="pencil" size={35}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.backRightBtnRight} onPress = {onDelete}>
-                    <IconEvilIcons name="trash" size="35"/>
+                    <IconEvilIcons name="trash" size={35}/>
                 </TouchableOpacity>
             </View>
         )

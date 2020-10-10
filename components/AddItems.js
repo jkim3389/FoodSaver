@@ -21,7 +21,10 @@ export default class AddItems extends React.Component {
     
         const storeData = async (value)=>{
             try {
+                console.log("Store Data");
+                console.log(value);
                 await AsyncStorage.setItem("items", JSON.stringify(value))
+                console.log("Finish Store Data")
             } catch(e){
                 console.log("error occured during store data", e)
             }
@@ -85,7 +88,7 @@ export default class AddItems extends React.Component {
             }
         ).then(({data:{objects}})=>{
             // let items = {}
-            console.log(objects);
+            // console.log(objects);
             const res = objects.map(object=>{
                 
                 if (object.object === "Fruit") {
