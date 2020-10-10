@@ -76,7 +76,6 @@ export default function ViewItems(props) {
             </View>
         )
     }
-
     
     const renderHiddenItem = (data, rowMap) => {
         return (
