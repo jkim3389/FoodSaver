@@ -1,11 +1,20 @@
-import React from "react";
-import { ImageBackground, View, Text, Alert, Button, Platform, StyleSheet } from "react-native";
+import React, { useState }from "react";
+import { ImageBackground,
+    ImageEditor,
+    Image,
+    View,
+    Text,
+    Alert,
+    Button,
+    Platform,
+    StyleSheet, } from "react-native";
 import axios from "axios";
-import AsyncStorage from '@react-native-community/async-storage';
-import * as ImageManipulator from "expo-image-manipulator";
-import * as ImagePicker from 'expo-image-picker';
-import image from "../assets/background.jpg"
+import * as ImagePicker from "expo-image-picker";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { readData, storeData } from "../utils/storageManager";
+import image from "../assets/background.jpg"
+// import Background from "../components/Background";
+// import * as ImageManipulator from "expo-image-manipulator";
 
 // import { v4 as uuidv4 } from 'uuid';
 
@@ -13,137 +22,113 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 var keyIndex = 0;
 
-export default class AddItems extends React.Component {
-     
-    componentDidMount() {
-        const endpoint = `https://foodsaver.cognitiveservices.azure.com/`;
+export default function AddItems(props) {
+
+    const onPickImageHandler = () => {
+        pickImage().then((data) => {
+            imageFetching(data);
+        });
+    };
+
+    const onPickCameraHandler = () => {
+        pickCamera().then((data) => {
+            imageFetching(data);
+        });
+    };
+
+    const imageFetching = (image) => {
+        const endpoint = `https://foodsaver.cognitiveservices.azure.com`;
         const key = `8962510d94cc4c40aeec29ad416fce1a`;
         const apiPath = `${endpoint}/vision/v2.0/analyze`;
-    
-        const storeData = async (value)=>{
-            try {
-                console.log("Store Data");
-                console.log(value);
-                await AsyncStorage.setItem("items", JSON.stringify(value))
-                console.log("Finish Store Data")
-            } catch(e){
-                console.log("error occured during store data", e)
-            }
-        }
-        const readData =  async () => {
-            try {
-                const data = await AsyncStorage.getItem("items")
-                if(data != null){
-                    // console.log(JSON.parse(data))
-                    return JSON.parse(data)
-                } else {
-                    return []
-                }
-            }catch(e){
-                console.log("error occured during reading data", e)
-            }
-        }
-        const cropImage = async (object) => {
-            cropData = {
-                originX:object.rectangle.x,
-                originY:object.rectangle.y,
-                width:object.rectangle.w,
-                height:object.rectangle.h
-            }
-            try{
-                await ImageManipulator.manipulateAsync(items.uri, [{crop:cropData}], {compress: 1})
-                .then(cropped => {
-                    // console.debug(cropped.uri), //ok
-                    object.image = cropped.uri
-                  })
-                  console.debug(object.image)
-                  return object.image
-            }
-            catch(error){
-                console.log('Error caught in this.cropImage:', error)
-            }
-        }
-        
+
         const fd = new FormData();
         var items = {
-            uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
-            
-            name: "items.jpeg",
-            // uri: "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items2.png",
-            // name: "items2.png",
-            type: "image/jpeg"
-        }
-        fd.append("file", items)
-        axios.post(
-            apiPath,
-            fd,
-            // {
-            //     data: "/Users/benpooser/Documents/GitHub/FoodSaver/assets/items.jpg"
-            //     // url:
-            //     //     "https://images.unsplash.com/photo-1535914254981-b5012eebbd15?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
-            // },
-            {
+            uri: image.uri,
+            name: image.name,
+            type: "image/jpeg",
+        };
+        fd.append("file", items);
+        axios
+            .post(apiPath, fd, {
                 params: {
-                    language : "en",
-                    visualFeatures: "Objects"
+                    language: "en",
+                    visualFeatures: "Objects",
                 },
-                headers : {
-                    "Ocp-Apim-Subscription-Key" : key,
-                    "Content-Type": "multipart/form-data"
+                headers: {
+                    "Ocp-Apim-Subscription-Key": key,
+                    "Content-Type": "multipart/form-data",
+                },
+            })
+            .then(({ data: { objects } }) => {
+                const res = objects.map((object) => {
+                    if (object.object === "Fruit") {
+                        // console.debug(object.rectangle.x)
+                        return {
+                            key: keyIndex++,
+                            productname: object.object,
+                            expiryDate: 8,
+                            // image: cropImage(object),
+                        };
+                    }
+                    return {
+                        key: keyIndex++,
+                        productname: object.object,
+                        expiryDate: 10,
+                        // image: cropImage(object),
+                    };
+                });
+
+                readData().then((data) => {
+                    const listOfObject = [...data, ...res];
+                    storeData(listOfObject);
+                    Alert.alert(`Items are added to data!`);
+                });
+            })
+            .catch((error) => {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log("Error", error.message);
                 }
-            }
-        ).then(({data:{objects}})=>{
-            // let items = {}
-            // console.log(objects);
-            const res = objects.map(object=>{
-                if (object.object === "Fruit") {
-                    return {key : keyIndex++, productname: object.object, expiryDate: 8, image: cropImage(object)}
-                }
-                return {key : keyIndex++, productname: object.object, expiryDate: 10, image: cropImage(object)}
-            })
-
-            // items = objects.forEach(element => {
-            //     const id = Math.floor(Math.random() * 100)
-            //     return {
-            //     ...items,
-            //     id : {
-            //         productName: element.object,
-            //         expirationData: 10,
-            //     },
-            // }});
-
-            // storeData([{test:"a"}])
-            // readData().then(data=>console.log( data))
-            readData().then((data)=>{
-                const listOfObject = [...data, ...res]
-                storeData(listOfObject)
-                Alert.alert(`Items are added to My Fridge!`)
-            })
-            })
-        .catch((e)=>console.log("error", e));
-    }
-
+                console.log(error.config);
+            });
+    };
     // function to bring image from cameraroll
-    pickImage = async () => {
+    const pickImage = async () => {
         const grant = await ImagePicker.requestCameraRollPermissionsAsync();
         if (grant) {
             let result = await ImagePicker.launchImageLibraryAsync({
-              mediaTypes: ImagePicker.MediaTypeOptions.Images,
-              allowsEditing: false,
-            //   aspect: [3, 4],
-              quality: 1,
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: false,
+                //   aspect: [3, 4],
+                quality: 1,
             });
             // print the information of image
             console.log(result);
+            return {
+                uri: result.uri,
+                name: result.uri.replace(/^.*[\\\/]/, ""),
+                type: result.type,
+            };
         } else {
             Alert.alert("Need permission for libaray");
         }
     };
-    
+
     //function to take a picture using default camera
-    pickCamera = async () => {  
+    const pickCamera = async () => {
         const grant = await ImagePicker.requestCameraPermissionsAsync();
-        if(grant) {
+        if (grant) {
             let result = await ImagePicker.launchCameraAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: false,
@@ -151,40 +136,38 @@ export default class AddItems extends React.Component {
                 quality: 1,
             });
             // print the information of image
-            console.log(result);
+            // this.setState({ image: result.uri });
+            return {
+                uri: result.uri,
+                name: result.uri.replace(/^.*[\\\/]/, ""),
+                type: result.type,
+            };
         } else {
             Alert.alert("Need permission for camera");
         }
     };
 
-    render() {
-        // return (
-        //     <View>
-        //         <Text>Camera UI will be added here. Currenly online url is used to detect objects</Text>
-        //     </View>
-        // );
-        return (
-            <ImageBackground source={image} style={styles.image}>
-                <Text style={styles.text}>How would you like to add items?</Text>
-                <View style={styles.container}>
-                    <TouchableOpacity style={styles.button} onPress={this.pickCamera}>
-                        <Text style={styles.buttonText} >Take a picture</Text>  
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={this.pickImage}>
-                        <Text style={styles.buttonText}>Choose from library</Text>
-                    </TouchableOpacity>
-                </View>
-            </ImageBackground>
-        );
-    }
+    return (
+        <ImageBackground source={image} style={styles.image}>
+            <Text style={styles.text}>How would you like to add items?</Text>
+            <View style={styles.container}>
+                <TouchableOpacity style={styles.button} onPress={onPickCameraHandler}>
+                    <Text style={styles.buttonText} >Take a picture</Text>  
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={onPickImageHandler}>
+                    <Text style={styles.buttonText}>Choose from library</Text>
+                </TouchableOpacity>
+            </View>
+        </ImageBackground>
+    );
 }
 
 const styles = StyleSheet.create({
-    container: { 
-        width: '90%',
-        height: '20%',
-        alignSelf: 'center', 
-        justifyContent: 'space-around' 
+    container: {
+        width: "90%",
+        height: "30%",
+        alignSelf: "center",
+        justifyContent: "space-around",
     },
     image: {
         flex: 1,
@@ -192,22 +175,22 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     button: {
-        height: "40%",
-        width: "65%",
+        height: "50%",
+        width: "80%",
         justifyContent: "space-evenly",
-        alignSelf:'center',
-        backgroundColor: 'rgba(190, 223, 83, .5)',
+        alignSelf: "center",
+        backgroundColor: "#D8ECCF",
         marginTop: 30,
         marginBottom: 30,
         borderRadius: 20,
     },
     buttonText: {
-        fontFamily: 'Arial Rounded MT Bold',
+        fontWeight: "bold",
         fontSize: 20,
-        color:'#1D1C1A',
-        textAlign: 'center',
-        textTransform: 'capitalize'
-    }, 
+        color: "#1D1C1A",
+        textAlign: "center",
+        textTransform: "capitalize",
+    },
     text: {
         width: '90%',
         alignSelf: 'center', 
@@ -218,3 +201,5 @@ const styles = StyleSheet.create({
         marginBottom: 40
     },
 });
+
+//  TODO handle oversized picture
