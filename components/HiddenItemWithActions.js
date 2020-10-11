@@ -18,7 +18,6 @@ export default function HiddenItemWithActions(props) {
 const styles = StyleSheet.create({
     rowBack :{
         alignItems: 'center',
-
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',

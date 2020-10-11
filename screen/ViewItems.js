@@ -7,6 +7,7 @@ import ItemListView from "../components/ItemListView";
 import { readData } from "../utils/storageManager";
 
 export default function ViewItems(props) {
+    const {navigation} = props;
     const [data, setData] = useState([]);
     const [isEmptyFridge, setIsEmptyFridge] = useState(true);
     

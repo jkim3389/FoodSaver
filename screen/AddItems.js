@@ -21,8 +21,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 //Currently, with pre-defined pic, it will send http request to azrue and once it successfully get the data response, it will alert dialog to display that it is done
 
-var keyIndex = 0;
-
 export default function AddItems(props) {
 
     const onPickImageHandler = () => {
@@ -36,6 +34,20 @@ export default function AddItems(props) {
             imageFetching(data);
         });
     };
+
+    const onSampleImage = () => {
+        pickSample().then((data) => {
+            imageFetching(data);
+        })
+    }
+    const pickSample = async () => {
+        var items = {
+            uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
+            name: "items.jpeg",
+            type: "image/jpeg"
+        }
+        return items;
+    }
 
     const cropImage = async (srcPath, {rectangle}) => {
         const cropData = {
@@ -133,6 +145,7 @@ export default function AddItems(props) {
 
     return (
         <Background>
+            <Text style={styles.text}>How would you like to add items?</Text>
             <View style={styles.container}>
                 <TouchableOpacity
                     style={styles.button}
@@ -146,6 +159,12 @@ export default function AddItems(props) {
                 >
                     <Text style={styles.buttonText}>Choose from library</Text>
                 </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={onSampleImage}
+                >
+                    <Text style={styles.buttonText}>Sample Image</Text>
+                </TouchableOpacity>
             </View>
         </Background>
     );
@@ -157,6 +176,11 @@ const styles = StyleSheet.create({
         height: "30%",
         alignSelf: "center",
         justifyContent: "space-around",
+    },
+    image: {
+        flex: 1,
+        resizeMode: "cover",
+        justifyContent: "center"
     },
     button: {
         height: "50%",
@@ -174,6 +198,15 @@ const styles = StyleSheet.create({
         color: "#1D1C1A",
         textAlign: "center",
         textTransform: "capitalize",
+    },
+    text: {
+        width: '90%',
+        alignSelf: 'center', 
+        fontSize: 30,
+        color: '#5F6A6A',
+        fontFamily: 'Arial Rounded MT Bold',
+        textAlign: 'center',
+        marginBottom: 40
     },
 });
 

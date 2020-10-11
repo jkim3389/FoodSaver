@@ -8,6 +8,7 @@ export default function EmptyFridge() {
                 style={styles.noItems}
             />
             <Text style={styles.emptyHeader}>No Item</Text>
+            <Text/>
             <Text style={styles.emptyBody}>please add items</Text>
         </View>
     );

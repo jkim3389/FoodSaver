@@ -61,13 +61,11 @@ export default function ItemListView(props) {
 
             <SwipeListView
                 data={props.data}
-                style={{ ...styles.flatList, ...props.style }}
                 renderItem={renderItem}
                 scrollIndicatorInsets={{ right: 1 }}
                 disableRightSwipe
                 renderHiddenItem={renderHiddenItem}
                 rightOpenValue={-115}
-
             />
         </View>
     );
@@ -82,11 +80,6 @@ const styles = StyleSheet.create({
     listContainer: {
         alignItems: "center",
         backgroundColor: "red",
-    },
-
-    flatList: {
-        // backgroundColor: "green",
-        width: "100%",
     },
     list: {
         width: "100%",
