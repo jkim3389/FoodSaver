@@ -1,17 +1,32 @@
-import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
-export default function EmptyFridge() {
+import React, {useState} from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import IconMaterialIcons from "react-native-vector-icons/MaterialIcons";
+
+export default function EmptyFridge(props) {
+    
     return (
-        <View style={styles.emptyContainer}>
-            <Image source={require("../assets/noItems.png")}  style={styles.noItems}/>
-            <Text style={styles.emptyHeader}>No Item</Text>
-            <Text/>
-            <Text style={styles.emptyBody}>please add items</Text>
+        <View style={styles.container}>
+            <TouchableOpacity
+                style={styles.addItembtn}
+                onPress={() => props.navigation.navigate("Add Items")}
+            >
+                <IconMaterialIcons name="add" style={styles.addItembtnText} />
+                <Text style={styles.addItembtnText}>Click to add items</Text>
+            </TouchableOpacity>
+            <View style={styles.emptyContainer}>
+                <Image source={require("../assets/noItems.png")}  style={styles.noItems}/>
+                <Text style={styles.emptyHeader}>No Item</Text>
+                <Text/>
+                <Text style={styles.emptyBody}>please add items</Text>
+            </View>    
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        height:'100%',
+    },
     emptyHeader: {
         fontSize: 30,
         color: '#5F6A6A',
@@ -24,7 +39,8 @@ const styles = StyleSheet.create({
         fontFamily: 'Arial Rounded MT Bold'
     },
     emptyContainer: {
-        alignItems: "center",
+        alignItems: 'center',
+        
     },
     noItems: { 
         top: -30,
@@ -33,5 +49,20 @@ const styles = StyleSheet.create({
         justifyContent: "center", 
         alignItems: "center",
         marginBottom: -20,
+    },
+    addItembtn: {
+        backgroundColor: "#FBFCFC",
+        borderRadius: 5,
+        height: 60,
+        margin: 5,
+        flexDirection: "row",
+        marginBottom:'50%',
+    },
+    addItembtnText: {
+        alignItems: "center",
+        fontSize: 25,
+        paddingLeft: 10,
+        color: "#797D7F",
+        alignSelf: "center",
     },
 });

@@ -12,7 +12,6 @@ export async function storeData(value) {
 }
 
 export async function readData() {
-    
         try {
             const data = await AsyncStorage.getItem("items")
             if(data != null){
@@ -26,7 +25,6 @@ export async function readData() {
         }
     
 }
-
 
 export async function clearData() {
     try {
