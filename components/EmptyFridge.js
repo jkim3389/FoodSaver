@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         height: 60,
         margin: 5,
         flexDirection: "row",
-        marginBottom:'50%',
+        marginBottom:'40%',
     },
     addItembtnText: {
         alignItems: "center",

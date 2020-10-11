@@ -18,7 +18,7 @@ export default function VisibleItem({ data }) {
                 />
                 <View style={styles.contentContainer}>
                     <Text style={styles.productname}>{data.productname}</Text>
-                    <Text style={styles.expirydate}>
+                    <Text style={styles.expiryDate}>
                         Expiry Date: {data.expiryDate} days left
                     </Text>
                 </View>
@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     rowFront: {
         flex: 1,
         flexDirection: "row",
-
         backgroundColor: "rgb(52, 52, 52)",
         borderRadius: 5,
         height: 100,

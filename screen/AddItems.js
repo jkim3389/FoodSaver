@@ -173,7 +173,7 @@ export default function AddItems(props) {
 const styles = StyleSheet.create({
     container: {
         width: "90%",
-        height: "30%",
+        height: "40%",
         alignSelf: "center",
         justifyContent: "space-around",
     },
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     button: {
-        height: "50%",
+        height: "40%",
         width: "80%",
         justifyContent: "space-evenly",
         alignSelf: "center",
