@@ -79,18 +79,6 @@ const styles = StyleSheet.create({
         height: "100%",
         backgroundColor: "rgba(236, 227, 207, 0.7)",
     },
-    listContainer: {
-        alignItems: "center",
-        backgroundColor: "red",
-    },
-    list: {
-        width: "100%",
-        backgroundColor: "rgba(52, 52, 52, 0.2)",
-        marginTop: 10,
-        padding: 30,
-        alignItems: "center",
-    },
-
     addItembtn: {
         backgroundColor: "#FBFCFC",
         borderRadius: 5,

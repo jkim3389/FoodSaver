@@ -5,10 +5,10 @@ export default function HiddenItemWithActions(props) {
     return (
         <View style={styles.rowBack}>
                 <TouchableOpacity style={styles.backRightBtnLeft} onPress = {props.onEdit} > 
-                    <IconEvilIcons name="pencil" size={35}/>
+                    <IconEvilIcons name="pencil" size={40}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.backRightBtnRight} onPress = {props.onDelete}>
-                    <IconEvilIcons name="trash" size={35}/>
+                    <IconEvilIcons name="trash" size={40}/>
                 </TouchableOpacity>
             </View>
     )
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         width: 50,
         backgroundColor: '#1f65ff',
         right: 5,
-        height: 50,
+        height: 80,
         borderBottomLeftRadius:5,
         borderTopLeftRadius: 5,
     },
@@ -48,6 +48,6 @@ const styles = StyleSheet.create({
         right: 5,
         borderTopRightRadius: 5,
         borderBottomRightRadius: 5,
-        height: 50,
+        height: 80,
     }
 })
