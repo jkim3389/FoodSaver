@@ -7,13 +7,12 @@ import VisibleItem from "./VisibleItem";
 
 export default function ItemListView(props) {
 
-
     const editRow = (rowMap, rowKey) => {
         if (rowMap[rowKey]) {
             rowMap[rowKey].closeRow();
         }
         if (rowMap[rowKey]) {
-            navigation.navigate("Edit Items", {
+            props.navigation.navigate("Edit Items", {
                 keyNumber:rowKey,
             });
         }
@@ -54,20 +53,18 @@ export default function ItemListView(props) {
         <View style={styles.flatListView}>
             <TouchableOpacity
                 style={styles.addItembtn}
-                onPress={() => navigation.navigate("Add Items")}
+                onPress={() => props.navigation.navigate("Add Items")}
             >
                 <IconMaterialIcons name="add" style={styles.addItembtnText} />
                 <Text style={styles.addItembtnText}>Click to add items</Text>
             </TouchableOpacity>
             <SwipeListView
                 data={props.data}
-                style={{ ...styles.flatList, ...props.style }}
                 renderItem={renderItem}
                 scrollIndicatorInsets={{ right: 1 }}
                 disableRightSwipe
                 renderHiddenItem={renderHiddenItem}
                 rightOpenValue={-115}
-
             />
         </View>
     );
@@ -82,11 +79,6 @@ const styles = StyleSheet.create({
     listContainer: {
         alignItems: "center",
         backgroundColor: "red",
-    },
-
-    flatList: {
-        // backgroundColor: "green",
-        width: "100%",
     },
     list: {
         width: "100%",

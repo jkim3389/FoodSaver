@@ -14,7 +14,7 @@ export default function VisibleItem({data}) {
             <View style={styles.rowFront}>
                 <Image source={data.image} />
                 <Text style={styles.productname}>{data.productname}</Text>
-                <Text style={styles.expirydate}>Expiry Date: {data.expiryDate} days left</Text>
+                <Text style={styles.expiryDate}>Expiry Date: {data.expiryDate} days left</Text>
             </View>
         </TouchableHighlight>
     );

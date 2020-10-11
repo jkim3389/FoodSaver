@@ -7,6 +7,7 @@ import ItemListView from "../components/ItemListView";
 import { readData } from "../utils/storageManager";
 
 export default function ViewItems(props) {
+    const {navigation} = props;
     const [data, setData] = useState([]);
     const [isEmptyFridge, setIsEmptyFridge] = useState(true);
 
@@ -26,7 +27,7 @@ export default function ViewItems(props) {
 
     let content = <EmptyFridge />;
     if (!isEmptyFridge) {
-        content = <ItemListView data={data} />;
+        content = <ItemListView data={data} navigation={navigation}/>;
     }
     return <Background>{content}</Background>;
 }

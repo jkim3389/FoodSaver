@@ -5,6 +5,7 @@ export default function EmptyFridge() {
         <View style={styles.emptyContainer}>
             <Image source={require("../assets/noItems.png")}  style={styles.noItems}/>
             <Text style={styles.emptyHeader}>No Item</Text>
+            <Text/>
             <Text style={styles.emptyBody}>please add items</Text>
         </View>
     );

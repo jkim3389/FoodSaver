@@ -16,6 +16,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { readData, storeData } from "../utils/storageManager";
 import Background from "../components/Background";
 import * as ImageManipulator from "expo-image-manipulator";
+import 'react-native-get-random-values'
 import { v4 as uuidv4 } from 'uuid';
 
 //Currently, with pre-defined pic, it will send http request to azrue and once it successfully get the data response, it will alert dialog to display that it is done
@@ -132,6 +133,7 @@ export default function AddItems(props) {
 
     return (
         <Background>
+            <Text style={styles.text}>How would you like to add items?</Text>
             <View style={styles.container}>
                 <TouchableOpacity
                     style={styles.button}
@@ -157,6 +159,11 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         justifyContent: "space-around",
     },
+    image: {
+        flex: 1,
+        resizeMode: "cover",
+        justifyContent: "center"
+    },
     button: {
         height: "50%",
         width: "80%",
@@ -173,6 +180,15 @@ const styles = StyleSheet.create({
         color: "#1D1C1A",
         textAlign: "center",
         textTransform: "capitalize",
+    },
+    text: {
+        width: '90%',
+        alignSelf: 'center', 
+        fontSize: 30,
+        color: '#5F6A6A',
+        fontFamily: 'Arial Rounded MT Bold',
+        textAlign: 'center',
+        marginBottom: 40
     },
 });
 
