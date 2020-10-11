@@ -8,6 +8,7 @@ import {
     BoldText,
 } from "react-native";
 export default function VisibleItem({data}) {
+    console.log("data", data)
     return (
         <TouchableHighlight>
             <View style={styles.rowFront}>

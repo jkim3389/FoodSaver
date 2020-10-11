@@ -51,7 +51,7 @@ export default function AddItems(props) {
         }
     }
 
-    const imageFetching = (image) => {
+    const imageFetching = async (image) => {
         const endpoint = `https://foodsaver.cognitiveservices.azure.com`;
         const key = `8962510d94cc4c40aeec29ad416fce1a`;
         const apiPath = `${endpoint}/vision/v2.0/analyze`;
@@ -63,8 +63,7 @@ export default function AddItems(props) {
             type: "image/jpeg",
         };
         fd.append("file", items);
-        axios
-            .post(apiPath, fd, {
+        const { data: { objects: response } } = await axios.post(apiPath, fd, {
                 params: {
                     language: "en",
                     visualFeatures: "Objects",
@@ -74,44 +73,22 @@ export default function AddItems(props) {
                     "Content-Type": "multipart/form-data",
                 },
             })
-            .then(({ data: { objects } }) => {
-                const res = objects.map((object) => {
-                    cropImage(items.uri, object).then(uri=>{
-                        console.log(uri)
-                        return {
-                            key: keyIndex++,
-                            productname: object.object,
-                            expiryDate: 10,
-                            image: uri,
-                        };
-                    })
-                    
-                });
-                readData().then((data) => {
-                    const listOfObject = [...data, ...res];
-                    storeData(listOfObject);
-                    Alert.alert(`Items are added to data!`);
-                });
-            })
-            .catch((error) => {
-                if (error.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log("Error", error.message);
-                }
-                console.log(error.config);
-                Alert.alert(`Fetching Error: ${error.response.data.message}`);
-            });
+
+        const dataToBeSaved = await Promise.all(response.map(async (object)=>{
+            const cropURI = await cropImage(items.uri, object)
+            return {
+                key: keyIndex++,
+                productname: object.object,
+                // TODO: set ExpiryDate based on user-defined setting
+                expiryDate: Math.floor(Math.random() * 10),
+                image: cropURI,
+            }
+        }))
+
+        const existingDataFromStorage = await readData()
+        const listOfObject = [...existingDataFromStorage, ...dataToBeSaved]
+        await storeData(listOfObject)
+        Alert.alert(`Items are added to data!`);
     };
     // function to bring image from cameraroll
     const pickImage = async () => {

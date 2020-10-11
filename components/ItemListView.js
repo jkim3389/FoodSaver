@@ -49,7 +49,7 @@ export default function ItemListView(props) {
             />
         );
     };
-
+console.log(props.data)
     return (
         <View style={styles.flatListView}>
             <TouchableOpacity
