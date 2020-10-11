@@ -16,6 +16,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { readData, storeData } from "../utils/storageManager";
 import Background from "../components/Background";
 import * as ImageManipulator from "expo-image-manipulator";
+import { v4 as uuidv4 } from 'uuid';
 
 //Currently, with pre-defined pic, it will send http request to azrue and once it successfully get the data response, it will alert dialog to display that it is done
 
@@ -77,14 +78,14 @@ export default function AddItems(props) {
         const dataToBeSaved = await Promise.all(response.map(async (object)=>{
             const cropURI = await cropImage(items.uri, object)
             return {
-                key: keyIndex++,
+                key: uuidv4(),
                 productname: object.object,
                 // TODO: set ExpiryDate based on user-defined setting
                 expiryDate: Math.floor(Math.random() * 10),
                 image: cropURI,
             }
         }))
-
+        console.log(dataToBeSaved)
         const existingDataFromStorage = await readData()
         const listOfObject = [...existingDataFromStorage, ...dataToBeSaved]
         await storeData(listOfObject)
