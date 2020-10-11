@@ -7,14 +7,21 @@ import {
     Text,
     BoldText,
 } from "react-native";
-export default function VisibleItem({data}) {
-
+export default function VisibleItem({ data }) {
     return (
         <TouchableHighlight>
             <View style={styles.rowFront}>
-                <Image source={data.image} />
-                <Text style={styles.productname}>{data.productname}</Text>
-                <Text style={styles.expirydate}>Expiry Date: {data.expiryDate} days left</Text>
+                <Image
+                    source={{ uri: data.image }}
+                    style={styles.image}
+                    resizeMode="contain"
+                />
+                <View style={styles.contentContainer}>
+                    <Text style={styles.productname}>{data.productname}</Text>
+                    <Text style={styles.expirydate}>
+                        Expiry Date: {data.expiryDate} days left
+                    </Text>
+                </View>
             </View>
         </TouchableHighlight>
     );
@@ -23,9 +30,11 @@ export default function VisibleItem({data}) {
 const styles = StyleSheet.create({
     rowFront: {
         flex: 1,
+        flexDirection: "row",
+
         backgroundColor: "rgb(52, 52, 52)",
         borderRadius: 5,
-        height: 60,
+        height: 100,
         margin: 5,
         marginBottom: 5,
         shadowColor: "#999",
@@ -35,6 +44,7 @@ const styles = StyleSheet.create({
         elevation: 5,
         paddingHorizontal: 10,
         justifyContent: "center",
+        alignItems: "center",
     },
     productname: {
         fontSize: 20,
@@ -45,5 +55,15 @@ const styles = StyleSheet.create({
     expiryDate: {
         fontSize: 15,
         color: "#f2e6d7",
+    },
+    image: {
+        width: 90,
+        height: 90,
+        flex: 2,
+    },
+    contentContainer: {
+        // backgroundColor:"blue",
+        flex: 5,
+        paddingLeft: 15,
     },
 });

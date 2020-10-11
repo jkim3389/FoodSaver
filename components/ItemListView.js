@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import IconMaterialIcons from "react-native-vector-icons/MaterialIcons";
 import HiddenItemWithActions from "./HiddenItemWithActions";
@@ -7,13 +7,12 @@ import VisibleItem from "./VisibleItem";
 
 export default function ItemListView(props) {
 
-
     const editRow = (rowMap, rowKey) => {
         if (rowMap[rowKey]) {
             rowMap[rowKey].closeRow();
         }
         if (rowMap[rowKey]) {
-            navigation.navigate("Edit Items", {
+            props.navigation.navigate("Edit Items", {
                 keyNumber:rowKey,
             });
         }
@@ -54,11 +53,12 @@ export default function ItemListView(props) {
         <View style={styles.flatListView}>
             <TouchableOpacity
                 style={styles.addItembtn}
-                onPress={() => navigation.navigate("Add Items")}
+                onPress={() => props.navigation.navigate("Add Items")}
             >
                 <IconMaterialIcons name="add" style={styles.addItembtnText} />
                 <Text style={styles.addItembtnText}>Click to add items</Text>
             </TouchableOpacity>
+
             <SwipeListView
                 data={props.data}
                 style={{ ...styles.flatList, ...props.style }}

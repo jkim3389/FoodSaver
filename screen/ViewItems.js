@@ -9,7 +9,7 @@ import { readData } from "../utils/storageManager";
 export default function ViewItems(props) {
     const [data, setData] = useState([]);
     const [isEmptyFridge, setIsEmptyFridge] = useState(true);
-
+    
     useEffect(() => {
         async function fetch() {
             const dataFromStorage = await readData();
@@ -26,7 +26,7 @@ export default function ViewItems(props) {
 
     let content = <EmptyFridge />;
     if (!isEmptyFridge) {
-        content = <ItemListView data={data} />;
+        content = <ItemListView data={data} navigation={props.navigation} />;
     }
     return <Background>{content}</Background>;
 }

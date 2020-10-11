@@ -16,7 +16,6 @@ export async function readData() {
         try {
             const data = await AsyncStorage.getItem("items")
             if(data != null){
-                // console.log(JSON.parse(data))
                 return JSON.parse(data)
             } else {
                 return []
@@ -31,12 +30,12 @@ export async function readData() {
 export async function clearData() {
     try {
         const data = await AsyncStorage.getItem("items");
-        // console.log("data" , data)
+
         if(data){
             await AsyncStorage.clear();            
             Alert.alert(`Cleared local data`);
         } else {
-            Alert.alert("THere is nothing to delete")
+            Alert.alert("There is nothing to delete")
         }
     } catch (e) {
         console.log(e);

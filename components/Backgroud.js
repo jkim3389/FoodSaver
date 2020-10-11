@@ -5,13 +5,12 @@ export default function Background(props) {
     return (
         <ImageBackground
             source={require("../assets/background.jpg")}
-            style={{...styles.image, ...props.style}}
+            style={{ ...styles.image, ...props.style }}
         >
             {props.children}
         </ImageBackground>
     );
 }
-
 
 const styles = StyleSheet.create({
     image: {
@@ -19,4 +18,4 @@ const styles = StyleSheet.create({
         resizeMode: "cover",
         justifyContent: "center",
     },
-})
+});
