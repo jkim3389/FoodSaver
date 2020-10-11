@@ -21,8 +21,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 //Currently, with pre-defined pic, it will send http request to azrue and once it successfully get the data response, it will alert dialog to display that it is done
 
-var keyIndex = 0;
-
 export default function AddItems(props) {
 
     const onPickImageHandler = () => {
@@ -36,6 +34,20 @@ export default function AddItems(props) {
             imageFetching(data);
         });
     };
+
+    const onSampleImage = () => {
+        pickSample().then((data) => {
+            imageFetching(data);
+        })
+    }
+    const pickSample = async () => {
+        var items = {
+            uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
+            name: "items.jpeg",
+            type: "image/jpeg"
+        }
+        return items;
+    }
 
     const cropImage = async (srcPath, {rectangle}) => {
         const cropData = {
@@ -146,6 +158,12 @@ export default function AddItems(props) {
                     onPress={onPickImageHandler}
                 >
                     <Text style={styles.buttonText}>Choose from library</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={onSampleImage}
+                >
+                    <Text style={styles.buttonText}>Sample Image</Text>
                 </TouchableOpacity>
             </View>
         </Background>
