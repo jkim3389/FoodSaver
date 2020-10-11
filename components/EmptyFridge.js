@@ -29,24 +29,24 @@ const styles = StyleSheet.create({
     },
     emptyHeader: {
         fontSize: 30,
-        color: '#5F6A6A',
-        fontFamily: 'Arial Rounded MT Bold'
+        color: "#5F6A6A",
+        fontFamily: "Arial Rounded MT Bold",
     },
     emptyBody: {
-        marginTop:-10,
+        marginTop: -10,
         fontSize: 20,
-        color: '#5F6A6A',
-        fontFamily: 'Arial Rounded MT Bold'
+        color: "#5F6A6A",
+        fontFamily: "Arial Rounded MT Bold",
     },
     emptyContainer: {
         alignItems: 'center',
         
     },
-    noItems: { 
+    noItems: {
         top: -30,
-        width: 200, 
-        height: 200, 
-        justifyContent: "center", 
+        width: 200,
+        height: 200,
+        justifyContent: "center",
         alignItems: "center",
         marginBottom: -20,
     },

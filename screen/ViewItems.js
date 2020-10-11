@@ -30,7 +30,7 @@ export default function ViewItems(props) {
 
     let content = <EmptyFridge navigation={navigation}/>;
     if (!isEmptyFridge) {
-        content = <ItemListView data={data} navigation={navigation}/>;
+        content = <ItemListView data={data} navigation={props.navigation} />;
     }
     return <Background>{content}</Background>;
 }

@@ -60,6 +60,7 @@ export default function ItemListView(props) {
                 <IconMaterialIcons name="add" style={styles.addItembtnText} />
                 <Text style={styles.addItembtnText}>Click to add items</Text>
             </TouchableOpacity>
+
             <SwipeListView
                 data={props.data}
                 renderItem={renderItem}

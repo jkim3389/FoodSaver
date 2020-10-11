@@ -98,7 +98,7 @@ export default function AddItems(props) {
                 image: cropURI,
             }
         }))
-        console.log(dataToBeSaved)
+
         const existingDataFromStorage = await readData()
         const listOfObject = [...existingDataFromStorage, ...dataToBeSaved]
         await storeData(listOfObject)
