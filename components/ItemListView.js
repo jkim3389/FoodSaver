@@ -23,7 +23,7 @@ export default function ItemListView(props) {
             const prevIndex = data.findIndex(item => item.key === key);
             newData.splice(prevIndex,1);
             setData(newData);
-            await AsyncStorage.setItem("items",JSON.stringify(newData));
+            await AsyncStorage.setItem(key,JSON.stringify(newData));
         } catch(e){
             console.log("error occured during remove item", e)
         }
