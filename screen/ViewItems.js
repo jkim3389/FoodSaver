@@ -4,9 +4,8 @@ import { StyleSheet } from "react-native";
 import EmptyFridge from "../components/EmptyFridge";
 import Background from "../components/Background";
 import ItemListView from "../components/ItemListView";
-import { readData } from "../utils/storageManager";
 import { useIsFocused } from '@react-navigation/native'
-
+import { readAllData } from "../utils/storageManager";
 
 export default function ViewItems(props) {
     const {navigation} = props;
@@ -16,7 +15,7 @@ export default function ViewItems(props) {
 
     useEffect(() => {
         async function fetch() {
-            const dataFromStorage = await readData();
+            const dataFromStorage = await readAllData();
             setData(dataFromStorage);
 
             if (dataFromStorage.length !== 0 ) {

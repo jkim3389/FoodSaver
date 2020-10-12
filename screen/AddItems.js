@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { readData, storeData } from "../utils/storageManager";
+import { readAllData, readData, storeData } from "../utils/storageManager";
 import Background from "../components/Background";
 import * as ImageManipulator from "expo-image-manipulator";
 import 'react-native-get-random-values'
@@ -42,6 +42,7 @@ export default function AddItems(props) {
     }
     const pickSample = async () => {
         var items = {
+            // uri: "file:///Users/juntaekim/Desktop/newProject/FoodSaver/assets/items.jpeg",
             uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
             name: "items.jpeg",
             type: "image/jpeg"
@@ -88,20 +89,19 @@ export default function AddItems(props) {
                 },
             })
 
-        const dataToBeSaved = await Promise.all(response.map(async (object)=>{
+        await Promise.all(response.map(async (object)=>{
             const cropURI = await cropImage(items.uri, object)
-            return {
-                key: uuidv4(),
+            const key = uuidv4()
+            const item =  {
+                key,
                 productname: object.object,
                 // TODO: set ExpiryDate based on user-defined setting
                 expiryDate: Math.floor(Math.random() * 10),
                 image: cropURI,
             }
+            await storeData(key, item)
+            
         }))
-
-        const existingDataFromStorage = await readData()
-        const listOfObject = [...existingDataFromStorage, ...dataToBeSaved]
-        await storeData(listOfObject)
         Alert.alert(`Items are added to data!`);
     };
     // function to bring image from cameraroll
@@ -188,8 +188,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-evenly",
         alignSelf: "center",
         backgroundColor: "#D8ECCF",
-        marginTop: 30,
-        marginBottom: 30,
+        marginVertical: 30,
         borderRadius: 20,
     },
     buttonText: {

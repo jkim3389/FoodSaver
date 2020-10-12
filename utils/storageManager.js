@@ -2,12 +2,14 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { Alert } from "react-native";
 
 
-// export default funcs
-export async function storeData(value) {
+
+// V2
+export async function storeData(key, value) {
     try {
-        await AsyncStorage.setItem("items", JSON.stringify(value))
+        await AsyncStorage.setItem(key, JSON.stringify(value))        
     } catch(e){
         console.log("error occured during store data", e)
+            return null
     }
 }
 
@@ -25,18 +27,47 @@ export async function readData() {
     
 }
 
+// // V2
+// export async function readDataByOne(key) {
+    
+//     try {
+//         const data = await AsyncStorage.getItem(key)
+//         if(data != null){
+//             return JSON.parse(data)
+//         } else {
+//             return []
+//         }
+//     }catch(e){
+//         console.log("error occured during reading data", e)
+//     }
+// }
+
+export async function readAllData() {
+    const keys = await AsyncStorage.getAllKeys()
+    const items = await AsyncStorage.multiGet(keys);
+    return items.map(item=> JSON.parse(item[1]))
+    
+}
+
+
 export async function clearData() {
     try {
-        const data = await AsyncStorage.getItem("items");
-
-        if(data){
             await AsyncStorage.clear();            
             Alert.alert(`Cleared local data`);
-        } else {
-            Alert.alert("There is nothing to delete")
-        }
     } catch (e) {
         console.log(e);
         Alert.alert(`Error`);
     }
 }
+
+
+
+export async function removeDataByOne(key) {
+    try{
+        await AsyncStorage.removeItem(key)
+    } catch(error) {
+        console.log(error)
+    }
+
+}
+

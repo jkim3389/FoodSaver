@@ -2,17 +2,12 @@ import React from "react";
 import {
     StatusBar,
     Image,
-    ImageBackground,
     StyleSheet,
     View,
-    Button,
     TouchableOpacity,
-    Alert,
     Text,
 } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
 import logo from "../assets/logo.png";
-import { greaterThan } from "react-native-reanimated";
 import Background from "../components/Background";
 import { clearData } from "../utils/storageManager";
 export default function HomeScreen(props) {
