@@ -43,9 +43,10 @@ export default function AddItems(props) {
     const pickSample = async () => {
         var items = {
             // uri: "file:///Users/juntaekim/Desktop/newProject/FoodSaver/assets/items.jpeg",
-            uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
-            name: "items.jpeg",
-            type: "image/jpeg"
+            // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
+            uri: "file:///Users/raycho/CS4261/FoodSaver/assets/item5.jpg",
+            name: "items.jpg",
+            type: "image/jpg"
         }
         return items;
     }
@@ -88,8 +89,9 @@ export default function AddItems(props) {
                     "Content-Type": "multipart/form-data",
                 },
             })
-
+        console.log(response);
         await Promise.all(response.map(async (object)=>{
+            // console.log(object);
             const cropURI = await cropImage(items.uri, object)
             const key = uuidv4()
             const item =  {
@@ -99,6 +101,7 @@ export default function AddItems(props) {
                 expiryDate: Math.floor(Math.random() * 10),
                 image: cropURI,
             }
+            // console.log(item);
             await storeData(key, item)
             
         }))
