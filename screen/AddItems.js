@@ -43,10 +43,10 @@ export default function AddItems(props) {
     const pickSample = async () => {
         var items = {
             // uri: "file:///Users/juntaekim/Desktop/newProject/FoodSaver/assets/items.jpeg",
-            // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
-            uri: "file:///Users/raycho/CS4261/FoodSaver/assets/item5.jpg",
-            name: "items.jpg",
-            type: "image/jpg"
+            uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items3.png",
+            // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/item5.jpg",
+            name: "items.png",
+            type: "image/png"
         }
         return items;
     }
@@ -114,7 +114,7 @@ export default function AddItems(props) {
             let result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: false,
-                quality: 1,
+                // quality: 1,
             });
 
             return {
@@ -134,7 +134,7 @@ export default function AddItems(props) {
             let result = await ImagePicker.launchCameraAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: false,
-                quality: 1,
+                // quality: 1, 
             });
             return {
                 uri: result.uri,
