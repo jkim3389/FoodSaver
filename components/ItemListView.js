@@ -1,11 +1,10 @@
-import React, {useState} from "react";
+import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import IconMaterialIcons from "react-native-vector-icons/MaterialIcons";
 import HiddenItemWithActions from "./HiddenItemWithActions";
 import VisibleItem from "./VisibleItem";
-import { readData, storeData } from "../utils/storageManager";
-import AsyncStorage from "@react-native-community/async-storage";
+import { readData, storeData, removeDataByOne, readAllData } from "../utils/storageManager";
 
 
 export default function ItemListView(props) {
@@ -22,11 +21,9 @@ export default function ItemListView(props) {
     }
     const removeItem = async (key)=>{
         try {
-            const newData = props.data;
-            const prevIndex = newData.findIndex(item => item.key === key);
-            newData.splice(prevIndex,1);
-            // setData(newData);
-            await AsyncStorage.setItem(key,JSON.stringify(newData));
+            removeDataByOne(key);
+            const newData = await readAllData();
+            props.updateData(newData);
         } catch(e){
             console.log("error occured during remove item", e)
         }
@@ -38,7 +35,7 @@ export default function ItemListView(props) {
         removeItem(rowKey);
     }
 
-    const renderItem = ({ item }) => {
+    const renderItem = ({ item }, rowMap) => {
         return <VisibleItem data={item} />;
     };
     const renderHiddenItem = ({ item }, rowMap) => {

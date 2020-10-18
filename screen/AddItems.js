@@ -89,7 +89,7 @@ export default function AddItems(props) {
                     "Content-Type": "multipart/form-data",
                 },
             })
-        console.log(response);
+        // console.log(response);
         await Promise.all(response.map(async (object)=>{
             // console.log(object);
             const cropURI = await cropImage(items.uri, object)
@@ -103,7 +103,6 @@ export default function AddItems(props) {
             }
             // console.log(item);
             await storeData(key, item)
-            
         }))
         Alert.alert(`Items are added to data!`);
     };

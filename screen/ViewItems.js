@@ -7,8 +7,8 @@ import ItemListView from "../components/ItemListView";
 import { useIsFocused } from '@react-navigation/native'
 import { readAllData } from "../utils/storageManager";
 
+
 export default function ViewItems(props) {
-    const {navigation} = props;
     const [data, setData] = useState([]);
     const [isEmptyFridge, setIsEmptyFridge] = useState(true);
     const isFocused = useIsFocused()
@@ -17,7 +17,6 @@ export default function ViewItems(props) {
         async function fetch() {
             const dataFromStorage = await readAllData();
             setData(dataFromStorage);
-
             if (dataFromStorage.length !== 0 ) {
                 setIsEmptyFridge(false);
             } else {
@@ -27,9 +26,13 @@ export default function ViewItems(props) {
         fetch();
     }, [isFocused]);
 
-    let content = <EmptyFridge navigation={navigation}/>;
+    const updateData = (itemList) => {
+        setData(itemList);
+    }
+
+    let content = <EmptyFridge navigation={props.navigation}/>;
     if (!isEmptyFridge) {
-        content = <ItemListView data={data} navigation={props.navigation} />;
+        content = <ItemListView data={data} navigation={props.navigation} updateData = {updateData}/>;
     }
     return <Background>{content}</Background>;
 }
