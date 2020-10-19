@@ -43,8 +43,9 @@ export default function AddItems(props) {
     const pickSample = async () => {
         var items = {
             // uri: "file:///Users/juntaekim/Desktop/newProject/FoodSaver/assets/items.jpeg",
-            uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items3.png",
+            // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items3.png",
             // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/item5.jpg",
+            uri: "file:///Users/iLuna/Repositories/FoodSaver/assets/items1.jpeg",
             name: "items.png",
             type: "image/png"
         }
@@ -149,18 +150,28 @@ export default function AddItems(props) {
         <Background>
             <Text style={styles.text}>How would you like to add items?</Text>
             <View style={styles.container}>
+                
                 <TouchableOpacity
                     style={styles.button}
                     onPress={onPickCameraHandler}
                 >
                     <Text style={styles.buttonText}>Take a picture</Text>
                 </TouchableOpacity>
+                
                 <TouchableOpacity
                     style={styles.button}
                     onPress={onPickImageHandler}
                 >
                     <Text style={styles.buttonText}>Choose from library</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => props.navigation.navigate("Add An Item")}
+                >
+                    <Text style={styles.buttonText}>Manually Enter</Text>
+                </TouchableOpacity>
+
                 <TouchableOpacity
                     style={styles.button}
                     onPress={onSampleImage}
@@ -179,24 +190,19 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         justifyContent: "space-around",
     },
-    image: {
-        flex: 1,
-        resizeMode: "cover",
-        justifyContent: "center"
-    },
     button: {
-        height: "40%",
-        width: "80%",
+        height: "35%",
+        width: "70%",
         justifyContent: "space-evenly",
         alignSelf: "center",
-        backgroundColor: "#D8ECCF",
+        backgroundColor: 'rgba(190, 223, 83, .5)',
         marginVertical: 30,
-        borderRadius: 20,
+        borderRadius: 30,
     },
     buttonText: {
         fontWeight: "bold",
         fontSize: 20,
-        color: "#1D1C1A",
+        color: '#1D1C1A',
         textAlign: "center",
         textTransform: "capitalize",
     },
@@ -204,10 +210,10 @@ const styles = StyleSheet.create({
         width: '90%',
         alignSelf: 'center', 
         fontSize: 30,
-        color: '#5F6A6A',
+        color: '#1D1C1A',
         fontFamily: 'Arial Rounded MT Bold',
         textAlign: 'center',
-        marginBottom: 40
+        marginBottom: 60
     },
 });
 
