@@ -5,7 +5,8 @@ import EmptyFridge from "../components/EmptyFridge";
 import Background from "../components/Background";
 import ItemListView from "../components/ItemListView";
 import { useIsFocused } from '@react-navigation/native'
-import { readAllData } from "../utils/storageManager";
+import { readAllData, fbReadAllData } from "../utils/storageManager";
+import { db } from "../utils/config";
 
 
 export default function ViewItems(props) {
@@ -14,16 +15,30 @@ export default function ViewItems(props) {
     const isFocused = useIsFocused()
 
     useEffect(() => {
-        async function fetch() {
-            const dataFromStorage = await readAllData();
-            setData(dataFromStorage);
-            if (dataFromStorage.length !== 0 ) {
-                setIsEmptyFridge(false);
-            } else {
-                setIsEmptyFridge(true);
-            }
+        // async function fetch() {
+        //     const dataFromStorage = await readAllData();
+        //     setData(dataFromStorage);
+        //     if (dataFromStorage.length !== 0 ) {
+        //         setIsEmptyFridge(false);
+        //     } else {
+        //         setIsEmptyFridge(true);
+        //     }
+        // }
+        // fetch();
+        let mounted = true;
+        if (mounted) {
+            db.ref("/items").on("value", (dataSnapshot) => {
+                let data = dataSnapshot.val() ? dataSnapshot.val() : {};
+                let items = Object.values(data);
+                setData(items);
+                if (items.length !== 0 ) {
+                    setIsEmptyFridge(false);
+                } else {
+                    setIsEmptyFridge(true);
+                }
+            });
         }
-        fetch();
+        return () => mounted = false;
     }, [isFocused]);
 
     const updateData = (itemList) => {

@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { readAllData, readData, storeData } from "../utils/storageManager";
+import { readAllData, readData, storeData, addNewItem } from "../utils/storageManager";
 import Background from "../components/Background";
 import * as ImageManipulator from "expo-image-manipulator";
 import 'react-native-get-random-values'
@@ -45,9 +45,13 @@ export default function AddItems(props) {
             // uri: "file:///Users/juntaekim/Desktop/newProject/FoodSaver/assets/items.jpeg",
             // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items3.png",
             // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/item5.jpg",
-            uri: "file:///Users/iLuna/Repositories/FoodSaver/assets/items1.jpeg",
-            name: "items.png",
-            type: "image/png"
+            // uri: "file:///Users/iLuna/Repositories/FoodSaver/assets/items1.jpeg",
+            // name: "items.png",
+            // type: "image/png"
+            // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
+            uri: "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items1.jpeg",
+            name: "items.jpg",
+            type: "image/jpg"
         }
         return items;
     }
@@ -104,6 +108,8 @@ export default function AddItems(props) {
             }
             // console.log(item);
             await storeData(key, item)
+            addNewItem(key, item)
+            
         }))
         Alert.alert(`Items are added to data!`);
     };

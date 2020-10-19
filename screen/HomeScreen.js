@@ -9,10 +9,11 @@ import {
 } from "react-native";
 import logo from "../assets/logo.png";
 import Background from "../components/Background";
-import { clearData } from "../utils/storageManager";
+import { clearData, clearItems } from "../utils/storageManager";
 export default function HomeScreen(props) {
     const onClearHandler = () => {
         clearData();
+        clearItems();
     };
 
     return (
