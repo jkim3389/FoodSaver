@@ -4,7 +4,7 @@ import { SwipeListView } from "react-native-swipe-list-view";
 import IconMaterialIcons from "react-native-vector-icons/MaterialIcons";
 import HiddenItemWithActions from "./HiddenItemWithActions";
 import VisibleItem from "./VisibleItem";
-import { readData, storeData, removeDataByOne, readAllData } from "../utils/storageManager";
+import { readData, storeData, removeDataByOne, readAllData, fbRemoveDataByOne, fbReadAllData } from "../utils/storageManager";
 
 
 export default function ItemListView(props) {
@@ -22,7 +22,9 @@ export default function ItemListView(props) {
     const removeItem = async (key)=>{
         try {
             removeDataByOne(key);
+            fbRemoveDataByOne(key);
             const newData = await readAllData();
+            // const newData = fbReadAllData();
             props.updateData(newData);
         } catch(e){
             console.log("error occured during remove item", e)

@@ -15,7 +15,7 @@ export async function storeData(key, value) {
 }
 
 export function addNewItem(key, value) {
-    db.ref("/items").push(value);
+    db.ref('/items').child(value['key']).set(value);
 }
 
 export async function readData() {
@@ -95,3 +95,10 @@ export async function removeDataByOne(key) {
 
 }
 
+export function fbRemoveDataByOne(key) {
+    try {
+        db.ref('/items/' + key).remove();
+    } catch(error) {
+        console.log(error);
+    }
+}
