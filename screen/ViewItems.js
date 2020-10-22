@@ -3,11 +3,10 @@ import { StyleSheet } from "react-native";
 
 import EmptyFridge from "../components/EmptyFridge";
 import Background from "../components/Background";
-import ItemListView from "../components/ItemListView";
 import { useIsFocused } from '@react-navigation/native'
 import { readAllData, fbReadAllData } from "../utils/storageManager";
 import { db } from "../utils/config";
-
+import NonEmptyFridge from "../components/NonEmptyFridge";
 
 export default function ViewItems(props) {
     const [data, setData] = useState([]);
@@ -38,7 +37,7 @@ export default function ViewItems(props) {
                 }
             });
         }
-        return () => mounted = false;
+        // return () => mounted = false;
     }, [isFocused]);
 
     const updateData = (itemList) => {
@@ -47,7 +46,8 @@ export default function ViewItems(props) {
 
     let content = <EmptyFridge navigation={props.navigation}/>;
     if (!isEmptyFridge) {
-        content = <ItemListView data={data} navigation={props.navigation} updateData = {updateData}/>;
+        // content = <ItemListView data={data} navigation={props.navigation} updateData = {updateData}/>;
+        content = <NonEmptyFridge data={data} navigation={props.navigation} updateData = {updateData}/>;
     }
     return <Background>{content}</Background>;
 }
