@@ -65,7 +65,6 @@ export default function AddItems(props) {
         }
         setIsLoading(true)
         await new Promise((resolve)=>setTimeout(resolve, 3000))
-        console.log("running")
         
         imageFetching(items, 0)
     }
@@ -111,9 +110,9 @@ export default function AddItems(props) {
             setIsEditingMode(true),
             setIsLoading(false)
             setData(result)
-            console.log(result)
+
             //TODO : Saving item screen open
-            Alert.alert("item is added!");
+            Alert.alert("item recognized!");
         } catch (e) {
             setIsEditingMode(false)
             setIsLoading(false)
@@ -128,7 +127,7 @@ export default function AddItems(props) {
     if(isLoading) {
         content = <Loading/>
     } else if(isEditingMode){
-        content =  <SavingItems data={data} changeData={setData} navigation={props.navigation}/>
+        content =  <SavingItems data={data} changeData={setData} navigation={props.navigation} route={props.route}/>
     } else {
         content = (<View>
             <Text style={styles.text}>How would you like to add items?</Text>

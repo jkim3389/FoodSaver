@@ -12,6 +12,7 @@ export default function ViewItems(props) {
     const [data, setData] = useState([]);
     const [isEmptyFridge, setIsEmptyFridge] = useState(true);
     const isFocused = useIsFocused()
+    const [didMount, setDidMount] = useState(false); 
 
     useEffect(() => {
         // async function fetch() {
@@ -24,8 +25,8 @@ export default function ViewItems(props) {
         //     }
         // }
         // fetch();
-        let mounted = true;
-        if (mounted) {
+        setDidMount(true)
+        // if (mounted) {
             db.ref("/items").on("value", (dataSnapshot) => {
                 let data = dataSnapshot.val() ? dataSnapshot.val() : {};
                 let items = Object.values(data);
@@ -36,9 +37,9 @@ export default function ViewItems(props) {
                     setIsEmptyFridge(true);
                 }
             });
-        }
-        // return () => mounted = false;
-    }, [isFocused]);
+        // }
+        return () => setDidMount(false);
+    }, []);
 
     const updateData = (itemList) => {
         setData(itemList);
