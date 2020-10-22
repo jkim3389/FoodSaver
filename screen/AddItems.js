@@ -9,8 +9,8 @@ import * as ImageManipulator from "expo-image-manipulator";
 import "react-native-get-random-values";
 // import FormData from "form-data";
 import SavingItems from "./SavingItems";
-import { storeData } from "../utils/storageManager";
 import ListView from "../components/ListView";
+import Loading from "./Loading";
 
 
 //Currently, with pre-defined pic, it will send http request to azrue and once it successfully get the data response, it will alert dialog to display that it is done
@@ -18,19 +18,22 @@ import ListView from "../components/ListView";
 export default function AddItems(props) {
     const [data, setData] = useState([]);
     const [isEditingMode, setIsEditingMode] = useState(false);
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const onPickHandler = async (mode, confidenceLimit) => {
         const grant = (await (mode === "camera"))
             ? ImagePicker.requestCameraRollPermissionsAsync()
             : ImagePicker.requestCameraPermissionsAsync();
         if (grant) {
+
+            // setIsLoading(true)
             let result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: false,
-                // quality: 0.3,
+                quality: 0.3,
             });
             if (!result.cancelled) {
+                setIsLoading(true)
                 imageFetching(
                     {
                         uri: result.uri,
@@ -39,18 +42,15 @@ export default function AddItems(props) {
                     },
                     confidenceLimit
                 );
+            }else {
+                setIsLoading(false)
             }
         } else {
             Alert.alert("Need permission");
         }
     };
 
-    const onSampleImage = () => {
-        pickSample().then((data) => {
-            imageFetching(data);
-        })
-    }
-    const pickSample = async () => {
+    const onSampleImage = async () => {
         var items = {
             // uri: "file:///Users/juntaekim/Desktop/newProject/FoodSaver/assets/items.jpeg",
             // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items3.png",
@@ -59,12 +59,18 @@ export default function AddItems(props) {
             // name: "items.png",
             // type: "image/png"
             // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
-            uri: "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items1.jpeg",
+            uri: "file:///Users/juntaekim/Desktop/newProject/FoodSaver/assets/items1.jpeg",
             name: "items.jpg",
             type: "image/jpg",
-        });
-    };
-
+        }
+        setIsLoading(true)
+        await new Promise((resolve)=>setTimeout(resolve, 3000))
+        console.log("running")
+        
+        imageFetching(items, 0)
+    }
+    
+    
     const imageFetching = async (image, confidenceLimit = 0) => {
         const fd = new FormData();
         var items = {
@@ -75,16 +81,15 @@ export default function AddItems(props) {
             name: image.name,
             type: "image/jpeg",
         };
+
         fd.append("upload", items);
 
         try {
             const { data: response } = await axios.post(
-                `http://192.168.1.244:3000/addItems?confidence=${confidenceLimit}`,
+                `http://128.61.3.90:3000/addItems?confidence=${confidenceLimit}`,
                 fd,
                 {}
             );
-            
-                // console.log(response)
             const result = await Promise.all(
                 response.map(async (element) => {
                     const cropped = await ImageManipulator.manipulateAsync(
@@ -104,17 +109,28 @@ export default function AddItems(props) {
                 ),
             );
             setIsEditingMode(true),
+            setIsLoading(false)
             setData(result)
-
+            console.log(result)
             //TODO : Saving item screen open
             Alert.alert("item is added!");
         } catch (e) {
+            setIsEditingMode(false)
+            setIsLoading(false)
             console.log(e);
         }
 
     };
-    let content = !isEditingMode ? (
-        <View>
+
+
+
+    let content = ''
+    if(isLoading) {
+        content = <Loading/>
+    } else if(isEditingMode){
+        content =  <SavingItems data={data} changeData={setData} navigation={props.navigation}/>
+    } else {
+        content = (<View>
             <Text style={styles.text}>How would you like to add items?</Text>
             <View style={styles.container}>
                 
@@ -147,9 +163,9 @@ export default function AddItems(props) {
                 </TouchableOpacity>
             </View>
         </View>
-    ) : (
-        <ListView data={data}/>
-    );
+    )
+    }
+
     return <Background>{content}</Background>;
 }
 

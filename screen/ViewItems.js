@@ -37,7 +37,7 @@ export default function ViewItems(props) {
                 }
             });
         }
-        return () => mounted = false;
+        // return () => mounted = false;
     }, [isFocused]);
 
     const updateData = (itemList) => {

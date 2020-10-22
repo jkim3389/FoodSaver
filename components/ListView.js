@@ -27,7 +27,11 @@ export default function ListView(props) {
         if (rowMap[rowKey]) {
             rowMap[rowKey].closeRow();
         }
-        removeItem(rowKey);
+        if(props.removeItem){
+            props.removeItem(rowKey)
+        }else {
+            removeItem(rowKey);
+        }
     }
     const renderItem = ({ item }, rowMap) => {
         return <VisibleItem data={item} />;
