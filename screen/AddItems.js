@@ -85,7 +85,7 @@ export default function AddItems(props) {
 
         try {
             const { data: response } = await axios.post(
-                `http://128.61.3.90:3000/addItems?confidence=${confidenceLimit}`,
+                `https://gentle-river-84632.herokuapp.com/addItems?confidence=${confidenceLimit}`,
                 fd,
                 {}
             );
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     },
     container: {
         width: "90%",
-        height: "40%",
+        height: "60%",
         alignSelf: "center",
         justifyContent: "space-around",
     },
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(190, 223, 83, .5)',
         marginVertical: 30,
         borderRadius: 30,
+        
     },
     buttonText: {
         fontWeight: "bold",
