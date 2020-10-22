@@ -1,38 +1,48 @@
 import React, { useState } from "react";
-import {
-    ImageBackground,
-    ImageEditor,
-    Image,
-    View,
-    Text,
-    Alert,
-    Button,
-    Platform,
-    StyleSheet,
-} from "react-native";
+import { View, Text, Alert, Platform, StyleSheet } from "react-native";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { readAllData, readData, storeData, addNewItem } from "../utils/storageManager";
 import Background from "../components/Background";
 import * as ImageManipulator from "expo-image-manipulator";
-import 'react-native-get-random-values'
-import { v4 as uuidv4 } from 'uuid';
+import "react-native-get-random-values";
+// import FormData from "form-data";
+import SavingItems from "./SavingItems";
+import { storeData } from "../utils/storageManager";
+import ListView from "../components/ListView";
+
 
 //Currently, with pre-defined pic, it will send http request to azrue and once it successfully get the data response, it will alert dialog to display that it is done
 
 export default function AddItems(props) {
+    const [data, setData] = useState([]);
+    const [isEditingMode, setIsEditingMode] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
 
-    const onPickImageHandler = () => {
-        pickImage().then((data) => {
-            imageFetching(data);
-        });
-    };
-
-    const onPickCameraHandler = () => {
-        pickCamera().then((data) => {
-            imageFetching(data);
-        });
+    const onPickHandler = async (mode, confidenceLimit) => {
+        const grant = (await (mode === "camera"))
+            ? ImagePicker.requestCameraRollPermissionsAsync()
+            : ImagePicker.requestCameraPermissionsAsync();
+        if (grant) {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: false,
+                // quality: 0.3,
+            });
+            if (!result.cancelled) {
+                imageFetching(
+                    {
+                        uri: result.uri,
+                        name: result.uri.replace(/^.*[\\\/]/, ""),
+                        type: result.type,
+                    },
+                    confidenceLimit
+                );
+            }
+        } else {
+            Alert.alert("Need permission");
+        }
     };
 
     const onSampleImage = () => {
@@ -51,122 +61,73 @@ export default function AddItems(props) {
             // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
             uri: "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items1.jpeg",
             name: "items.jpg",
-            type: "image/jpg"
-        }
-        return items;
-    }
+            type: "image/jpg",
+        });
+    };
 
-    const cropImage = async (srcPath, {rectangle}) => {
-        const cropData = {
-            originX:rectangle.x,
-            originY:rectangle.y,
-            width:rectangle.w,
-            height:rectangle.h
-        }
-        try{
-            const cropped = await ImageManipulator.manipulateAsync(srcPath, [{crop:cropData}], {compress: 1})
-            return cropped.uri
-        }
-        catch(error){
-            console.log('Error caught in this.cropImage:', error)
-        }
-    }
-
-    const imageFetching = async (image) => {
-        const endpoint = `https://foodsaver.cognitiveservices.azure.com`;
-        const key = `8962510d94cc4c40aeec29ad416fce1a`;
-        const apiPath = `${endpoint}/vision/v2.0/analyze`;
-
+    const imageFetching = async (image, confidenceLimit = 0) => {
         const fd = new FormData();
         var items = {
-            uri: image.uri,
+            uri:
+                Platform.OS === "android"
+                    ? image.uri
+                    : image.uri.replace("file://", ""),
             name: image.name,
             type: "image/jpeg",
         };
-        fd.append("file", items);
-        const { data: { objects: response } } = await axios.post(apiPath, fd, {
-                params: {
-                    language: "en",
-                    visualFeatures: "Objects",
-                },
-                headers: {
-                    "Ocp-Apim-Subscription-Key": key,
-                    "Content-Type": "multipart/form-data",
-                },
-            })
-        // console.log(response);
-        await Promise.all(response.map(async (object)=>{
-            // console.log(object);
-            const cropURI = await cropImage(items.uri, object)
-            const key = uuidv4()
-            const item =  {
-                key,
-                productname: object.object,
-                // TODO: set ExpiryDate based on user-defined setting
-                expiryDate: Math.floor(Math.random() * 10),
-                image: cropURI,
-            }
-            // console.log(item);
-            await storeData(key, item)
-            addNewItem(key, item)
+        fd.append("upload", items);
+
+        try {
+            const { data: response } = await axios.post(
+                `http://192.168.1.244:3000/addItems?confidence=${confidenceLimit}`,
+                fd,
+                {}
+            );
             
-        }))
-        Alert.alert(`Items are added to data!`);
-    };
-    // function to bring image from cameraroll
-    const pickImage = async () => {
-        const grant = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (grant) {
-            let result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: false,
-                // quality: 1,
-            });
+                // console.log(response)
+            const result = await Promise.all(
+                response.map(async (element) => {
+                    const cropped = await ImageManipulator.manipulateAsync(
+                        image.uri,
+                        [{ crop: element.image }],
+                        { compress: 1 }
+                    );
+                    return {
+                            ...element,
+                            image: cropped.uri,
+                        }
+                    }
+                    // await storeData(element.key, {
+                    //     ...element,
+                    //     image: cropped.uri,
+                    // });
+                ),
+            );
+            setIsEditingMode(true),
+            setData(result)
 
-            return {
-                uri: result.uri,
-                name: result.uri.replace(/^.*[\\\/]/, ""),
-                type: result.type,
-            };
-        } else {
-            Alert.alert("Need permission for libaray");
+            //TODO : Saving item screen open
+            Alert.alert("item is added!");
+        } catch (e) {
+            console.log(e);
         }
-    };
 
-    //function to take a picture using default camera
-    const pickCamera = async () => {
-        const grant = await ImagePicker.requestCameraPermissionsAsync();
-        if (grant) {
-            let result = await ImagePicker.launchCameraAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: false,
-                // quality: 1, 
-            });
-            return {
-                uri: result.uri,
-                name: result.uri.replace(/^.*[\\\/]/, ""),
-                type: result.type,
-            };
-        } else {
-            Alert.alert("Need permission for camera");
-        }
     };
-
-    return (
-        <Background>
+    let content = !isEditingMode ? (
+        <View>
             <Text style={styles.text}>How would you like to add items?</Text>
             <View style={styles.container}>
                 
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={onPickCameraHandler}
+                    onPress={() => onPickHandler("camera", 0)}
                 >
                     <Text style={styles.buttonText}>Take a picture</Text>
                 </TouchableOpacity>
                 
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={onPickImageHandler}
+                    onPress={() => onPickHandler("image", 0)}
                 >
                     <Text style={styles.buttonText}>Choose from library</Text>
                 </TouchableOpacity>
@@ -185,11 +146,19 @@ export default function AddItems(props) {
                     <Text style={styles.buttonText}>Sample Image</Text>
                 </TouchableOpacity>
             </View>
-        </Background>
+        </View>
+    ) : (
+        <ListView data={data}/>
     );
+    return <Background>{content}</Background>;
 }
 
 const styles = StyleSheet.create({
+    progressBar: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
     container: {
         width: "90%",
         height: "40%",
@@ -213,8 +182,8 @@ const styles = StyleSheet.create({
         textTransform: "capitalize",
     },
     text: {
-        width: '90%',
-        alignSelf: 'center', 
+        width: "90%",
+        alignSelf: "center",
         fontSize: 30,
         color: '#1D1C1A',
         fontFamily: 'Arial Rounded MT Bold',
