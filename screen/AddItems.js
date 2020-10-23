@@ -43,15 +43,15 @@ export default function AddItems(props) {
     const pickSample = async () => {
         var items = {
             // uri: "file:///Users/juntaekim/Desktop/newProject/FoodSaver/assets/items.jpeg",
-            // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items3.png",
+            uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items3.png",
             // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/item5.jpg",
             // uri: "file:///Users/iLuna/Repositories/FoodSaver/assets/items1.jpeg",
             // name: "items.png",
             // type: "image/png"
-            // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items.jpeg",
-            uri: "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items1.jpeg",
-            name: "items.jpg",
-            type: "image/jpg"
+            // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items1.jpeg",
+            // uri: "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items1.jpeg",
+            name: "items.png",
+            type: "image/png"
         }
         return items;
     }
@@ -96,7 +96,7 @@ export default function AddItems(props) {
             })
         // console.log(response);
         await Promise.all(response.map(async (object)=>{
-            // console.log(object);
+            console.log(object);
             const cropURI = await cropImage(items.uri, object)
             const key = uuidv4()
             const item =  {

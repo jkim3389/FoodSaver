@@ -42,19 +42,19 @@ export function fbReadAllData() {
 }
 
 // // V2
-// export async function readDataByOne(key) {
+export async function readDataByOne(key) {
     
-//     try {
-//         const data = await AsyncStorage.getItem(key)
-//         if(data != null){
-//             return JSON.parse(data)
-//         } else {
-//             return []
-//         }
-//     }catch(e){
-//         console.log("error occured during reading data", e)
-//     }
-// }
+    try {
+        const data = await AsyncStorage.getItem(key)
+        if(data != null){
+            return JSON.parse(data)
+        } else {
+            return []
+        }
+    }catch(e){
+        console.log("error occured during reading data", e)
+    }
+}
 
 export async function readAllData() {
     const keys = await AsyncStorage.getAllKeys()

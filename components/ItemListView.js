@@ -12,10 +12,8 @@ export default function ItemListView(props) {
     const editRow = (rowMap, rowKey) => {
         if (rowMap[rowKey]) {
             rowMap[rowKey].closeRow();
-        }
-        if (rowMap[rowKey]) {
             props.navigation.navigate("Edit Items", {
-                keyNumber:rowKey,
+                key:rowKey,
             });
         }
     }
