@@ -21,18 +21,21 @@ export default function AddItems(props) {
     const [isLoading, setIsLoading] = useState(false);
 
     const onPickHandler = async (mode, confidenceLimit) => {
-        const grant = (await (mode === "camera"))
+        const grant = await ((mode === "camera")
             ? ImagePicker.requestCameraRollPermissionsAsync()
-            : ImagePicker.requestCameraPermissionsAsync();
+            : ImagePicker.requestCameraPermissionsAsync())
         if (grant) {
 
             // setIsLoading(true)
-            let result = await ImagePicker.launchImageLibraryAsync({
+            const ImagePickerConfig = {
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: false,
                 quality: 0.3,
-            });
+            }
+            let result = await ((mode==="camera")? ImagePicker.launchCameraAsync(ImagePickerConfig): ImagePicker.launchImageLibraryAsync(ImagePickerConfig));
+
             if (!result.cancelled) {
+            
                 setIsLoading(true)
                 imageFetching(
                     {
