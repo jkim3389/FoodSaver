@@ -9,10 +9,11 @@ import {
 } from "react-native";
 import logo from "../assets/logo.png";
 import Background from "../components/Background";
-import { clearData } from "../utils/storageManager";
+import { clearData, clearItems } from "../utils/storageManager";
 export default function HomeScreen(props) {
     const onClearHandler = () => {
         clearData();
+        clearItems();
     };
 
     return (
@@ -58,22 +59,22 @@ const styles = StyleSheet.create({
         justifyContent: "space-evenly",
         alignSelf:'center',
         backgroundColor: 'rgba(190, 223, 83, .5)',
-        marginTop: 15,
+        marginTop: 20,
         borderRadius: 30,
     },
     buttonText: {
         fontWeight: 'bold',
-        fontSize: 15,
+        fontSize: 18,
         color:'#1D1C1A',
         textAlign: 'center',
         textTransform: 'uppercase'
     },
     logo: {
         top: -30,
-        width: 400,
-        height: 400,
+        width: 370,
+        height: 370,
+        alignSelf:'center',
         justifyContent: "center",
-        alignItems: "center",
-        marginBottom: -20,
+        marginBottom: -30,
     },
 });

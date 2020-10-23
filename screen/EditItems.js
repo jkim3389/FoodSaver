@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
-import { Image, ImageBackground, View, Text, FlatList, StyleSheet, Button } from "react-native";
+import { Image, View, Text, FlatList, StyleSheet, Button } from "react-native";
 
 
 export default function EditItems({route, navigation}) {

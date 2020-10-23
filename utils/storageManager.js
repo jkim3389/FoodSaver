@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import { Alert } from "react-native";
+import { db } from "./config";
 
 
 
@@ -13,6 +14,10 @@ export async function storeData(key, value) {
     }
 }
 
+export function addNewItem(key, value) {
+    db.ref('/items').child(value['key']).set(value);
+}
+
 export async function readData() {
         try {
             const data = await AsyncStorage.getItem("items")
@@ -24,7 +29,16 @@ export async function readData() {
         }catch(e){
             console.log("error occured during reading data", e)
         }
-    
+}
+state = {
+    items: [],
+};
+export function fbReadAllData() {
+    db.ref("/items").on("value", (dataSnapshot) => {
+        let data = dataSnapshot.val() ? dataSnapshot.val() : {};
+        let items = Object.values(data);
+        return items;
+    });
 }
 
 // // V2
@@ -60,6 +74,16 @@ export async function clearData() {
     }
 }
 
+export function clearItems() {
+    try {
+        db.ref('/items').remove();
+        Alert.alert(`Cleared local data`);
+    } catch (e) {
+        console.log(e);
+        Alert.alert(`Error`);
+    }
+}
+
 
 
 export async function removeDataByOne(key) {
@@ -71,3 +95,10 @@ export async function removeDataByOne(key) {
 
 }
 
+export function fbRemoveDataByOne(key) {
+    try {
+        db.ref('/items/' + key).remove();
+    } catch(error) {
+        console.log(error);
+    }
+}
