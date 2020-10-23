@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
-import { Image, View, Text, FlatList, StyleSheet, Button, TextInput, TouchableOpacity, Alert, TouchableWithoutFeedback } from "react-native";
+import { Image, View, Text, FlatList, StyleSheet, Button, TextInput, TouchableOpacity, Alert, TouchableWithoutFeedback, ScrollView } from "react-native";
 import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-modern-datepicker';
 import * as ImagePicker from "expo-image-picker";
@@ -13,9 +13,11 @@ export default function EditItems({route, navigation}) {
     const {key} = route.params;
     const {newData} = route.params;
     const [data, setData] = useState(newData);
-    
+    console.log(data);
+
     const submitAndClear = () => {
-        if (data.productnamename === '') {
+        console.log(data.productname);
+        if (data.productnamename === "") {
             Alert.alert("Item name is required.");
         } else {            
             storeData(key, data)
@@ -32,7 +34,7 @@ export default function EditItems({route, navigation}) {
 
     return (
         <Background style={styles.bg}>
-            <View style={styles.container}>
+            <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps='handled' style={styles.container}>
                 <View>
                     <TouchableOpacity style={styles.image} onPress={() => pickImage().then(uri=>setData({...data, image: uri }))}>
                         {imageSection}
@@ -61,6 +63,7 @@ export default function EditItems({route, navigation}) {
                     }}
                     style={pickerSelectStyles}
                 />
+
                 <Text style={styles.text}>Expiry Date</Text>
                 <DatePicker
                         style={styles.datePicker}
@@ -78,7 +81,7 @@ export default function EditItems({route, navigation}) {
                             borderColor: '#1D1C1A',
                         }}                        
                     />
-            </View>
+            </ScrollView>
 
             <TouchableOpacity style={styles.button} onPress={submitAndClear}>
                 <Text style={styles.buttonText}>Save</Text>
