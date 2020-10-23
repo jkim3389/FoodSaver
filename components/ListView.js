@@ -3,17 +3,31 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { SwipeListView } from 'react-native-swipe-list-view';
 import HiddenItemWithActions from './HiddenItemWithActions';
 import VisibleItem from './VisibleItem';
-import { readData, storeData, removeDataByOne, readAllData, fbRemoveDataByOne, fbReadAllData } from "../utils/storageManager";
+import { readData, readDataByOne ,storeData, removeDataByOne, readAllData, fbRemoveDataByOne, fbReadAllData } from "../utils/storageManager";
 
 export default function ListView(props) {
     // console.log(props.data);
     // console.log(" ");
+
+    const readOneData = (key) =>{
+        try{
+            const data = props.data;
+            const result = data.find(e => {
+                if (e.key === key) return e;
+            });
+            return result;
+        } catch(e) {
+            console.log(("error occured during read a singdata in ListView", e));
+        }
+    }
+
     const editRow = (rowMap, rowKey) => {
         if (rowMap[rowKey]) {
             rowMap[rowKey].closeRow();
             console.log(rowKey);
             props.navigation.navigate("Edit Items", {
                 key:rowKey,
+                newData: readOneData(rowKey),
             });
         }
     }

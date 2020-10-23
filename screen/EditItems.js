@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
-import { Image, View, Text, FlatList, StyleSheet, Button, TextInput, TouchableOpacity, Alert } from "react-native";
+import { Image, View, Text, FlatList, StyleSheet, Button, TextInput, TouchableOpacity, Alert, TouchableWithoutFeedback } from "react-native";
 import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-modern-datepicker';
 import * as ImagePicker from "expo-image-picker";
@@ -11,30 +11,11 @@ import { storeData } from "../utils/storageManager";
 
 export default function EditItems({route, navigation}) {
     const {key} = route.params;
-    const [data, setData] = useState([]);
-
-    useEffect(() => {
-        async function readData() {
-            try {
-                const data = await AsyncStorage.getItem(key);
-                console.log("The key of the item is : " + key);
-                console.log("This is the data in EditItems");
-                console.log(data);
-                if (data != null) {
-                    setData(JSON.parse(data));
-                } else {
-                    Alert.alert("Failed importing the item");
-                    return setData([]);
-                }
-            } catch(e) {
-                console.log("error occured during reading selected data", e);
-            }
-        }
-        readData();
-    }, []);
-
+    const {newData} = route.params;
+    const [data, setData] = useState(newData);
+    
     const submitAndClear = () => {
-        if (data.productnamename == '') {
+        if (data.productnamename === '') {
             Alert.alert("Item name is required.");
         } else {            
             storeData(key, data)
@@ -52,17 +33,22 @@ export default function EditItems({route, navigation}) {
     return (
         <Background style={styles.bg}>
             <View style={styles.container}>
-                <TouchableOpacity style={styles.image} onPress={() => pickImage().then(uri=>setData({...data, image: uri }))}>
-                    {imageSection}
-                </TouchableOpacity>
+                <View>
+                    <TouchableOpacity style={styles.image} onPress={() => pickImage().then(uri=>setData({...data, image: uri }))}>
+                        {imageSection}
+                    </TouchableOpacity>
+                </View>
 
                 <Text style={styles.text}>Name </Text>
-                <TextInput
-                    style={styles.textInput}
-                    clearButtonMode='always'
-                    value={data.productname}
-                    onChangeText={text => setData({...data, productname: text })}
-                />
+                <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
+                    <TextInput
+                        style={styles.textInput}
+                        clearButtonMode='always'
+                        value={data.productname}
+                        onChangeText={text => setData({...data, productname: text })}
+                    />
+                </TouchableWithoutFeedback>
+
 
                 <Text style={styles.text}>Category</Text>
                 <RNPickerSelect
@@ -100,6 +86,7 @@ export default function EditItems({route, navigation}) {
         </Background>
     )
 }
+
 
 const getToday = () => {
     var date = new Date().getDate(); //To get the Current Date
