@@ -3,16 +3,16 @@ import { StyleSheet } from "react-native";
 
 import EmptyFridge from "../components/EmptyFridge";
 import Background from "../components/Background";
-import ItemListView from "../components/ItemListView";
 import { useIsFocused } from '@react-navigation/native'
 import { readAllData, fbReadAllData } from "../utils/storageManager";
 import { db } from "../utils/config";
-
+import NonEmptyFridge from "../components/NonEmptyFridge";
 
 export default function ViewItems(props) {
     const [data, setData] = useState([]);
     const [isEmptyFridge, setIsEmptyFridge] = useState(true);
     const isFocused = useIsFocused()
+    const [didMount, setDidMount] = useState(false); 
 
     useEffect(() => {
         // async function fetch() {
@@ -25,8 +25,8 @@ export default function ViewItems(props) {
         //     }
         // }
         // fetch();
-        let mounted = true;
-        if (mounted) {
+        setDidMount(true)
+        // if (mounted) {
             db.ref("/items").on("value", (dataSnapshot) => {
                 let data = dataSnapshot.val() ? dataSnapshot.val() : {};
                 let items = Object.values(data);
@@ -37,9 +37,9 @@ export default function ViewItems(props) {
                     setIsEmptyFridge(true);
                 }
             });
-        }
-        return () => mounted = false;
-    }, [isFocused]);
+        // }
+        return () => setDidMount(false);
+    }, []);
 
     const updateData = (itemList) => {
         setData(itemList);
@@ -47,7 +47,8 @@ export default function ViewItems(props) {
 
     let content = <EmptyFridge navigation={props.navigation}/>;
     if (!isEmptyFridge) {
-        content = <ItemListView data={data} navigation={props.navigation} updateData = {updateData}/>;
+        // content = <ItemListView data={data} navigation={props.navigation} updateData = {updateData}/>;
+        content = <NonEmptyFridge data={data} navigation={props.navigation} updateData = {updateData}/>;
     }
     return <Background>{content}</Background>;
 }

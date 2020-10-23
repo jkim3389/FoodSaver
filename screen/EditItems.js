@@ -5,7 +5,6 @@ import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-modern-datepicker';
 import * as ImagePicker from "expo-image-picker";
 import NoImage from "../assets/addImage.png"
-
 import Background from "../components/Background";
 import { storeData } from "../utils/storageManager";
 
@@ -18,6 +17,9 @@ export default function EditItems({route, navigation}) {
         async function readData() {
             try {
                 const data = await AsyncStorage.getItem(key);
+                console.log("The key of the item is : " + key);
+                console.log("This is the data in EditItems");
+                console.log(data);
                 if (data != null) {
                     setData(JSON.parse(data));
                 } else {
@@ -36,7 +38,7 @@ export default function EditItems({route, navigation}) {
             Alert.alert("Item name is required.");
         } else {            
             storeData(key, data)
-            console.log(data);
+            // console.log(data);
             Alert.alert(data.productname + " Saved")
             navigation.navigate("My Fridge")
         }

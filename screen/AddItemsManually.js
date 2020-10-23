@@ -1,103 +1,156 @@
 import Background from "../components/Background";
 import React, { Component, useState } from "react";
-import { StyleSheet, TouchableOpacity, View, Text, Button, TextInput, Image, Alert } from "react-native";
-import RNPickerSelect from 'react-native-picker-select';
+import {
+    StyleSheet,
+    TouchableOpacity,
+    View,
+    Text,
+    Button,
+    TextInput,
+    Image,
+    Alert,
+} from "react-native";
+import RNPickerSelect from "react-native-picker-select";
 import addImage from "../assets/addImage.png";
-import DatePicker from 'react-native-modern-datepicker';
-import {storeData, addNewItem } from "../utils/storageManager";
-import { v4 as uuidv4 } from 'uuid';
+import DatePicker from "react-native-modern-datepicker";
+import { storeData, addNewItem } from "../utils/storageManager";
+import { v4 as uuidv4 } from "uuid";
 import * as ImagePicker from "expo-image-picker";
 
 export default class AddItemsManually extends Component {
     constructor(props) {
-        super(props)
-        this.state = { image: addImage, name: '', category: 'None', expiryDate: '' }
+        super(props);
+        this.state = {
+            image: '../assets/addImage.png',
+            name: "",
+            category: "None",
+            expiryDate: "",
+            isDefaultImage : true
+        };
     }
-
-    submitAndClear = () => {
-        if (this.state.name == '') {
+    submit = ()=>{
+        if (this.state.name == "") {
             Alert.alert("Item name is required.");
         } else {
-            console.debug(this.state.image)
-            const key = uuidv4()
-            const item =  {
+            console.debug(this.state.image);
+            const key = uuidv4();
+            const item = {
                 key,
                 productname: this.state.name,
                 expiryDate: this.state.expiryDate,
-                image: this.state.image
-            }
-            storeData(key, item)
-            addNewItem(key, item)
-            Alert.alert(this.state.name + " Added")
+                image: this.state.image,
+            };
+            // console.log(this.props.route)
+            this.props.navigation.goBack()
+            this.props.route.params.onSelectData(item);
+        }
+
+    }
+    submitAndClear = () => {
+        if (this.state.name == "") {
+            Alert.alert("Item name is required.");
+        } else {
+            console.debug(this.state.image);
+            const key = uuidv4();
+            const item = {
+                key,
+                productname: this.state.name,
+                expiryDate: this.state.expiryDate,
+                image: this.state.image,
+            };
+            console.log(item)
+            storeData(key, item);
+            addNewItem(key, item);
+            Alert.alert(this.state.name + " Added");
             // this.setState({image: '', name: '', category: null, expiryDate: ''}) //not working
             // console.log(this.state.name + this.state.expiryDate)
-            this.props.navigation.navigate("Add Items")
+            this.props.navigation.navigate("Add Items");
         }
-    }
+    };
 
     render() {
+
         return (
             <Background>
                 <View style style={styles.container}>
-
                     {/* <Text style={styles.text}>Image </Text> */}
-                    <TouchableOpacity style={styles.image} onPress={() => pickImage().then(uri=>this.setState({ image: uri }))}>
-                        <Image source={this.state.image} style={styles.addImage} />
+                    <TouchableOpacity
+                        style={styles.image}
+                        onPress={() => {
+                            pickImage().then((uri) =>
+                                this.setState({ image: uri, isDefaultImage:false })
+                            );
+                        }}
+                    >
+                        <Image
+                            source={this.state.isDefaultImage? require('../assets/addImage.png'): { uri: this.state.image }}
+                            style={styles.addImage}
+                        />
                     </TouchableOpacity>
 
                     <Text style={styles.text}>Name </Text>
                     <TextInput
                         style={styles.textInput}
-                        clearButtonMode='always'
-                        placeholder='Enter Name...'
+                        clearButtonMode="always"
+                        placeholder="Enter Name..."
                         value={this.state.name}
-                        onChangeText={text => this.setState({ name: text })}
+                        onChangeText={(text) => this.setState({ name: text })}
                     />
 
                     <Text style={styles.text}>Category</Text>
                     <RNPickerSelect
-                        onValueChange={text => this.setState({ category: text })}
+                        onValueChange={(text) =>
+                            this.setState({ category: text })
+                        }
                         items={categories}
                         value={this.state.category}
                         placeholder={{
-                            label: 'Select category...',
+                            label: "Select category...",
                             value: null,
-                            color: '#9EA0A4',
+                            color: "#9EA0A4",
                         }}
                         style={pickerSelectStyles}
                     />
                     <Text style={styles.text}>Expiry Date</Text>
                     <DatePicker
                         style={styles.datePicker}
-                        onDateChange={date => this.setState({ expiryDate: date })}
+                        onDateChange={(date) =>
+                            this.setState({ expiryDate: date })
+                        }
                         minimumDate={getToday()}
                         mode="calendar"
                         selected={this.state.expiryDate}
                         options={{
-                            backgroundColor: '#DCE5A1',
+                            backgroundColor: "#DCE5A1",
                             // textHeaderColor: '#FFA25B',
                             // textDefaultColor: '#F6E7C1',
                             // selectedTextColor: 'rgba(190, 223, 83, .5)',
-                            mainColor: '#1D1C1A',
-                            textSecondaryColor: '#1D1C1A',
-                            borderColor: '#1D1C1A',
+                            mainColor: "#1D1C1A",
+                            textSecondaryColor: "#1D1C1A",
+                            borderColor: "#1D1C1A",
                         }}
                     />
                     {/* <Text>{this.state.expiryDate - today}</Text> */}
                 </View>
-                <TouchableOpacity style={styles.button} onPress={this.submitAndClear}>
-                        <Text style={styles.buttonText}>Add this item</Text>
-                    </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={
+                        // console.log(this.props.route)
+                        (this.props.route.params)?this.submit:this.submitAndClear
+                        }
+                >
+                    <Text style={styles.buttonText}>Add this item</Text>
+                </TouchableOpacity>
             </Background>
-        )
+        );
     }
 }
 const getToday = () => {
     var date = new Date().getDate(); //To get the Current Date
     var month = new Date().getMonth() + 1; //To get the Current Month
     var year = new Date().getFullYear(); //To get the Current Year
-    return year + "-" + month + "-" + date
-}
+    return year + "-" + month + "-" + date;
+};
 
 const pickImage = async () => {
     const grant = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -129,24 +182,24 @@ const styles = StyleSheet.create({
         width: "90%",
         height: "88%",
         backgroundColor: "rgba(236, 227, 207, 0.7)",
-        alignSelf: 'center',
+        alignSelf: "center",
         // justifyContent: "center",
         // borderRadius: 20,
     },
     addImage: {
         width: "80%",
         height: "80%",
-        alignSelf: 'center',
+        alignSelf: "center",
         justifyContent: "center",
-        alignItems: 'center',
+        alignItems: "center",
     },
     image: {
         width: 200,
         height: 200,
         // backgroundColor: "grey",
-        alignSelf: 'center',
+        alignSelf: "center",
         justifyContent: "center",
-        alignItems: 'center',
+        alignItems: "center",
         // borderWidth:2,
         // borderColor: '#1D1C1A',
         // borderRadius: 20,
@@ -155,8 +208,8 @@ const styles = StyleSheet.create({
     text: {
         left: 25,
         marginBottom: -5,
-        color: '#1D1C1A',
-        fontFamily: 'Arial Rounded MT Bold',
+        color: "#1D1C1A",
+        fontFamily: "Arial Rounded MT Bold",
     },
     textInput: {
         height: 40,
@@ -165,7 +218,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         margin: 10,
         borderRadius: 20,
-        backgroundColor: '#DCE5A1',
+        backgroundColor: "#DCE5A1",
     },
     datePicker: {
         marginTop: 10,
@@ -173,26 +226,26 @@ const styles = StyleSheet.create({
         height: "40%",
         borderRadius: 20,
         alignSelf: "center",
-        backgroundColor: '#DCE5A1',
+        backgroundColor: "#DCE5A1",
     },
     button: {
         top: -10,
         height: "5%",
         width: "45%",
         justifyContent: "space-evenly",
-        alignSelf: 'center',
-        backgroundColor: 'rgba(190, 223, 83, .5)',
+        alignSelf: "center",
+        backgroundColor: "rgba(190, 223, 83, .5)",
         marginTop: 20,
         borderRadius: 30,
     },
     buttonText: {
-        fontWeight: 'bold',
+        fontWeight: "bold",
         fontSize: 18,
-        color: '#1D1C1A',
-        textAlign: 'center',
-        textTransform: 'uppercase'
+        color: "#1D1C1A",
+        textAlign: "center",
+        textTransform: "uppercase",
     },
-})
+});
 
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
@@ -204,16 +257,16 @@ const pickerSelectStyles = StyleSheet.create({
         // borderColor: 'rgba(190, 223, 83, 1)',
         borderRadius: 20,
         paddingRight: 30, // to ensure the text is never behind the icon
-        backgroundColor: '#DCE5A1',
+        backgroundColor: "#DCE5A1",
     },
     inputAndroid: {
         fontSize: 16,
         paddingHorizontal: 10,
         paddingVertical: 8,
         borderWidth: 0.5,
-        borderColor: 'purple',
+        borderColor: "purple",
         borderRadius: 8,
-        color: 'black',
+        color: "black",
         paddingRight: 30, // to ensure the text is never behind the icon
     },
 });

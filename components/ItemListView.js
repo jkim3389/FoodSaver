@@ -8,7 +8,6 @@ import { readData, storeData, removeDataByOne, readAllData, fbRemoveDataByOne, f
 
 
 export default function ItemListView(props) {
-
     const editRow = (rowMap, rowKey) => {
         if (rowMap[rowKey]) {
             rowMap[rowKey].closeRow();
