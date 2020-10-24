@@ -6,7 +6,7 @@ import DatePicker from 'react-native-modern-datepicker';
 import * as ImagePicker from "expo-image-picker";
 import NoImage from "../assets/addImage.png"
 import Background from "../components/Background";
-import { storeData } from "../utils/storageManager";
+import { storeData, fbStoreData } from "../utils/storageManager";
 
 
 export default function EditItems({route, navigation}) {
@@ -20,6 +20,7 @@ export default function EditItems({route, navigation}) {
             Alert.alert("Item name is required.");
         } else {            
             storeData(key, data)
+            fbStoreData(key, data)
             // console.log(data);
             Alert.alert(data.productname + " Saved")
             navigation.navigate("My Fridge")
