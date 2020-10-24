@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { SwipeListView } from 'react-native-swipe-list-view';
 import HiddenItemWithActions from './HiddenItemWithActions';
@@ -35,7 +35,8 @@ export default function ListView(props) {
         try {
             removeDataByOne(key);
             fbRemoveDataByOne(key);
-            const newData = await readAllData();
+            const currentData = props.data;
+            const newData = currentData.filter((data) => data.key != key);
             // const newData = fbReadAllData();
             props.updateData(newData);
         } catch(e){
