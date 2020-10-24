@@ -16,7 +16,6 @@ export default function EditItems({route, navigation}) {
     console.log(data);
 
     const submitAndClear = () => {
-        console.log(data.productname);
         if (data.productnamename === "") {
             Alert.alert("Item name is required.");
         } else {            
@@ -34,58 +33,59 @@ export default function EditItems({route, navigation}) {
 
     return (
         <Background style={styles.bg}>
-            <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps='handled' style={styles.container}>
-                <View>
+            <View style={styles.container}>
+
+                <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps='handled' >
                     <TouchableOpacity style={styles.image} onPress={() => pickImage().then(uri=>setData({...data, image: uri }))}>
                         {imageSection}
                     </TouchableOpacity>
-                </View>
 
-                <Text style={styles.text}>Name </Text>
-                <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
-                    <TextInput
-                        style={styles.textInput}
-                        clearButtonMode='always'
-                        value={data.productname}
-                        onChangeText={text => setData({...data, productname: text })}
+                    <Text style={styles.text}>Name </Text>
+                    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
+                        <TextInput
+                            style={styles.textInput}
+                            clearButtonMode='always'
+                            value={data.productname}
+                            onChangeText={text => setData({...data, productname: text })}
+                        />
+                    </TouchableWithoutFeedback>
+
+
+                    <Text style={styles.text}>Category</Text>
+                    <RNPickerSelect
+                        onValueChange={text => setData({...data, category: text })}
+                        items={categories}
+                        placeholder={{
+                            label: 'Select category...',
+                            value: null,
+                            color: '#9EA0A4',
+                        }}
+                        style={pickerSelectStyles}
                     />
-                </TouchableWithoutFeedback>
 
-
-                <Text style={styles.text}>Category</Text>
-                <RNPickerSelect
-                    onValueChange={text => setData({...data, category: text })}
-                    items={categories}
-                    placeholder={{
-                        label: 'Select category...',
-                        value: null,
-                        color: '#9EA0A4',
-                    }}
-                    style={pickerSelectStyles}
-                />
-
-                <Text style={styles.text}>Expiry Date</Text>
-                <DatePicker
-                        style={styles.datePicker}
-                        onDateChange={date => setData({...data, expiryDate: date })}
-                        minimumDate={getToday()}
-                        mode="calendar"
-                        // selected={this.state.expiryDate}
-                        options={{
-                            backgroundColor: '#DCE5A1',
-                            // textHeaderColor: '#FFA25B',
-                            // textDefaultColor: '#F6E7C1',
-                            // selectedTextColor: 'rgba(190, 223, 83, .5)',
-                            mainColor: '#1D1C1A',
-                            textSecondaryColor: '#1D1C1A',
-                            borderColor: '#1D1C1A',
-                        }}                        
-                    />
-            </ScrollView>
-
-            <TouchableOpacity style={styles.button} onPress={submitAndClear}>
-                <Text style={styles.buttonText}>Save</Text>
-            </TouchableOpacity>
+                    <Text style={styles.text}>Expiry Date</Text>
+                    <DatePicker
+                            style={styles.datePicker}
+                            onDateChange={date => setData({...data, expiryDate: date })}
+                            minimumDate={getToday()}
+                            mode="calendar"
+                            // selected={this.state.expiryDate}
+                            options={{
+                                backgroundColor: '#DCE5A1',
+                                // textHeaderColor: '#FFA25B',
+                                // textDefaultColor: '#F6E7C1',
+                                // selectedTextColor: 'rgba(190, 223, 83, .5)',
+                                mainColor: '#1D1C1A',
+                                textSecondaryColor: '#1D1C1A',
+                                borderColor: '#1D1C1A',
+                            }}                        
+                        />
+                </ScrollView>
+                
+                <TouchableOpacity style={styles.button} onPress={submitAndClear}>
+                    <Text style={styles.buttonText}>Save</Text>
+                </TouchableOpacity>
+            </View>
         </Background>
     )
 }
@@ -127,11 +127,10 @@ const styles = StyleSheet.create({
     bg: {
         width: "100%",
         height: "100%",
-        color: "rgba(236, 227, 207, 0.7)",
     },
     container: {
-        width: "90%",
-        height: "88%",
+        width: "100%",
+        height: "100%",
         backgroundColor: "rgba(236, 227, 207, 0.7)",
         alignSelf: 'center',
         // justifyContent: "center",
@@ -161,6 +160,12 @@ const styles = StyleSheet.create({
         // borderColor: '#1D1C1A',
         // borderRadius: 20,
         marginBottom: -30,
+    },
+    text: {
+        left: 25,
+        marginBottom: -5,
+        color: "#1D1C1A",
+        fontFamily: "Arial Rounded MT Bold",
     },
     textInput: {
         height: 40,
