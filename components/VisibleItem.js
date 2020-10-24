@@ -6,6 +6,7 @@ import {
     Image,
     Text,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 export default function VisibleItem({ data }) {
     return (
         <TouchableHighlight>
@@ -20,6 +21,9 @@ export default function VisibleItem({ data }) {
                     <Text style={styles.expiryDate}>
                         Expiry Date: {data.expiryDate} days left
                     </Text>
+                </View>
+                <View style={styles.warningImage}>
+                    {data.expiryDate<3? <Ionicons name="md-warning" size={40} color="red" />:null}
                 </View>
             </View>
         </TouchableHighlight>
@@ -43,6 +47,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         justifyContent: "center",
         alignItems: "center",
+    },
+    warningImage:{
+        flex:1,
+        justifyContent:"center",
+        alignItems:"center"
     },
     productname: {
         fontSize: 20,
