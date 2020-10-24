@@ -13,8 +13,43 @@ export default function EditItems({route, navigation}) {
     const {key} = route.params;
     const {newData} = route.params;
     const [data, setData] = useState(newData);
-    console.log(data);
+    // console.log(data);
 
+
+    pickImage = async () => {
+        const grant = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (grant) {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: false,
+                // quality: 1,
+            });
+            if(!result.cancelled) {
+                return result.uri
+            }
+            return undefined
+        } else {
+            Alert.alert("Need permission for libaray");
+        }
+    };
+    submit = ()=>{
+        if (this.state.name == "") {
+            Alert.alert("Item name is required.");
+        } else {
+            console.debug(this.state.image);
+            const key = uuidv4();
+            const item = {
+                key,
+                productname: this.state.name,
+                expiryDate: this.state.expiryDate,
+                image: this.state.image,
+            };
+            // console.log(this.props.route)
+            this.props.navigation.goBack()
+            this.props.route.params.onSelectData(item);
+        }
+
+    }
     const submitAndClear = () => {
         if (data.productnamename === "") {
             Alert.alert("Item name is required.");
@@ -36,7 +71,13 @@ export default function EditItems({route, navigation}) {
             <View style={styles.container}>
 
                 <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps='handled' >
-                    <TouchableOpacity style={styles.image} onPress={() => pickImage().then(uri=>setData({...data, image: uri }))}>
+                    <TouchableOpacity style={styles.image} onPress={() => {
+                        this.pickImage().then(uri=>{
+                        if(uri){
+                            setData({...data, image: uri })
+                        }
+                        })}
+                        }>
                         {imageSection}
                     </TouchableOpacity>
 
@@ -98,19 +139,6 @@ const getToday = () => {
     return year + "-" + month + "-" + date
 }
 
-const pickImage = async () => {
-    const grant = await ImagePicker.requestCameraRollPermissionsAsync();
-    if (grant) {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: false,
-            // quality: 1,
-        });
-        return result.uri;
-    } else {
-        Alert.alert("Need permission for libaray");
-    }
-};
 
 const categories = [
     { label: "None", value: "None" },

@@ -28,6 +28,25 @@ export default class AddItemsManually extends Component {
             isDefaultImage : true
         };
     }
+     pickImage = async () => {
+        console.log("before", this.state.image)
+        const grant = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (grant) {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: false,
+                // quality: 1,
+            });
+            if(!result.cancelled){
+                return result.uri
+            }
+            console.log("cancelled?", result.cancelled)
+            console.log("uri?", result.uri)
+            return undefined
+        } else {
+            Alert.alert("Need permission for libaray");
+        }
+    };
     submit = ()=>{
         if (this.state.name == "") {
             Alert.alert("Item name is required.");
@@ -58,7 +77,7 @@ export default class AddItemsManually extends Component {
                 expiryDate: this.state.expiryDate,
                 image: this.state.image,
             };
-            console.log(item)
+            // console.log(item)
             storeData(key, item);
             addNewItem(key, item);
             Alert.alert(this.state.name + " Added");
@@ -77,8 +96,11 @@ export default class AddItemsManually extends Component {
                     <TouchableOpacity
                         style={styles.image}
                         onPress={() => {
-                            pickImage().then((uri) =>
-                                this.setState({ image: uri, isDefaultImage:false })
+                            console.log("in button", this.state)
+                            this.pickImage().then((uri) =>
+                                {if(uri){
+                                    this.setState({ image: uri, isDefaultImage:false })
+                                }}
                             );
                         }}
                     >
@@ -152,19 +174,7 @@ const getToday = () => {
     return year + "-" + month + "-" + date;
 };
 
-const pickImage = async () => {
-    const grant = await ImagePicker.requestCameraRollPermissionsAsync();
-    if (grant) {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: false,
-            // quality: 1,
-        });
-        return result.uri;
-    } else {
-        Alert.alert("Need permission for libaray");
-    }
-};
+
 
 // const Required = () => <Text style={{color:"red", fontSize:10}}>Required</Text>
 const categories = [

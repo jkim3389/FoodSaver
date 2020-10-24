@@ -32,7 +32,7 @@ export default function SavingItems(props) {
     }
     return (
         <View style={styles.contentContainer}>
-            <ListView data={props.data} removeItem={removeItem} />
+            <ListView data={props.data} removeItem={removeItem} navigation={props.navigation}/>
 
             <View style={styles.touchableContainer}>
                 <TouchableOpacity
