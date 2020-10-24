@@ -7,14 +7,12 @@ import * as ImagePicker from "expo-image-picker";
 import NoImage from "../assets/addImage.png"
 import Background from "../components/Background";
 import { storeData, fbStoreData } from "../utils/storageManager";
-
+import {NavigationActions} from 'react-navigation'
 
 export default function EditItems({route, navigation}) {
-    const {key} = route.params;
-    const {newData} = route.params;
+    const {key, newData} = route.params;
     const [data, setData] = useState(newData);
-    // console.log(data);
-
+ 
 
     pickImage = async () => {
         const grant = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -36,27 +34,17 @@ export default function EditItems({route, navigation}) {
         if (this.state.name == "") {
             Alert.alert("Item name is required.");
         } else {
-            console.debug(this.state.image);
-            const key = uuidv4();
-            const item = {
-                key,
-                productname: this.state.name,
-                expiryDate: this.state.expiryDate,
-                image: this.state.image,
-            };
-            // console.log(this.props.route)
-            this.props.navigation.goBack()
-            this.props.route.params.onSelectData(item);
+            navigation.goBack()
+            route.params.editItem(data.key, data);
         }
 
     }
-    const submitAndClear = () => {
+    submitAndClear = () => {
         if (data.productnamename === "") {
             Alert.alert("Item name is required.");
         } else {            
             storeData(key, data)
             fbStoreData(key, data)
-            // console.log(data);
             Alert.alert(data.productname + " Saved")
             navigation.navigate("My Fridge")
         }
@@ -74,10 +62,10 @@ export default function EditItems({route, navigation}) {
                 <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps='handled' >
                     <TouchableOpacity style={styles.image} onPress={() => {
                         this.pickImage().then(uri=>{
-                        if(uri){
-                            setData({...data, image: uri })
-                        }
-                        })}
+                            if(uri){
+                                setData({...data, image: uri })
+                            }
+                            })}
                         }>
                         {imageSection}
                     </TouchableOpacity>
@@ -129,7 +117,9 @@ export default function EditItems({route, navigation}) {
                         />
                 </ScrollView>
                 
-                <TouchableOpacity style={styles.button} onPress={submitAndClear}>
+                <TouchableOpacity style={styles.button} onPress={
+                    (!route.params.isFromViewFridge)?this.submit:this.submitAndClear
+                }>
                     <Text style={styles.buttonText}>Save</Text>
                 </TouchableOpacity>
             </View>

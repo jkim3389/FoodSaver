@@ -15,7 +15,7 @@ export default function NonEmptyFridge(props) {
                 <Text style={styles.addItembtnText}>Click to add items</Text>
             </TouchableOpacity>
 
-            <ListView data={props.data} navigation={props.navigation} updateData={props.updateData}/>
+            <ListView data={props.data} navigation={props.navigation} updateData={props.updateData} isFromViewFridge = {true}/>
         </View>
     );
 }

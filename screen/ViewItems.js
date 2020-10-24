@@ -6,7 +6,6 @@ import { useIsFocused } from '@react-navigation/native'
 import { readAllData, fbReadAllData } from "../utils/storageManager";
 import { db } from "../utils/config";
 import NonEmptyFridge from "../components/NonEmptyFridge";
-import ItemListView from "../components/ItemListView"
 
 export default function ViewItems(props) {
     const [data, setData] = useState([]);

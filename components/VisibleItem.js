@@ -5,7 +5,6 @@ import {
     View,
     Image,
     Text,
-    BoldText,
 } from "react-native";
 export default function VisibleItem({ data }) {
     return (

@@ -6,8 +6,6 @@ import VisibleItem from './VisibleItem';
 import { readData, readDataByOne ,storeData, removeDataByOne, readAllData, fbRemoveDataByOne, fbReadAllData } from "../utils/storageManager";
 
 export default function ListView(props) {
-    // console.log(props.data);
-    // console.log(" ");
 
     const readOneData = (key) =>{
         try{
@@ -24,10 +22,12 @@ export default function ListView(props) {
     const editRow = (rowMap, rowKey) => {
         if (rowMap[rowKey]) {
             rowMap[rowKey].closeRow();
-            console.log(rowKey);
+ 
             props.navigation.navigate("Edit Items", {
                 key:rowKey,
                 newData: readOneData(rowKey),
+                isFromViewFridge : props.isFromViewFridge,
+                editItem : (!props.isFromViewFridge)? props.editItem: undefined
             });
         }
     }
@@ -49,8 +49,10 @@ export default function ListView(props) {
         }
         if(props.removeItem){
             props.removeItem(rowKey)
+        } else {
+            removeItem(rowKey);
         }
-        removeItem(rowKey);
+
     }
 
     const renderItem = ({ item }, rowMap) => {

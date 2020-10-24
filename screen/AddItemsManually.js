@@ -1,17 +1,15 @@
 import Background from "../components/Background";
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import {
     StyleSheet,
     TouchableOpacity,
     View,
     Text,
-    Button,
     TextInput,
     Image,
     Alert,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import addImage from "../assets/addImage.png";
 import DatePicker from "react-native-modern-datepicker";
 import { storeData, addNewItem } from "../utils/storageManager";
 import { v4 as uuidv4 } from "uuid";
@@ -29,7 +27,6 @@ export default class AddItemsManually extends Component {
         };
     }
      pickImage = async () => {
-        console.log("before", this.state.image)
         const grant = await ImagePicker.requestCameraRollPermissionsAsync();
         if (grant) {
             let result = await ImagePicker.launchImageLibraryAsync({
@@ -40,8 +37,6 @@ export default class AddItemsManually extends Component {
             if(!result.cancelled){
                 return result.uri
             }
-            console.log("cancelled?", result.cancelled)
-            console.log("uri?", result.uri)
             return undefined
         } else {
             Alert.alert("Need permission for libaray");
@@ -51,7 +46,6 @@ export default class AddItemsManually extends Component {
         if (this.state.name == "") {
             Alert.alert("Item name is required.");
         } else {
-            console.debug(this.state.image);
             const key = uuidv4();
             const item = {
                 key,
@@ -59,7 +53,6 @@ export default class AddItemsManually extends Component {
                 expiryDate: this.state.expiryDate,
                 image: this.state.image,
             };
-            // console.log(this.props.route)
             this.props.navigation.goBack()
             this.props.route.params.onSelectData(item);
         }
@@ -80,12 +73,10 @@ export default class AddItemsManually extends Component {
                 expiryDate: days_diff,
                 image: this.state.image,
             };
-            // console.log(item)
+
             storeData(key, item);
             addNewItem(key, item);
             Alert.alert(this.state.name + " Added");
-            // this.setState({image: '', name: '', category: null, expiryDate: ''}) //not working
-            // console.log(this.state.name + this.state.expiryDate)
             this.props.navigation.navigate("Add Items");
         }
     };
@@ -95,11 +86,9 @@ export default class AddItemsManually extends Component {
         return (
             <Background>
                 <View style style={styles.container}>
-                    {/* <Text style={styles.text}>Image </Text> */}
                     <TouchableOpacity
                         style={styles.image}
                         onPress={() => {
-                            console.log("in button", this.state)
                             this.pickImage().then((uri) =>
                                 {if(uri){
                                     this.setState({ image: uri, isDefaultImage:false })
@@ -160,7 +149,6 @@ export default class AddItemsManually extends Component {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={
-                        // console.log(this.props.route)
                         (this.props.route.params)?this.submit:this.submitAndClear
                         }
                 >
