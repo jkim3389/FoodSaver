@@ -18,17 +18,20 @@ export default function AddItems(props) {
         const grant = await (mode === "camera"
             ? ImagePicker.requestCameraRollPermissionsAsync()
             : ImagePicker.requestCameraPermissionsAsync());
+        console.log(grant)
         if (grant) {
+
             // setIsLoading(true)
             const ImagePickerConfig = {
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: false,
                 quality: 0.3,
             };
+
             let result = await (mode === "camera"
                 ? ImagePicker.launchCameraAsync(ImagePickerConfig)
                 : ImagePicker.launchImageLibraryAsync(ImagePickerConfig));
-
+            
             if (!result.cancelled) {
                 setIsLoading(true);
                 imageFetching(
