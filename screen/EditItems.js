@@ -67,7 +67,13 @@ export default function EditItems({route, navigation}) {
                     <Text style={styles.text}>Expiry Date</Text>
                     <DatePicker
                             style={styles.datePicker}
-                            onDateChange={date => setData({...data, expiryDate: date })}
+                            onDateChange={date => {
+                                var newDate = new Date(date)
+                                var today = new Date(getToday())
+                                var days_diff = Math.floor((newDate.getTime() - today.getTime())/(86400000))
+                                console.log(days_diff)
+                                setData({...data, expiryDate: days_diff })
+                            }}
                             minimumDate={getToday()}
                             mode="calendar"
                             // selected={this.state.expiryDate}
