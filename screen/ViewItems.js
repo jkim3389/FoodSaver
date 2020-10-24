@@ -30,7 +30,7 @@ export default function ViewItems(props) {
             db.ref("/items").on("value", (dataSnapshot) => {
                 let data = dataSnapshot.val() ? dataSnapshot.val() : {};
                 let items = Object.values(data);
-                setData(items);
+                setData(items.sort((a, b) => (a.expiryDate > b. expiryDate) ? 1 : -1));
                 if (items.length !== 0 ) {
                     setIsEmptyFridge(false);
                 } else {

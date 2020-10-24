@@ -71,10 +71,13 @@ export default class AddItemsManually extends Component {
         } else {
             console.debug(this.state.image);
             const key = uuidv4();
+            var newDate = new Date(this.state.expiryDate)
+            var today = new Date(getToday())
+            var days_diff = Math.floor((newDate.getTime() - today.getTime())/(86400000))
             const item = {
                 key,
                 productname: this.state.name,
-                expiryDate: this.state.expiryDate,
+                expiryDate: days_diff,
                 image: this.state.image,
             };
             // console.log(item)
