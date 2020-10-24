@@ -46,6 +46,9 @@ export default function ListView(props) {
         if (rowMap[rowKey]) {
             rowMap[rowKey].closeRow();
         }
+        if(props.removeItem){
+            props.removeItem(rowKey)
+        }
         removeItem(rowKey);
     }
 
