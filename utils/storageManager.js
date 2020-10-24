@@ -14,6 +14,14 @@ export async function storeData(key, value) {
     }
 }
 
+export function fbStoreData(key, value) {
+    try {
+        db.ref('/items').child(key).set(value);
+    } catch(e) {
+        console.log("error occured during store data", e)
+    }
+}
+
 export function addNewItem(key, value) {
     db.ref('/items').child(value['key']).set(value);
 }

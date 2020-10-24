@@ -6,7 +6,7 @@ import DatePicker from 'react-native-modern-datepicker';
 import * as ImagePicker from "expo-image-picker";
 import NoImage from "../assets/addImage.png"
 import Background from "../components/Background";
-import { storeData } from "../utils/storageManager";
+import { storeData, fbStoreData } from "../utils/storageManager";
 
 
 export default function EditItems({route, navigation}) {
@@ -55,6 +55,7 @@ export default function EditItems({route, navigation}) {
             Alert.alert("Item name is required.");
         } else {            
             storeData(key, data)
+            fbStoreData(key, data)
             // console.log(data);
             Alert.alert(data.productname + " Saved")
             navigation.navigate("My Fridge")
@@ -107,7 +108,13 @@ export default function EditItems({route, navigation}) {
                     <Text style={styles.text}>Expiry Date</Text>
                     <DatePicker
                             style={styles.datePicker}
-                            onDateChange={date => setData({...data, expiryDate: date })}
+                            onDateChange={date => {
+                                var newDate = new Date(date)
+                                var today = new Date(getToday())
+                                var days_diff = Math.floor((newDate.getTime() - today.getTime())/(86400000))
+                                console.log(days_diff)
+                                setData({...data, expiryDate: days_diff })
+                            }}
                             minimumDate={getToday()}
                             mode="calendar"
                             // selected={this.state.expiryDate}
