@@ -8,7 +8,8 @@ export default function Card(props) {
                 <View style={styles.iconContainer}>{props.iconComponent}</View>
                 <View style={styles.textContainer}>
                     <TextField
-                        {...props}
+                        // {...props}
+                        
                         value={props.value}
                         label={props.placeholder}
                         onChangeText={props.onChangeText}
