@@ -10,6 +10,7 @@ import AddItems from "./screen/AddItems";
 import EditItems from "./screen/EditItems";
 import AddItemsManually from "./screen/AddItemsManually";
 import SavingItems from "./screen/SavingItems";
+import LoginScreen from './screen/LoginScreen'
 
 
 LogBox.ignoreLogs([
@@ -22,6 +23,7 @@ export default function App() {
     return (
             <NavigationContainer>
                 <Stack.Navigator>
+                    <Stack.Screen name="LogIn" component={LoginScreen}/>
                     <Stack.Screen name="Home" component={HomeScreen} />
                     <Stack.Screen name="My Fridge" component={ViewItems} />
                     <Stack.Screen name="Add Items" component={AddItems} />
