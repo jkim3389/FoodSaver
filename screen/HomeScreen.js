@@ -37,12 +37,12 @@ export default function HomeScreen(props) {
                 >
                     <Text style={styles.buttonText}>Add Items</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     style={styles.button}
                     onPress={onClearHandler}
                 >
                     <Text style={styles.buttonText}>Clear Data</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </Background>
         </View>
     );

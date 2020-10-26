@@ -6,9 +6,9 @@ import {
     Dimensions,
     TouchableOpacity,
     Image,
-    Alert
+    Alert,
 } from "react-native";
-import firebase from "../utils/config";
+import { auth } from "../utils/config";
 import Card from "../components/Card";
 
 const initialState = {
@@ -43,12 +43,10 @@ export default function Signup(props) {
             Alert.alert("the password should be matched");
             // console.log("password", userInput);
         } else {
-            firebase
-                .auth()
-                .createUserWithEmailAndPassword(
-                    userInput.username,
-                    userInput.password
-                )
+            auth.createUserWithEmailAndPassword(
+                userInput.username,
+                userInput.password
+            )
                 .then((res) => {
                     setUserInput(initialState);
                     props.onStatusHandler(false);
@@ -74,7 +72,7 @@ export default function Signup(props) {
                 onChangeText={(text) =>
                     setUserInput({ ...userInput, password: text })
                 }
-                secureTextEntry={false}
+                secureTextEntry={true}
             />
             <Card
                 placeholder="Re-password"
@@ -83,14 +81,14 @@ export default function Signup(props) {
                 onChangeText={(text) =>
                     setUserInput({ ...userInput, re_password: text })
                 }
-                secureTextEntry={false}
+                secureTextEntry={true}
             />
             <View style={{ ...styles.buttonContainer, height: "25%" }}>
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
-                        props.onStatusHandler(false)
-                        setUserInput(initialState)
+                        props.onStatusHandler(false);
+                        setUserInput(initialState);
                     }}
                 >
                     <Text style={styles.buttonText}>Cancel</Text>
@@ -101,7 +99,7 @@ export default function Signup(props) {
                         registerUser();
                     }}
                 >
-                    <Text style={styles.buttonText}>Sign Up</Text>
+                    <Text style={styles.buttonText}>Confirm</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -137,9 +135,10 @@ const styles = StyleSheet.create({
     button: {
         // height: "50%",
         // width: "150%",
-        flex: 1,
-        paddingHorizontal: 30,
-        marginVertical: 20,
+        // flex: 1,
+
+        paddingHorizontal: 20,
+        paddingVertical: 10,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "rgba(0, 0, 0, .5)",

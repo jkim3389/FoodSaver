@@ -1,13 +1,20 @@
-import React, {useState} from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions , Image, Alert} from "react-native";
-import firebase from "../utils/config";
-import Card from '../components/Card'
+import React, { useState } from "react";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    Dimensions,
+    Image,
+    Alert,
+} from "react-native";
+import { auth } from "../utils/config";
+import Card from "../components/Card";
 export default function Signin(props) {
-
     const [userInput, setUserInput] = useState({
-        username: '',
-        password:'',
-    })
+        username: "",
+        password: "",
+    });
     const renderUserIcon = () => (
         <Image
             source={require("../assets/icons/user.png")}
@@ -21,18 +28,22 @@ export default function Signin(props) {
             style={styles.iconImageStyle}
         />
     );
-    const userLogin =() => {
+    const userLogin = () => {
         if (userInput.username === "" || userInput.password === "") {
             Alert.alert("fill out every fields");
         } else {
-            firebase.auth().signInWithEmailAndPassword(userInput.username, userInput.password)
-                .then((res)=>{
-                    console.log(res)
-                    Alert.alert("User is successfully logged in")
-                    props.navigation.navigate('Home')
-                }).catch(e=>{
-                    Alert.alert(e.message)
+            auth.signInWithEmailAndPassword(
+                userInput.username,
+                userInput.password
+            )
+                .then((res) => {
+                    console.log(res);
+                    Alert.alert("User is successfully logged in");
+                    props.navigation.navigate("Home");
                 })
+                .catch((e) => {
+                    Alert.alert(e.message);
+                });
         }
     };
     return (
@@ -43,7 +54,6 @@ export default function Signin(props) {
                 value={userInput.username}
                 onChangeText={(text) => {
                     setUserInput({ ...userInput, username: text });
-                    console.log(userInput)
                 }}
             />
             <Card
@@ -52,14 +62,10 @@ export default function Signin(props) {
                 value={userInput.password}
                 onChangeText={(text) => {
                     setUserInput({ ...userInput, password: text });
-                    console.log(userInput)
                 }}
+                secureTextEntry={true}
             />
-            <View
-                style={
-                        { ...styles.buttonContainer, height: "33%" }
-                }
-            >
+            <View style={{ ...styles.buttonContainer, height: "33%" }}>
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
@@ -71,7 +77,7 @@ export default function Signin(props) {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
-                        props.onStatusHandler(true)
+                        props.onStatusHandler(true);
                     }}
                 >
                     <Text style={styles.buttonText}>Sign Up</Text>
@@ -110,9 +116,10 @@ const styles = StyleSheet.create({
     button: {
         // height: "50%",
         // width: "150%",
-        flex: 1,
-        paddingHorizontal: 30,
-        marginVertical: 20,
+        // flex: 1,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        // marginVertical: 20,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "rgba(0, 0, 0, .5)",
@@ -127,4 +134,4 @@ const styles = StyleSheet.create({
         textAlign: "center",
         textTransform: "capitalize",
     },
-})
+});
