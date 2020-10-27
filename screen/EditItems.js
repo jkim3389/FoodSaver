@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Image, View, Text, FlatList, StyleSheet, Button, TextInput, TouchableOpacity, Alert, TouchableWithoutFeedback, ScrollView } from "react-native";
 import RNPickerSelect from 'react-native-picker-select';
-import DatePicker from 'react-native-modern-datepicker';
+import DatePicker, { getFormatedDate } from 'react-native-modern-datepicker';
 import * as ImagePicker from "expo-image-picker";
 import NoImage from "../assets/addImage.png"
 import Background from "../components/Background";
@@ -83,7 +83,10 @@ export default function EditItems({route, navigation}) {
 
                     <Text style={styles.text}>Category</Text>
                     <RNPickerSelect
-                        onValueChange={text => setData({...data, category: text })}
+                        value={data.category}
+                        onValueChange={text => {
+                            setData({...data, category: text })
+                        }}
                         items={categories}
                         placeholder={{
                             label: 'Select category...',
@@ -91,6 +94,11 @@ export default function EditItems({route, navigation}) {
                             color: '#9EA0A4',
                         }}
                         style={pickerSelectStyles}
+                        pickerProps={{
+                            style: {
+                                overflow: 'hidden',
+                            }
+                        }}
                     />
 
                     <Text style={styles.text}>Expiry Date</Text>
@@ -98,13 +106,15 @@ export default function EditItems({route, navigation}) {
                             style={styles.datePicker}
                             onDateChange={date => {
                                 var newDate = new Date(date)
+                                var formattedDate = getFormatedDate(newDate, "YYYY/MM/DD")
                                 var today = new Date(getToday())
                                 var days_diff = Math.floor((newDate.getTime() - today.getTime())/(86400000))
-                                setData({...data, expiryDate: days_diff })
+                                setData({...data, expiryDate: days_diff, expirationDay: formattedDate })
                             }}
                             minimumDate={getToday()}
                             mode="calendar"
-                            // selected={this.state.expiryDate}
+                            selected={data.expirationDay}
+                            current={data.expirationDay}
                             options={{
                                 backgroundColor: '#DCE5A1',
                                 // textHeaderColor: '#FFA25B',

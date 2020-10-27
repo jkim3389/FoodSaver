@@ -10,10 +10,11 @@ import {
     Alert,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import DatePicker from "react-native-modern-datepicker";
+import DatePicker, { getFormatedDate }from "react-native-modern-datepicker";
 import { storeData, addNewItem } from "../utils/storageManager";
 import { v4 as uuidv4 } from "uuid";
 import * as ImagePicker from "expo-image-picker";
+import { categories } from "../components/Categories"
 
 export default class AddItemsManually extends Component {
     constructor(props) {
@@ -48,12 +49,14 @@ export default class AddItemsManually extends Component {
         } else {
             const key = uuidv4();
             var newDate = new Date(this.state.expiryDate)
+            var formattedDate = getFormatedDate(newDate, "YYYY/MM/DD")
             var today = new Date(getToday())
             var days_diff = Math.floor((newDate.getTime() - today.getTime())/(86400000))
             const item = {
                 key,
                 productname: this.state.name,
                 expiryDate: days_diff,
+                expirationDay: formattedDate,
                 image: this.state.image,
             };
             this.props.navigation.goBack()
@@ -68,12 +71,14 @@ export default class AddItemsManually extends Component {
             console.debug(this.state.image);
             const key = uuidv4();
             var newDate = new Date(this.state.expiryDate)
+            var formattedDate = getFormatedDate(newDate, "YYYY/MM/DD")
             var today = new Date(getToday())
             var days_diff = Math.floor((newDate.getTime() - today.getTime())/(86400000))
             const item = {
                 key,
                 productname: this.state.name,
                 expiryDate: days_diff,
+                expirationDay: formattedDate,
                 image: this.state.image,
             };
 
@@ -171,15 +176,15 @@ const getToday = () => {
 
 
 // const Required = () => <Text style={{color:"red", fontSize:10}}>Required</Text>
-const categories = [
-    { label: "None", value: "None" },
-    { label: "Fruit", value: "Fruit" },
-    { label: "Vegetable", value: "Vegetable" },
-    { label: "Dairy", value: "Diary" },
-    { label: "Meat", value: "Meat" },
-    { label: "Canned food", value: "Canned food" },
-    { label: "Snack", value: "Snack" },
-];
+// const categories = [
+//     { label: "None", value: "None" },
+//     { label: "Fruit", value: "Fruit" },
+//     { label: "Vegetable", value: "Vegetable" },
+//     { label: "Dairy", value: "Diary" },
+//     { label: "Meat", value: "Meat" },
+//     { label: "Canned food", value: "Canned food" },
+//     { label: "Snack", value: "Snack" },
+// ];
 
 const styles = StyleSheet.create({
     container: {

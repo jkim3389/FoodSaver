@@ -8,6 +8,7 @@ import * as ImageManipulator from "expo-image-manipulator";
 import "react-native-get-random-values";
 import SavingItems from "./SavingItems";
 import Loading from "./Loading";
+import moment from 'moment';
 
 export default function AddItems(props) {
     const [data, setData] = useState([]);
@@ -53,10 +54,10 @@ export default function AddItems(props) {
     const onSampleImage = async () => {
         var items = {
             uri:
-                "file:///Users/juntaekim/Desktop/newProject/FoodSaver/assets/items.jpeg",
-            // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items3.png",
-            // uri: "file:///Users/iLuna/Repositories/FoodSaver/assets/items1.jpeg",
-            // uri: "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items1.jpeg",
+                // "file:///Users/juntaekim/Desktop/newProject/FoodSaver/assets/items.jpeg",
+                "file:///Users/raycho/CS4261/FoodSaver/assets/items1.jpeg",
+                // "file:///Users/iLuna/Repositories/FoodSaver/assets/items1.jpeg",
+                // "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items1.jpeg",
             name: "items.jpg",
             type: "image/jpg",
         };
@@ -93,9 +94,13 @@ export default function AddItems(props) {
                             [{ crop: element.image }],
                             { compress: 1 }
                         );
+                        var today = new Date()
+                        var expiryDate = element.expiryDate;
+                        var newDate = moment(today).add(expiryDate,'day').format('YYYY/MM/DD')
                         return {
                             ...element,
                             image: cropped.uri,
+                            expirationDay:newDate,
                         };
                     }
                 )
