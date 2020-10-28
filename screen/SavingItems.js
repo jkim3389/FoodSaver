@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
     View,
     Text,
@@ -13,15 +13,28 @@ import { Ionicons } from "@expo/vector-icons";
 import { storeData, addNewItem } from "../utils/storageManager";
 
 export default function SavingItems(props) {
+    const [data, setData] = useState([...props.fetchingData])
+    useEffect(()=>{
+        setData(props.fetchingData)
+    },[props.fetchingData])
+    
     const removeItem = (key) => {
-        const currentData = props.data;
-        const newData = currentData.filter((data) => data.key != key);
-        props.changeData(newData);
+        const newData = data.filter((item) => item.key != key);
+        setData(newData)
     };
     const addItem = (item) => {
-        const currentData = props.data;
-        props.changeData([...currentData, item]);
+        console.log(item)
+        setData([...data, item])
     };
+
+    const editItem = (key, object)=>{
+        const copyData = [...data]
+        const idx = copyData.findIndex(item=>
+            item.key === key
+        )
+        copyData[idx] = object
+        setData(copyData)
+    }
 
     const savingItem = (data)=>{
         data.map((item)=>{
@@ -32,7 +45,7 @@ export default function SavingItems(props) {
     }
     return (
         <View style={styles.contentContainer}>
-            <ListView data={props.data} removeItem={removeItem} />
+            <ListView data={data} removeItem={removeItem} navigation={props.navigation} isFromViewFridge={false} editItem={editItem}/>
 
             <View style={styles.touchableContainer}>
                 <TouchableOpacity
@@ -53,7 +66,7 @@ export default function SavingItems(props) {
                 <TouchableOpacity
                     style={styles.touchable}
                     activeOpacity={0.6}
-                    onPress={()=>savingItem(props.data)}
+                    onPress={()=>savingItem(data)}
                 >
                     <View style={styles.button}>
                         <Ionicons name="md-save" size={60} color="white" />

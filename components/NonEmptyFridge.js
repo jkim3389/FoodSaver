@@ -1,11 +1,6 @@
-import React, {useState} from "react";
+import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { SwipeListView } from "react-native-swipe-list-view";
 import IconMaterialIcons from "react-native-vector-icons/MaterialIcons";
-import HiddenItemWithActions from "./HiddenItemWithActions";
-import VisibleItem from "./VisibleItem";
-import { readData, storeData } from "../utils/storageManager";
-import AsyncStorage from "@react-native-community/async-storage";
 import ListView from "./ListView";
 
 
@@ -20,7 +15,7 @@ export default function NonEmptyFridge(props) {
                 <Text style={styles.addItembtnText}>Click to add items</Text>
             </TouchableOpacity>
 
-            <ListView data={props.data}/>
+            <ListView data={props.data} navigation={props.navigation} updateData={props.updateData} isFromViewFridge = {true}/>
         </View>
     );
 }

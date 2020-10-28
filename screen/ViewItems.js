@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-
 import EmptyFridge from "../components/EmptyFridge";
 import Background from "../components/Background";
 import { useIsFocused } from '@react-navigation/native'
@@ -30,7 +29,7 @@ export default function ViewItems(props) {
             db.ref("/items").on("value", (dataSnapshot) => {
                 let data = dataSnapshot.val() ? dataSnapshot.val() : {};
                 let items = Object.values(data);
-                setData(items);
+                setData(items.sort((a, b) => (a.expiryDate > b. expiryDate) ? 1 : -1));
                 if (items.length !== 0 ) {
                     setIsEmptyFridge(false);
                 } else {
@@ -48,7 +47,7 @@ export default function ViewItems(props) {
     let content = <EmptyFridge navigation={props.navigation}/>;
     if (!isEmptyFridge) {
         // content = <ItemListView data={data} navigation={props.navigation} updateData = {updateData}/>;
-        content = <NonEmptyFridge data={data} navigation={props.navigation} updateData = {updateData}/>;
+        content = <NonEmptyFridge data={data} navigation={props.navigation} updateData = {setData}/>;
     }
     return <Background>{content}</Background>;
 }

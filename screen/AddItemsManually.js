@@ -1,21 +1,20 @@
 import Background from "../components/Background";
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import {
     StyleSheet,
     TouchableOpacity,
     View,
     Text,
-    Button,
     TextInput,
     Image,
     Alert,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import addImage from "../assets/addImage.png";
-import DatePicker from "react-native-modern-datepicker";
+import DatePicker, { getFormatedDate }from "react-native-modern-datepicker";
 import { storeData, addNewItem } from "../utils/storageManager";
 import { v4 as uuidv4 } from "uuid";
 import * as ImagePicker from "expo-image-picker";
+import { categories } from "../components/Categories"
 
 export default class AddItemsManually extends Component {
     constructor(props) {
@@ -28,19 +27,38 @@ export default class AddItemsManually extends Component {
             isDefaultImage : true
         };
     }
+     pickImage = async () => {
+        const grant = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (grant) {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: false,
+                // quality: 1,
+            });
+            if(!result.cancelled){
+                return result.uri
+            }
+            return undefined
+        } else {
+            Alert.alert("Need permission for libaray");
+        }
+    };
     submit = ()=>{
         if (this.state.name == "") {
             Alert.alert("Item name is required.");
         } else {
-            console.debug(this.state.image);
             const key = uuidv4();
+            var newDate = new Date(this.state.expiryDate)
+            var formattedDate = getFormatedDate(newDate, "YYYY/MM/DD")
+            var today = new Date(getToday())
+            var days_diff = Math.floor((newDate.getTime() - today.getTime())/(86400000))
             const item = {
                 key,
                 productname: this.state.name,
-                expiryDate: this.state.expiryDate,
+                expiryDate: days_diff,
+                expirationDay: formattedDate,
                 image: this.state.image,
             };
-            // console.log(this.props.route)
             this.props.navigation.goBack()
             this.props.route.params.onSelectData(item);
         }
@@ -52,18 +70,21 @@ export default class AddItemsManually extends Component {
         } else {
             console.debug(this.state.image);
             const key = uuidv4();
+            var newDate = new Date(this.state.expiryDate)
+            var formattedDate = getFormatedDate(newDate, "YYYY/MM/DD")
+            var today = new Date(getToday())
+            var days_diff = Math.floor((newDate.getTime() - today.getTime())/(86400000))
             const item = {
                 key,
                 productname: this.state.name,
-                expiryDate: this.state.expiryDate,
+                expiryDate: days_diff,
+                expirationDay: formattedDate,
                 image: this.state.image,
             };
-            console.log(item)
+
             storeData(key, item);
             addNewItem(key, item);
             Alert.alert(this.state.name + " Added");
-            // this.setState({image: '', name: '', category: null, expiryDate: ''}) //not working
-            // console.log(this.state.name + this.state.expiryDate)
             this.props.navigation.navigate("Add Items");
         }
     };
@@ -73,12 +94,13 @@ export default class AddItemsManually extends Component {
         return (
             <Background>
                 <View style style={styles.container}>
-                    {/* <Text style={styles.text}>Image </Text> */}
                     <TouchableOpacity
                         style={styles.image}
                         onPress={() => {
-                            pickImage().then((uri) =>
-                                this.setState({ image: uri, isDefaultImage:false })
+                            this.pickImage().then((uri) =>
+                                {if(uri){
+                                    this.setState({ image: uri, isDefaultImage:false })
+                                }}
                             );
                         }}
                     >
@@ -135,7 +157,6 @@ export default class AddItemsManually extends Component {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={
-                        // console.log(this.props.route)
                         (this.props.route.params)?this.submit:this.submitAndClear
                         }
                 >
@@ -152,30 +173,18 @@ const getToday = () => {
     return year + "-" + month + "-" + date;
 };
 
-const pickImage = async () => {
-    const grant = await ImagePicker.requestCameraRollPermissionsAsync();
-    if (grant) {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: false,
-            // quality: 1,
-        });
-        return result.uri;
-    } else {
-        Alert.alert("Need permission for libaray");
-    }
-};
+
 
 // const Required = () => <Text style={{color:"red", fontSize:10}}>Required</Text>
-const categories = [
-    { label: "None", value: "None" },
-    { label: "Fruit", value: "Fruit" },
-    { label: "Vegetable", value: "Vegetable" },
-    { label: "Dairy", value: "Diary" },
-    { label: "Meat", value: "Meat" },
-    { label: "Canned food", value: "Canned food" },
-    { label: "Snack", value: "Snack" },
-];
+// const categories = [
+//     { label: "None", value: "None" },
+//     { label: "Fruit", value: "Fruit" },
+//     { label: "Vegetable", value: "Vegetable" },
+//     { label: "Dairy", value: "Diary" },
+//     { label: "Meat", value: "Meat" },
+//     { label: "Canned food", value: "Canned food" },
+//     { label: "Snack", value: "Snack" },
+// ];
 
 const styles = StyleSheet.create({
     container: {
