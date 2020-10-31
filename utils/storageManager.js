@@ -106,7 +106,7 @@ export function fbRemoveDataByOne(key) {
 }
 
 
-//V2
+//V2 ------------ THIS IS FIREBASE VERSION UNDER USER ID 
 
 // let UID = auth.currentUser.uid
 
