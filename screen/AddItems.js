@@ -158,12 +158,12 @@ export default function AddItems(props) {
                         <Text style={styles.buttonText}>Manually Enter</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         style={styles.button}
                         onPress={onSampleImage}
                     >
                         <Text style={styles.buttonText}>Sample Image</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
         );
