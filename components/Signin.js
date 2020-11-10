@@ -39,7 +39,7 @@ export default function Signin(props) {
                 .then((res) => {
                     console.log(res);
                     Alert.alert("User is successfully logged in");
-                    props.navigation.navigate("Home");
+                    props.navigation.navigate("TabBar");
                 })
                 .catch((e) => {
                     Alert.alert(e.message);

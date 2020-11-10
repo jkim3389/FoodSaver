@@ -22,6 +22,7 @@ import Colors from "../constants/Colors";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
+import { Ionicons } from "@expo/vector-icons";
 const defaultOptions = {
     headerStyle: {
         backgroundColor: Colors.primary,
@@ -32,11 +33,11 @@ const Stack = createStackNavigator();
 export default function HomeNavigator() {
     return (
         <Stack.Navigator screenOptions={defaultOptions}>
-            <Stack.Screen
+            {/* <Stack.Screen
                 name="LogIn"
                 component={LoginScreen}
                 options={LoginScreenOption}
-            />
+            /> */}
             <Stack.Screen
                 name="Home"
                 component={HomeScreen}
@@ -66,3 +67,17 @@ export default function HomeNavigator() {
         </Stack.Navigator>
     );
 }
+
+export const screenOptions = (navData) => {
+    return {
+        tabBarIcon: (tabInfo) => {
+            return (
+                <Ionicons
+                    name="ios-basket"
+                    size={25}
+                    color={tabInfo.tintColor}
+                />
+            );
+        },
+    };
+};
