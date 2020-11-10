@@ -66,7 +66,6 @@ export async function removeDataByOne(key) {
 
 //Firebase Storage V1
 
-
 export function fbStoreData(key, value) {
     try {
         db.ref("/items").child(key).set(value);
@@ -76,7 +75,7 @@ export function fbStoreData(key, value) {
 }
 
 export function addNewItem(key, value) {
-    db.ref("/items").child(value["key"]).set(value);
+    db.ref("/items").child(value[key]).set(value);
 }
 
 export function fbReadAllData() {
@@ -105,8 +104,7 @@ export function fbRemoveDataByOne(key) {
     }
 }
 
-
-//V2 ------------ THIS IS FIREBASE VERSION UNDER USER ID 
+//V2 ------------ THIS IS FIREBASE VERSION UNDER USER ID
 
 // let UID = auth.currentUser.uid
 

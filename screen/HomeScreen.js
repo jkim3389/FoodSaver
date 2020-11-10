@@ -6,11 +6,22 @@ import {
     View,
     TouchableOpacity,
     Text,
+    Alert,
 } from "react-native";
 import logo from "../assets/logo.png";
 import Background from "../components/Background";
 import { clearData, clearItems } from "../utils/storageManager";
+import { auth } from "../utils/config";
 export default function HomeScreen(props) {
+    const onSignout = () => {
+        auth.signOut()
+            .then((res) => {
+                Alert.alert("Signed out!");
+                props.navigation.navigate("LogIn");
+            })
+            .catch((err) => Alert.alert(err.message));
+    };
+
     const onClearHandler = () => {
         clearData();
         clearItems();
@@ -27,7 +38,7 @@ export default function HomeScreen(props) {
                 <Image source={logo} style={styles.logo} />
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => props.navigation.navigate("My Fridge")}
+                    onPress={() => props.navigation.navigate("MyFridge")}
                 >
                     <Text style={styles.buttonText}>View My Fridge</Text>
                 </TouchableOpacity>
@@ -37,17 +48,19 @@ export default function HomeScreen(props) {
                 >
                     <Text style={styles.buttonText}>Add Items</Text>
                 </TouchableOpacity>
-                {/* <TouchableOpacity
-                    style={styles.button}
-                    onPress={onClearHandler}
-                >
-                    <Text style={styles.buttonText}>Clear Data</Text>
-                </TouchableOpacity> */}
+                <TouchableOpacity style={styles.button} onPress={onSignout}>
+                    <Text style={styles.buttonText}>Sign Out</Text>
+                </TouchableOpacity>
             </Background>
         </View>
     );
 }
-
+export const screenOptions = (navData) => {
+    return {
+        title: "Home",
+        headerShown: false,
+    };
+};
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -57,23 +70,23 @@ const styles = StyleSheet.create({
         height: "5%",
         width: "45%",
         justifyContent: "space-evenly",
-        alignSelf:'center',
-        backgroundColor: 'rgba(190, 223, 83, .5)',
+        alignSelf: "center",
+        backgroundColor: "rgba(190, 223, 83, .5)",
         marginTop: 20,
         borderRadius: 30,
     },
     buttonText: {
-        fontWeight: 'bold',
+        fontWeight: "bold",
         fontSize: 18,
-        color:'#1D1C1A',
-        textAlign: 'center',
-        textTransform: 'uppercase'
+        color: "#1D1C1A",
+        textAlign: "center",
+        textTransform: "uppercase",
     },
     logo: {
         top: -30,
         width: 370,
         height: 370,
-        alignSelf:'center',
+        alignSelf: "center",
         justifyContent: "center",
         marginBottom: -30,
     },

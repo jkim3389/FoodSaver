@@ -15,18 +15,21 @@ import { storeData, addNewItem } from "../utils/storageManager";
 import { v4 as uuidv4 } from "uuid";
 import * as ImagePicker from "expo-image-picker";
 
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import HeaderButton from "../components/HeaderButton";
+
 export default class AddItemsManually extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: '../assets/addImage.png',
+            image: "../assets/addImage.png",
             name: "",
             category: "None",
             expiryDate: "",
-            isDefaultImage : true
+            isDefaultImage: true,
         };
     }
-     pickImage = async () => {
+    pickImage = async () => {
         const grant = await ImagePicker.requestCameraRollPermissionsAsync();
         if (grant) {
             let result = await ImagePicker.launchImageLibraryAsync({
@@ -34,42 +37,45 @@ export default class AddItemsManually extends Component {
                 allowsEditing: false,
                 // quality: 1,
             });
-            if(!result.cancelled){
-                return result.uri
+            if (!result.cancelled) {
+                return result.uri;
             }
-            return undefined
+            return undefined;
         } else {
             Alert.alert("Need permission for libaray");
         }
     };
-    submit = ()=>{
+    submit = () => {
         if (this.state.name == "") {
             Alert.alert("Item name is required.");
         } else {
             const key = uuidv4();
-            var newDate = new Date(this.state.expiryDate)
-            var today = new Date(getToday())
-            var days_diff = Math.floor((newDate.getTime() - today.getTime())/(86400000))
+            var newDate = new Date(this.state.expiryDate);
+            var today = new Date(getToday());
+            var days_diff = Math.floor(
+                (newDate.getTime() - today.getTime()) / 86400000
+            );
             const item = {
                 key,
                 productname: this.state.name,
                 expiryDate: days_diff,
                 image: this.state.image,
             };
-            this.props.navigation.goBack()
+            this.props.navigation.goBack();
             this.props.route.params.onSelectData(item);
         }
-
-    }
+    };
     submitAndClear = () => {
         if (this.state.name == "") {
             Alert.alert("Item name is required.");
         } else {
             console.debug(this.state.image);
             const key = uuidv4();
-            var newDate = new Date(this.state.expiryDate)
-            var today = new Date(getToday())
-            var days_diff = Math.floor((newDate.getTime() - today.getTime())/(86400000))
+            var newDate = new Date(this.state.expiryDate);
+            var today = new Date(getToday());
+            var days_diff = Math.floor(
+                (newDate.getTime() - today.getTime()) / 86400000
+            );
             const item = {
                 key,
                 productname: this.state.name,
@@ -85,22 +91,28 @@ export default class AddItemsManually extends Component {
     };
 
     render() {
-
         return (
             <Background>
                 <View style style={styles.container}>
                     <TouchableOpacity
                         style={styles.image}
                         onPress={() => {
-                            this.pickImage().then((uri) =>
-                                {if(uri){
-                                    this.setState({ image: uri, isDefaultImage:false })
-                                }}
-                            );
+                            this.pickImage().then((uri) => {
+                                if (uri) {
+                                    this.setState({
+                                        image: uri,
+                                        isDefaultImage: false,
+                                    });
+                                }
+                            });
                         }}
                     >
                         <Image
-                            source={this.state.isDefaultImage? require('../assets/addImage.png'): { uri: this.state.image }}
+                            source={
+                                this.state.isDefaultImage
+                                    ? require("../assets/addImage.png")
+                                    : { uri: this.state.image }
+                            }
                             style={styles.addImage}
                         />
                     </TouchableOpacity>
@@ -152,8 +164,10 @@ export default class AddItemsManually extends Component {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={
-                        (this.props.route.params)?this.submit:this.submitAndClear
-                        }
+                        this.props.route.params
+                            ? this.submit
+                            : this.submitAndClear
+                    }
                 >
                     <Text style={styles.buttonText}>Add this item</Text>
                 </TouchableOpacity>
@@ -168,8 +182,6 @@ const getToday = () => {
     return year + "-" + month + "-" + date;
 };
 
-
-
 // const Required = () => <Text style={{color:"red", fontSize:10}}>Required</Text>
 const categories = [
     { label: "None", value: "None" },
@@ -181,6 +193,33 @@ const categories = [
     { label: "Snack", value: "Snack" },
 ];
 
+export const screenOptions = (navData) => {
+    return {
+        headerTitle: "Adding an Item..",
+        headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item
+                    title="Back"
+                    iconName="md-arrow-round-back"
+                    onPress={() => {
+                        navData.navigation.goBack();
+                    }}
+                />
+            </HeaderButtons>
+        ),
+        // headerRight: () => (
+        //     <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        //         <Item
+        //             title="Back"
+        //             iconName="md-save"
+        //             onPress={() => {
+        //                 navData.navigation.navigate("MyFridge");
+        //             }}
+        //         />
+        //     </HeaderButtons>
+        // ),
+    };
+};
 const styles = StyleSheet.create({
     container: {
         width: "90%",

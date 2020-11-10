@@ -4,16 +4,18 @@ import Background from "../components/Background";
 import Signin from "../components/Signin";
 import Signup from "../components/Signup";
 
-
 export default function LoginScreen(props) {
     const [isSignUp, setIsSignUp] = useState(false);
 
-    updateStatus = (value)=>{
-        setIsSignUp(value)
-    }
+    updateStatus = (value) => {
+        setIsSignUp(value);
+    };
 
-
-    let content = isSignUp? <Signup onStatusHandler={updateStatus}/>: <Signin navigation={props.navigation} onStatusHandler={updateStatus}/>
+    let content = isSignUp ? (
+        <Signup onStatusHandler={updateStatus} />
+    ) : (
+        <Signin navigation={props.navigation} onStatusHandler={updateStatus} />
+    );
 
     return (
         <Background style={styles.background}>
@@ -33,7 +35,18 @@ export default function LoginScreen(props) {
         </Background>
     );
 }
-
+export const screenOptions = (navData) => {
+    return {
+        headerTitle: "Home",
+        headerShown: false,
+        headerTitleStyle: {
+            fontFamily: "Arial Rounded MT Bold",
+        },
+        headerBackTitleStyle: {
+            fontFamily: "Arial Rounded MT Bold",
+        },
+    };
+};
 const styles = StyleSheet.create({
     background: {
         justifyContent: "flex-start",
@@ -41,10 +54,10 @@ const styles = StyleSheet.create({
     },
     imageContainerSignUp: {
         height: Dimensions.get("window").height * 0.8 - 450,
-        marginTop: 100,
+        marginTop: 200,
     },
     imageContainerLogIn: {
-        marginTop: 100,
+        marginTop: 200,
         height: Dimensions.get("window").height * 0.8 - 350,
     },
     logo: {
@@ -52,5 +65,4 @@ const styles = StyleSheet.create({
         height: 300,
         alignSelf: "center",
     },
-
 });
