@@ -75,7 +75,7 @@ export function fbStoreData(key, value) {
 }
 
 export function addNewItem(key, value) {
-    db.ref("/items").child(value[key]).set(value);
+    db.ref("/items").child(key).set(value);
 }
 
 export function fbReadAllData() {
@@ -104,6 +104,10 @@ export function fbRemoveDataByOne(key) {
     }
 }
 
+export function getUID(){
+    return auth.currentUser.uid
+
+}
 //V2 ------------ THIS IS FIREBASE VERSION UNDER USER ID
 
 // let UID = auth.currentUser.uid

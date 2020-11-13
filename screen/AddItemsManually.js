@@ -10,10 +10,11 @@ import {
     Alert,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import DatePicker from "react-native-modern-datepicker";
+import DatePicker, { getFormatedDate }from "react-native-modern-datepicker";
 import { storeData, addNewItem } from "../utils/storageManager";
 import { v4 as uuidv4 } from "uuid";
 import * as ImagePicker from "expo-image-picker";
+import { categories } from "../components/Categories"
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
@@ -59,6 +60,7 @@ export default class AddItemsManually extends Component {
                 key,
                 productname: this.state.name,
                 expiryDate: days_diff,
+                expirationDay: formattedDate,
                 image: this.state.image,
             };
             this.props.navigation.goBack();
@@ -80,6 +82,7 @@ export default class AddItemsManually extends Component {
                 key,
                 productname: this.state.name,
                 expiryDate: days_diff,
+                expirationDay: formattedDate,
                 image: this.state.image,
             };
 
@@ -183,15 +186,15 @@ const getToday = () => {
 };
 
 // const Required = () => <Text style={{color:"red", fontSize:10}}>Required</Text>
-const categories = [
-    { label: "None", value: "None" },
-    { label: "Fruit", value: "Fruit" },
-    { label: "Vegetable", value: "Vegetable" },
-    { label: "Dairy", value: "Diary" },
-    { label: "Meat", value: "Meat" },
-    { label: "Canned food", value: "Canned food" },
-    { label: "Snack", value: "Snack" },
-];
+// const categories = [
+//     { label: "None", value: "None" },
+//     { label: "Fruit", value: "Fruit" },
+//     { label: "Vegetable", value: "Vegetable" },
+//     { label: "Dairy", value: "Diary" },
+//     { label: "Meat", value: "Meat" },
+//     { label: "Canned food", value: "Canned food" },
+//     { label: "Snack", value: "Snack" },
+// ];
 
 export const screenOptions = (navData) => {
     return {

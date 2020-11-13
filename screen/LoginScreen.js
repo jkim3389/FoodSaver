@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Image, View, Text, Dimensions, Alert } from "react-native";
+import { StyleSheet, Image, View, Text, Dimensions, Alert, Keyboard, TouchableWithoutFeedback } from "react-native";
 import Background from "../components/Background";
 import Signin from "../components/Signin";
 import Signup from "../components/Signup";
@@ -18,7 +18,9 @@ export default function LoginScreen(props) {
     );
 
     return (
+
         <Background style={styles.background}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}><View>
             <View
                 style={
                     isSignUp
@@ -32,7 +34,10 @@ export default function LoginScreen(props) {
                 />
             </View>
             {content}
+            </View>
+            </TouchableWithoutFeedback>
         </Background>
+
     );
 }
 export const screenOptions = (navData) => {

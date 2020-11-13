@@ -115,6 +115,11 @@ export default function EditItems({ route, navigation }) {
                             color: "#9EA0A4",
                         }}
                         style={pickerSelectStyles}
+                        pickerProps={{
+                            style: {
+                                overflow: 'hidden',
+                            }
+                        }}
                     />
 
                     <Text style={styles.text}>Expiry Date</Text>

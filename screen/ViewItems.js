@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import EmptyFridge from "../components/EmptyFridge";
 import Background from "../components/Background";
 import { useIsFocused } from "@react-navigation/native";
-import { readAllData, fbReadAllData } from "../utils/storageManager";
+import { readAllData, fbReadAllData, getUID } from "../utils/storageManager";
 import { db } from "../utils/config";
 import NonEmptyFridge from "../components/NonEmptyFridge";
 
@@ -29,7 +29,7 @@ export default function ViewItems(props) {
         // fetch();
         setDidMount(true);
         // if (mounted) {
-        db.ref("/items").on("value", (dataSnapshot) => {
+        db.ref(`/${getUID()}/items`).on("value", (dataSnapshot) => {
             let data = dataSnapshot.val() ? dataSnapshot.val() : {};
             let items = Object.values(data);
             setData(

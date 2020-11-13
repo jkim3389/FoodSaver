@@ -4,13 +4,13 @@ import IconEvilIcons from 'react-native-vector-icons/EvilIcons'
 export default function HiddenItemWithActions(props) {
     return (
         <View style={styles.rowBack}>
-                <TouchableOpacity style={styles.backRightBtnLeft} onPress = {props.onEdit} > 
-                    <IconEvilIcons name="pencil" size={40}/>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.backRightBtnRight} onPress = {props.onDelete}>
-                    <IconEvilIcons name="trash" size={40}/>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={styles.backRightBtnLeft} onPress = {props.onEdit} > 
+                <IconEvilIcons name="pencil" size={40}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.backRightBtnRight} onPress = {props.onDelete}>
+                <IconEvilIcons name="trash" size={40}/>
+            </TouchableOpacity>
+        </View>
     )
 }
 

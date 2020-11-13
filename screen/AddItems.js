@@ -54,10 +54,10 @@ export default function AddItems(props) {
     const onSampleImage = async () => {
         var items = {
             uri:
-                "file:///Users/juntaekim/Desktop/newProject/FoodSaver/assets/items.jpeg",
-            // uri: "file:///Users/raycho/CS4261/FoodSaver/assets/items3.png",
-            // uri: "file:///Users/iLuna/Repositories/FoodSaver/assets/items1.jpeg",
-            // uri: "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items1.jpeg",
+                // "file:///Users/juntaekim/Desktop/newProject/FoodSaver/assets/items.jpeg",
+                "file:///Users/raycho/CS4261/FoodSaver/assets/items1.jpeg",
+                // "file:///Users/iLuna/Repositories/FoodSaver/assets/items1.jpeg",
+                // "file:///Users/benpooser/Documents/GitHub/FoodSaver/assets/items1.jpeg",
             name: "items.jpg",
             type: "image/jpg",
         };
