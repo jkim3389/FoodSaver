@@ -9,6 +9,7 @@ import Background from "../components/Background";
 import { storeData, fbStoreData } from "../utils/storageManager";
 import {NavigationActions} from 'react-navigation'
 
+
 export default function EditItems({route, navigation}) {
     const {key, newData} = route.params;
     const [data, setData] = useState(newData);
