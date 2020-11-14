@@ -23,7 +23,7 @@ export default function SavingItems(props) {
         setData(newData)
     };
     const addItem = (item) => {
-        console.log(item)
+        // console.log(item)
         setData([...data, item])
     };
 

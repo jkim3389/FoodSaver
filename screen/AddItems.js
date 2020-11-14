@@ -20,7 +20,7 @@ export default function AddItems(props) {
         const grant = await (mode === "camera"
             ? ImagePicker.requestCameraRollPermissionsAsync()
             : ImagePicker.requestCameraPermissionsAsync());
-        console.log(grant);
+        // console.log(grant);
         if (grant) {
             // setIsLoading(true)
             const ImagePickerConfig = {

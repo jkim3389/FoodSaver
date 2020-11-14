@@ -66,68 +66,21 @@ export async function removeDataByOne(key) {
 
 //Firebase Storage V1
 
-export function fbStoreData(key, value) {
-    try {
-        db.ref("/items").child(key).set(value);
-    } catch (e) {
-        console.log("error occured during store data", e);
-    }
-}
-
-export function addNewItem(key, value) {
-    db.ref("/items").child(key).set(value);
-}
-
-export function fbReadAllData() {
-    db.ref("/items").on("value", (dataSnapshot) => {
-        let data = dataSnapshot.val() ? dataSnapshot.val() : {};
-        let items = Object.values(data);
-        return items;
-    });
-}
-
-export function clearItems() {
-    try {
-        db.ref("/items").remove();
-        Alert.alert(`Cleared local data`);
-    } catch (e) {
-        console.log(e);
-        Alert.alert(`Error`);
-    }
-}
-
-export function fbRemoveDataByOne(key) {
-    try {
-        db.ref("/items/" + key).remove();
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-export function getUID(){
-    return auth.currentUser.uid
-
-}
-//V2 ------------ THIS IS FIREBASE VERSION UNDER USER ID
-
-// let UID = auth.currentUser.uid
-
 // export function fbStoreData(key, value) {
 //     try {
-//         db.ref(`/${UID}/items`).child(key).set(value)
+//         db.ref("/items").child(key).set(value);
 //     } catch (e) {
 //         console.log("error occured during store data", e);
 //     }
 // }
 
 // export function addNewItem(key, value) {
-//     db.ref(`/${UID}/items`).child(value["key"]).set(value);
+//     db.ref("/items").child(key).set(value);
 // }
 
 // export function fbReadAllData() {
-//     db.ref(`/${UID}/items`).on("value", (dataSnapshot) => {
+//     db.ref("/items").on("value", (dataSnapshot) => {
 //         let data = dataSnapshot.val() ? dataSnapshot.val() : {};
-//         console.log(data)
 //         let items = Object.values(data);
 //         return items;
 //     });
@@ -135,7 +88,7 @@ export function getUID(){
 
 // export function clearItems() {
 //     try {
-//         db.ref(`/${UID}/items`).remove();
+//         db.ref("/items").remove();
 //         Alert.alert(`Cleared local data`);
 //     } catch (e) {
 //         console.log(e);
@@ -145,8 +98,54 @@ export function getUID(){
 
 // export function fbRemoveDataByOne(key) {
 //     try {
-//         db.ref(`/${UID}/items/${key}`).remove();
+//         db.ref("/items/" + key).remove();
 //     } catch (error) {
 //         console.log(error);
 //     }
 // }
+
+export function getUID(){
+    return auth.currentUser.uid
+}
+//V2 ------------ THIS IS FIREBASE VERSION UNDER USER ID
+
+
+
+export function fbStoreData(key, value) {
+    try {
+        db.ref(`/${getUID()}/items`).child(key).set(value)
+    } catch (e) {
+        console.log("error occured during store data", e);
+    }
+}
+
+export function addNewItem(key, value) {
+    db.ref(`/${getUID()}/items`).child(value["key"]).set(value);
+}
+
+export function fbReadAllData() {
+    db.ref(`/${getUID()}/items`).on("value", (dataSnapshot) => {
+        let data = dataSnapshot.val() ? dataSnapshot.val() : {};
+
+        let items = Object.values(data);
+        return items;
+    });
+}
+
+export function clearItems() {
+    try {
+        db.ref(`/${getUID()}/items`).remove();
+        Alert.alert(`Cleared local data`);
+    } catch (e) {
+        console.log(e);
+        Alert.alert(`Error`);
+    }
+}
+
+export function fbRemoveDataByOne(key) {
+    try {
+        db.ref(`/${getUID()}/items/${key}`).remove();
+    } catch (error) {
+        console.log(error);
+    }
+}

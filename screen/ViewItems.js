@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import EmptyFridge from "../components/EmptyFridge";
 import Background from "../components/Background";
 import { useIsFocused } from "@react-navigation/native";
-import { readAllData, fbReadAllData, getUID } from "../utils/storageManager";
+import { readAllData, fbReadAllData, getUID,  } from "../utils/storageManager";
 import { db } from "../utils/config";
 import NonEmptyFridge from "../components/NonEmptyFridge";
 

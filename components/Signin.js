@@ -37,7 +37,7 @@ export default function Signin(props) {
                 userInput.password
             )
                 .then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     Alert.alert("User is successfully logged in");
                     props.navigation.navigate("TabBar");
                 })

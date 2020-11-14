@@ -1,32 +1,46 @@
+import Colors from "../constants/Colors";
+
+import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeNavigator, {
-    screenOptions as HomeScreenOption,
-} from "./HomeNavigator";
+
+import { Ionicons } from "@expo/vector-icons";
 import OverviewRecipeScreen, {
-    screenOptions as OverviewRecipeScreenOption,
+  screenOptions as OverviewRecipeScreenOption,
 } from "../screen/recipe/OverviewRecipeScreen";
+import RecipeDetailsScreen, {
+  screenOptions as RecipeDetailsScreenOption,
+} from "../screen/recipe/RecipeDetailsScreen";
 
-const BottomTab = createBottomTabNavigator();
-
-export default function RecipeNavigator() {
-    return (
-        <BottomTab.Navigator>
-            <BottomTab.Screen
-                name="Fridge"
-                component={HomeNavigator}
-                options={HomeScreenOption}
-            />
-            <BottomTab.Screen
-                name="Recipe"
-                component={OverviewRecipeScreen}
-                options={OverviewRecipeScreenOption}
-            />
-        </BottomTab.Navigator>
-    );
+const defaultOptions = {
+  headerStyle: {
+    backgroundColor: Colors.primary,
+  },
+  headerTintColor: "white",
+};
+const Stack = createStackNavigator();
+export default function Recipenavigator() {
+  return (
+    <Stack.Navigator screenOptions={defaultOptions}>
+      <Stack.Screen
+        name="RecipeOverview"
+        component={OverviewRecipeScreen}
+        options={OverviewRecipeScreenOption}
+      />
+      <Stack.Screen
+        name="RecipeDetails"
+        component={RecipeDetailsScreen}
+        options={RecipeDetailsScreenOption}
+      />
+    </Stack.Navigator>
+  );
 }
+
 export const screenOptions = (navData) => {
-    return {
-        headerShown: false,
-    };
+  return {
+    tabBarIcon: (tabInfo) => {
+      return (
+        <Ionicons name="ios-restaurant" size={25} color={tabInfo.tintColor} />
+      );
+    },
+  };
 };
