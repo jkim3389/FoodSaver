@@ -18,7 +18,7 @@ import DatePicker from "react-native-modern-datepicker";
 import * as ImagePicker from "expo-image-picker";
 import NoImage from "../assets/addImage.png";
 import Background from "../components/Background";
-import { storeData, fbStoreData } from "../utils/storageManager";
+import { storeData, fbStoreData, schedulePushNotification } from "../utils/storageManager";
 import { NavigationActions } from "react-navigation";
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -54,11 +54,17 @@ export default function EditItems({ route, navigation }) {
     submitAndClear = () => {
         if (data.productnamename === "") {
             Alert.alert("Item name is required.");
-        } else {
-            storeData(key, data);
-            fbStoreData(key, data);
-            Alert.alert(data.productname + " Saved");
-            navigation.navigate("MyFridge");
+        } else {            
+            var newDate = new Date(data.expirationDay)
+            var notifDate = new Date()
+            notifDate.setDate(newDate.getDate()-2)
+            var expireDay = new Date()
+            expireDay.setDate(newDate.getDate())
+            schedulePushNotification(notifDate, expireDay, data.productname, key)
+            storeData(key, data)
+            fbStoreData(key, data)
+            Alert.alert(data.productname + " Saved")
+            navigation.navigate("MyFridge")
         }
     };
 
@@ -124,6 +130,7 @@ export default function EditItems({ route, navigation }) {
 
                     <Text style={styles.text}>Expiry Date</Text>
                     <DatePicker
+<<<<<<< HEAD
                         style={styles.datePicker}
                         onDateChange={(date) => {
                             var newDate = new Date(date);
@@ -146,6 +153,35 @@ export default function EditItems({ route, navigation }) {
                             borderColor: "#1D1C1A",
                         }}
                     />
+=======
+                            style={styles.datePicker}
+                            onDateChange={date => {
+                                var newDate = new Date(date)
+                                var formattedDate = getFormatedDate(newDate, "YYYY/MM/DD")
+                                var notifDate = new Date()
+                                notifDate.setDate(newDate.getDate()-2)
+                                var expireDay = new Date()
+                                expireDay.setDate(newDate.getDate())
+                                // schedulePushNotification(notifDate, expireDay, data.productname, data.key)
+                                var today = new Date(getToday())
+                                var days_diff = Math.floor((newDate.getTime() - today.getTime())/(86400000))
+                                setData({...data, expiryDate: days_diff, expirationDay: formattedDate })
+                            }}
+                            minimumDate={getToday()}
+                            mode="calendar"
+                            selected={data.expirationDay}
+                            current={data.expirationDay}
+                            options={{
+                                backgroundColor: '#DCE5A1',
+                                // textHeaderColor: '#FFA25B',
+                                // textDefaultColor: '#F6E7C1',
+                                // selectedTextColor: 'rgba(190, 223, 83, .5)',
+                                mainColor: '#1D1C1A',
+                                textSecondaryColor: '#1D1C1A',
+                                borderColor: '#1D1C1A',
+                            }}                        
+                        />
+>>>>>>> 4f511b6eaebe26bdbb55457497ec7a42cebb0bba
                 </ScrollView>
 
                 <TouchableOpacity

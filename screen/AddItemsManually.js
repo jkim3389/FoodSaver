@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import DatePicker, { getFormatedDate }from "react-native-modern-datepicker";
-import { storeData, addNewItem } from "../utils/storageManager";
+import { storeData, addNewItem, schedulePushNotification } from "../utils/storageManager";
 import { v4 as uuidv4 } from "uuid";
 import * as ImagePicker from "expo-image-picker";
 import { categories } from "../components/Categories"
@@ -51,11 +51,23 @@ export default class AddItemsManually extends Component {
             Alert.alert("Item name is required.");
         } else {
             const key = uuidv4();
+<<<<<<< HEAD
             var newDate = new Date(this.state.expiryDate);
             var today = new Date(getToday());
             var days_diff = Math.floor(
                 (newDate.getTime() - today.getTime()) / 86400000
             );
+=======
+            var newDate = new Date(this.state.expiryDate)
+            var formattedDate = getFormatedDate(newDate, "YYYY/MM/DD")
+            // var notifDate = new Date()
+            // notifDate.setDate(newDate.getDate()-2)
+            // var expireDay = new Date()
+            // expireDay.setDate(newDate.getDate())
+            // schedulePushNotification(notifDate, expireDay, this.state.name, key)
+            var today = new Date(getToday())
+            var days_diff = Math.floor((newDate.getTime() - today.getTime())/(86400000))
+>>>>>>> 4f511b6eaebe26bdbb55457497ec7a42cebb0bba
             const item = {
                 key,
                 productname: this.state.name,
@@ -73,11 +85,22 @@ export default class AddItemsManually extends Component {
         } else {
             console.debug(this.state.image);
             const key = uuidv4();
+<<<<<<< HEAD
             var newDate = new Date(this.state.expiryDate);
             var today = new Date(getToday());
             var days_diff = Math.floor(
                 (newDate.getTime() - today.getTime()) / 86400000
             );
+=======
+            var newDate = new Date(this.state.expiryDate)
+            var formattedDate = getFormatedDate(newDate, "YYYY/MM/DD")
+            var notifDate = new Date()
+            notifDate.setDate(newDate.getDate()-2)
+            var expireDay = new Date()
+            expireDay.setDate(newDate.getDate())
+            var today = new Date(getToday())
+            var days_diff = Math.floor((newDate.getTime() - today.getTime())/(86400000))
+>>>>>>> 4f511b6eaebe26bdbb55457497ec7a42cebb0bba
             const item = {
                 key,
                 productname: this.state.name,
@@ -85,7 +108,7 @@ export default class AddItemsManually extends Component {
                 expirationDay: formattedDate,
                 image: this.state.image,
             };
-
+            schedulePushNotification(notifDate, expireDay, this.state.name, item.key)
             storeData(key, item);
             addNewItem(key, item);
             Alert.alert(this.state.name + " Added");
@@ -186,15 +209,6 @@ const getToday = () => {
 };
 
 // const Required = () => <Text style={{color:"red", fontSize:10}}>Required</Text>
-// const categories = [
-//     { label: "None", value: "None" },
-//     { label: "Fruit", value: "Fruit" },
-//     { label: "Vegetable", value: "Vegetable" },
-//     { label: "Dairy", value: "Diary" },
-//     { label: "Meat", value: "Meat" },
-//     { label: "Canned food", value: "Canned food" },
-//     { label: "Snack", value: "Snack" },
-// ];
 
 export const screenOptions = (navData) => {
     return {
