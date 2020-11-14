@@ -102,19 +102,29 @@ export function fbRemoveDataByOne(key) {
     }
 }
 
+
+*/
+
 export function getUID(){
     return auth.currentUser.uid
 
 }
-
-*/
-
 //V2 ------------ THIS IS FIREBASE VERSION UNDER USER ID
+
+export function fbStoreData(key, value) {
+  try {
+      db.ref(`/${getUID()}/items`).child(key).set(value);
+  } catch (e) {
+      console.log("error occured during store data", e);
+      return null;
+  }
+}
+
 
 export async function removeDataByOne(key) {
   try {
-    db.ref(`/${getUID()}/items`).remove();
-    db.ref(`/${getUID()}/users`).remove();
+    db.ref(`/${getUID()}/items/${key}`).remove();
+    db.ref(`/${getUID()}/users/${key}`).remove();
     Alert.alert(`Cleared local data`);
   } catch (e) {
     console.log("error occured during store data", e);
@@ -145,7 +155,7 @@ export function clearItems() {
 
 export function fbRemoveDataByOne(key) {
   try {
-    db.ref(`/${getUID()}/items` + key).remove();
+    db.ref(`/${getUID()}/items/${key}`).remove();
   } catch (error) {
     console.log(error);
   }
@@ -159,7 +169,7 @@ export async function schedulePushNotification(
 ) {
   var cancel_expire_day_notif;
   var cancel_notif_day;
-  db.ref("/users").on("value", (dataSnapshot) => {
+  db.ref(`/${getUID()}/users`).on("value", (dataSnapshot) => {
     let data = dataSnapshot.val() ? dataSnapshot.val() : {};
     let users = Object.values(data);
     try {

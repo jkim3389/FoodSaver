@@ -14,7 +14,7 @@ import {
   ScrollView,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import DatePicker from "react-native-modern-datepicker";
+import DatePicker, { getFormatedDate } from "react-native-modern-datepicker";
 import * as ImagePicker from "expo-image-picker";
 import NoImage from "../assets/addImage.png";
 import Background from "../components/Background";
@@ -64,8 +64,8 @@ export default function EditItems({ route, navigation }) {
       notifDate.setDate(newDate.getDate() - 2);
       var expireDay = new Date();
       expireDay.setDate(newDate.getDate());
-      schedulePushNotification(notifDate, expireDay, data.productname, key);
-      storeData(key, data);
+      // schedulePushNotification(notifDate, expireDay, data.productname, key);
+      // storeData(key, data);
       fbStoreData(key, data);
       Alert.alert(data.productname + " Saved");
       navigation.navigate("MyFridge");

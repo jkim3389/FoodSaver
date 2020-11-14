@@ -17,6 +17,7 @@ import SavingItems from "../screen/SavingItems";
 import LoginScreen, {
     screenOptions as LoginScreenOption,
 } from "../screen/LoginScreen";
+import Setting from "../screen/Setting";
 import Colors from "../constants/Colors";
 
 import { createStackNavigator } from "@react-navigation/stack";
@@ -63,6 +64,7 @@ export default function HomeNavigator() {
                 options={EditItemsScreenOptions}
             />
             <Stack.Screen name="Saving Items" component={SavingItems} />
+            <Stack.Screen name="Setting" component={Setting} />
         </Stack.Navigator>
     );
 }

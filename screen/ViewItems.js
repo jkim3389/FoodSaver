@@ -31,7 +31,7 @@ export default function ViewItems(props) {
         //     }
         // }
         // fetch();
-        setDidMount(true);
+        // setDidMount(true);
         // if (mounted) {
             db.ref(`/${getUID()}/items`).on("value", (dataSnapshot) => {
                 let data = dataSnapshot.val() ? dataSnapshot.val() : {};
@@ -49,7 +49,7 @@ export default function ViewItems(props) {
                 }
             });
         // }
-        return () => setDidMount(false);
+        // return () => setDidMount(false);
     }, []);
 
     const loadExpiredItem = async (item) => {
