@@ -36,8 +36,11 @@ export default function Category(category) {
                 </View>
                 <View style={styles.contentContainer}>
                     <Text style={styles.expiryDate}>
-                        10yr 5m 4d
+                        10         5         3
                         {category.predefined}
+                    </Text>
+                    <Text style={styles.expiryDate2}>
+                        Year   Month   Day
                     </Text>
                 </View>
             </View>
@@ -71,6 +74,12 @@ const styles = StyleSheet.create({
         fontFamily: "Arial Rounded MT Bold",
     },
     expiryDate: {
+        fontFamily: "Arial Rounded MT Bold",
+        fontSize: 15,
+        alignSelf: "center",
+        color: "black",
+    },
+    expiryDate2: {
         fontSize: 15,
         alignSelf: "center",
         color: "black",
