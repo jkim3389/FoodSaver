@@ -23,21 +23,21 @@ function setPredifned(label, predefined) {
     categories.filter(category => category.label == label)[0][predefined] = predefined;
 }
 
-export default function Category(category) {
+export default function Category(props) {
     return (
         <TouchableOpacity
         // onPress={}
         >
             <View style={styles.rowFront}>
                 <View style={styles.contentContainer}>
-                    <Text style={styles.productname}> Vegatable
-                        {category.label}
+                    <Text style={styles.productname}> 
+                        {props.category.label}
                     </Text>
                 </View>
                 <View style={styles.contentContainer}>
                     <Text style={styles.expiryDate}>
                         10         5         3
-                        {category.predefined}
+                        {props.category.predefined}
                     </Text>
                     <Text style={styles.expiryDate2}>
                         Year   Month   Day

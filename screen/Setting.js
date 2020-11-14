@@ -27,8 +27,9 @@ export default function Settings() {
     </Background>;
 }
 
-const renderCategory = ({ category }, rowMap) => {
-    return <Category category={category} />;
+const renderCategory = (category, rowMap) => {
+    console.log(category.item)
+    return <Category category={category.item} />;
 };
 
 const styles = StyleSheet.create({
