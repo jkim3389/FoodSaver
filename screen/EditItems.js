@@ -6,7 +6,7 @@ import DatePicker, { getFormatedDate } from 'react-native-modern-datepicker';
 import * as ImagePicker from "expo-image-picker";
 import NoImage from "../assets/addImage.png"
 import Background from "../components/Background";
-import { storeData, fbStoreData } from "../utils/storageManager";
+import { storeData, fbStoreData, schedulePushNotification } from "../utils/storageManager";
 import {NavigationActions} from 'react-navigation'
 
 
@@ -44,6 +44,12 @@ export default function EditItems({route, navigation}) {
         if (data.productnamename === "") {
             Alert.alert("Item name is required.");
         } else {            
+            var newDate = new Date(data.expirationDay)
+            var notifDate = new Date()
+            notifDate.setDate(newDate.getDate()-2)
+            var expireDay = new Date()
+            expireDay.setDate(newDate.getDate())
+            schedulePushNotification(notifDate, expireDay, data.productname, key)
             storeData(key, data)
             fbStoreData(key, data)
             Alert.alert(data.productname + " Saved")
@@ -108,6 +114,11 @@ export default function EditItems({route, navigation}) {
                             onDateChange={date => {
                                 var newDate = new Date(date)
                                 var formattedDate = getFormatedDate(newDate, "YYYY/MM/DD")
+                                var notifDate = new Date()
+                                notifDate.setDate(newDate.getDate()-2)
+                                var expireDay = new Date()
+                                expireDay.setDate(newDate.getDate())
+                                // schedulePushNotification(notifDate, expireDay, data.productname, data.key)
                                 var today = new Date(getToday())
                                 var days_diff = Math.floor((newDate.getTime() - today.getTime())/(86400000))
                                 setData({...data, expiryDate: days_diff, expirationDay: formattedDate })

@@ -1,6 +1,8 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import { Alert } from "react-native";
 import { db } from "./config";
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 
 
 
@@ -85,6 +87,7 @@ export async function clearData() {
 export function clearItems() {
     try {
         db.ref('/items').remove();
+        db.ref('/users').remove();
         Alert.alert(`Cleared local data`);
     } catch (e) {
         console.log(e);
@@ -109,4 +112,53 @@ export function fbRemoveDataByOne(key) {
     } catch(error) {
         console.log(error);
     }
+}
+
+export async function schedulePushNotification(notifDay, expireDay, productname, itemID) {
+    var cancel_expire_day_notif
+    var cancel_notif_day
+    db.ref('/users').on("value", (dataSnapshot) => {
+        let data = dataSnapshot.val() ? dataSnapshot.val() : {};
+        let users = Object.values(data);
+        try {
+            cancel_expire_day_notif = users[0][itemID]['expire_day_notif_id'];
+            cancel_notif_day = users[0][itemID]['days_before_notif_id'];
+        } catch(e) {
+            // console.log(e)
+        }
+    });
+    await Notifications.cancelScheduledNotificationAsync(cancel_expire_day_notif);
+    await Notifications.cancelScheduledNotificationAsync(cancel_notif_day);
+    const expire_day_notif = await Notifications.scheduleNotificationAsync({
+        content: {
+            title: "FoodSaver",
+            body: productname + ' is expiring soon!',
+            data: { data: 'goes here' },
+        },
+        trigger: { 
+            year: notifDay.getFullYear(),
+            month: notifDay.getMonth()+1,
+            day: notifDay.getDate(),
+            hour: 16,
+            minute: 41,
+            second: 30,
+        },
+    });
+    const days_before_notif = await Notifications.scheduleNotificationAsync({
+        content: {
+            title: "FoodSaver",
+            body: productname + ' is expiring today!',
+            data: { data: 'goes here' },
+        },
+        trigger: { 
+            year: expireDay.getFullYear(),
+            month: expireDay.getMonth()+1,
+            day: expireDay.getDate(),
+            hour: 16,
+            minute: 41,
+            second: 30,
+        },
+    });
+    db.ref('/users').child(Constants.installationId).child(itemID).child('expire_day_notif_id').set(expire_day_notif)
+    db.ref('/users').child(Constants.installationId).child(itemID).child('days_before_notif_id').set(days_before_notif)
 }

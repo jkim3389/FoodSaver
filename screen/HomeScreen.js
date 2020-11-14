@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
     StatusBar,
     Image,
@@ -11,11 +11,45 @@ import logo from "../assets/logo.png";
 import setting from "../assets/setting.png";
 import Background from "../components/Background";
 import { clearData, clearItems } from "../utils/storageManager";
+import { db } from "../utils/config";
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+import * as Notifications from 'expo-notifications';
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
+
 export default function HomeScreen(props) {
     const onClearHandler = () => {
         clearData();
         clearItems();
     };
+
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState(false);
+    const notificationListener = useRef();
+    const responseListener = useRef();
+
+    useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+        // This listener is fired whenever a notification is received while the app is foregrounded
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            setNotification(notification);
+        });
+        // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log(response);
+        });
+            return () => {
+                Notifications.removeNotificationSubscription(notificationListener);
+                Notifications.removeNotificationSubscription(responseListener);
+            };
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -52,6 +86,40 @@ export default function HomeScreen(props) {
             </Background>
         </View>
     );
+}
+
+
+async function registerForPushNotificationsAsync() {
+    let token;
+    if (Constants.isDevice) {
+        const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+        }
+        token = (await Notifications.getExpoPushTokenAsync()).data;
+        // console.log(token);
+        let uid = Constants.installationId;
+        db.ref("users_expo_token").child(uid).update({
+            expoPushToken: token
+        });
+    } else {
+        alert('Must use physical device for Push Notifications');
+    }
+    if (Platform.OS === 'android') {
+        Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
+        });
+    }
+    return token;
 }
 
 const styles = StyleSheet.create({
