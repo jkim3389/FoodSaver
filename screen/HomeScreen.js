@@ -8,6 +8,7 @@ import {
     Text,
 } from "react-native";
 import logo from "../assets/logo.png";
+import setting from "../assets/setting.png";
 import Background from "../components/Background";
 import { clearData, clearItems } from "../utils/storageManager";
 export default function HomeScreen(props) {
@@ -24,6 +25,11 @@ export default function HomeScreen(props) {
                     barStyle="light-content"
                     backgroundColor="transparent"
                 />
+                <TouchableOpacity
+                    onPress={() =>props.navigation.navigate("Setting")}
+                >
+                    <Image source={setting} style={styles.setting} />
+                </TouchableOpacity>
                 <Image source={logo} style={styles.logo} />
                 <TouchableOpacity
                     style={styles.button}
@@ -57,7 +63,7 @@ const styles = StyleSheet.create({
         height: "5%",
         width: "45%",
         justifyContent: "space-evenly",
-        alignSelf:'center',
+        alignSelf: 'center',
         backgroundColor: 'rgba(190, 223, 83, .5)',
         marginTop: 20,
         borderRadius: 30,
@@ -65,7 +71,7 @@ const styles = StyleSheet.create({
     buttonText: {
         fontWeight: 'bold',
         fontSize: 18,
-        color:'#1D1C1A',
+        color: '#1D1C1A',
         textAlign: 'center',
         textTransform: 'uppercase'
     },
@@ -73,8 +79,16 @@ const styles = StyleSheet.create({
         top: -30,
         width: 370,
         height: 370,
-        alignSelf:'center',
+        alignSelf: 'center',
         justifyContent: "center",
         marginBottom: -30,
     },
+    setting: {
+        top: -95,
+        right: 20,
+        alignSelf: "flex-end",
+        // position: "absolute",
+        height: 50,
+        width: 50,
+    }
 });

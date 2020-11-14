@@ -173,18 +173,7 @@ const getToday = () => {
     return year + "-" + month + "-" + date;
 };
 
-
-
 // const Required = () => <Text style={{color:"red", fontSize:10}}>Required</Text>
-// const categories = [
-//     { label: "None", value: "None" },
-//     { label: "Fruit", value: "Fruit" },
-//     { label: "Vegetable", value: "Vegetable" },
-//     { label: "Dairy", value: "Diary" },
-//     { label: "Meat", value: "Meat" },
-//     { label: "Canned food", value: "Canned food" },
-//     { label: "Snack", value: "Snack" },
-// ];
 
 const styles = StyleSheet.create({
     container: {

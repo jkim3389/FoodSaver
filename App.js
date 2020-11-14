@@ -10,7 +10,7 @@ import AddItems from "./screen/AddItems";
 import EditItems from "./screen/EditItems";
 import AddItemsManually from "./screen/AddItemsManually";
 import SavingItems from "./screen/SavingItems";
-
+import Setting from "./screen/Setting";
 
 LogBox.ignoreLogs([
     'Non-serializable values were found in the navigation state',
@@ -28,6 +28,7 @@ export default function App() {
                     <Stack.Screen name="Add An Item" component={AddItemsManually} />
                     <Stack.Screen name="Edit Items" component={EditItems} />
                     <Stack.Screen name="Saving Items" component={SavingItems}/>
+                    <Stack.Screen name="Setting" component={Setting}/>
                 </Stack.Navigator>
             </NavigationContainer>
     );
