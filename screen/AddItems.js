@@ -8,7 +8,8 @@ import * as ImageManipulator from "expo-image-manipulator";
 import "react-native-get-random-values";
 import SavingItems from "./SavingItems";
 import Loading from "./Loading";
-import moment from 'moment';
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import HeaderButton from "../components/HeaderButton";
 
 export default function AddItems(props) {
     const [data, setData] = useState([]);
@@ -19,9 +20,8 @@ export default function AddItems(props) {
         const grant = await (mode === "camera"
             ? ImagePicker.requestCameraRollPermissionsAsync()
             : ImagePicker.requestCameraPermissionsAsync());
-        console.log(grant)
+        console.log(grant);
         if (grant) {
-
             // setIsLoading(true)
             const ImagePickerConfig = {
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -32,7 +32,7 @@ export default function AddItems(props) {
             let result = await (mode === "camera"
                 ? ImagePicker.launchCameraAsync(ImagePickerConfig)
                 : ImagePicker.launchImageLibraryAsync(ImagePickerConfig));
-            
+
             if (!result.cancelled) {
                 setIsLoading(true);
                 imageFetching(
@@ -87,23 +87,17 @@ export default function AddItems(props) {
                 {}
             );
             const result = await Promise.all(
-                response.map(
-                    async (element) => {
-                        const cropped = await ImageManipulator.manipulateAsync(
-                            image.uri,
-                            [{ crop: element.image }],
-                            { compress: 1 }
-                        );
-                        var today = new Date()
-                        var expiryDate = element.expiryDate;
-                        var newDate = moment(today).add(expiryDate,'day').format('YYYY/MM/DD')
-                        return {
-                            ...element,
-                            image: cropped.uri,
-                            expirationDay:newDate,
-                        };
-                    }
-                )
+                response.map(async (element) => {
+                    const cropped = await ImageManipulator.manipulateAsync(
+                        image.uri,
+                        [{ crop: element.image }],
+                        { compress: 1 }
+                    );
+                    return {
+                        ...element,
+                        image: cropped.uri,
+                    };
+                })
             );
             setIsEditingMode(true), setIsLoading(false);
             setData(result);
@@ -158,12 +152,12 @@ export default function AddItems(props) {
                         <Text style={styles.buttonText}>Manually Enter</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         style={styles.button}
                         onPress={onSampleImage}
                     >
                         <Text style={styles.buttonText}>Sample Image</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
         );
@@ -172,6 +166,33 @@ export default function AddItems(props) {
     return <Background>{content}</Background>;
 }
 
+export const screenOptions = (navData) => {
+    return {
+        headerTitle: "Adding Items..",
+        headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item
+                    title="Back"
+                    iconName="md-arrow-round-back"
+                    onPress={() => {
+                        navData.navigation.goBack();
+                    }}
+                />
+            </HeaderButtons>
+        ),
+        headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item
+                    title="Back"
+                    iconName="ios-basket"
+                    onPress={() => {
+                        navData.navigation.navigate("MyFridge");
+                    }}
+                />
+            </HeaderButtons>
+        ),
+    };
+};
 const styles = StyleSheet.create({
     progressBar: {
         flex: 1,
@@ -210,4 +231,3 @@ const styles = StyleSheet.create({
         marginBottom: 60,
     },
 });
-
