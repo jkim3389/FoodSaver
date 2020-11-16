@@ -64,7 +64,7 @@ export default function EditItems({ route, navigation }) {
       notifDate.setDate(newDate.getDate() - 2);
       var expireDay = new Date();
       expireDay.setDate(newDate.getDate());
-      // schedulePushNotification(notifDate, expireDay, data.productname, key);
+      schedulePushNotification(notifDate, expireDay, data.productname, key);
       // storeData(key, data);
       fbStoreData(key, data);
       Alert.alert(data.productname + " Saved");
@@ -132,10 +132,10 @@ export default function EditItems({ route, navigation }) {
             onDateChange={(date) => {
               var newDate = new Date(date);
               var formattedDate = getFormatedDate(newDate, "YYYY/MM/DD");
-              var notifDate = new Date();
-              notifDate.setDate(newDate.getDate() - 2);
-              var expireDay = new Date();
-              expireDay.setDate(newDate.getDate());
+              // var notifDate = new Date();
+              // notifDate.setDate(newDate.getDate() - 2);
+              // var expireDay = new Date();
+              // expireDay.setDate(newDate.getDate());
               // schedulePushNotification(notifDate, expireDay, data.productname, data.key)
               var today = new Date(getToday());
               var days_diff = Math.floor(
