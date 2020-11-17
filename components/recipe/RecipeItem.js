@@ -15,8 +15,10 @@ export default function RecipeItem(props) {
       <View style={styles.touchable}>
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("RecipeDetails", { id: props.id });
-            Alert.alert("clicked!");
+            props.navigation.navigate("RecipeDetails", {
+              id: props.id,
+              title: props.title,
+            });
           }}
         >
           {/* <View> */}

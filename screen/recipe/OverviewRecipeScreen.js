@@ -73,7 +73,7 @@ export default function OverviewRecipeScreen(props) {
           setRecipes(
             updatedRecipe.map((recipe) => {
               return new Recipe(
-                +recipe.id,
+                recipe.id,
                 recipe.title,
                 recipe.image,
                 recipe.usedIngredients
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
   },
   title: {
-    marginTop: 60,
+    marginTop: 100,
     marginBottom: 30,
   },
   text: {
