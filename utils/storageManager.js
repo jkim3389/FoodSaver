@@ -122,10 +122,27 @@ export function fbStoreData(key, value) {
 
 
 export async function removeDataByOne(key) {
+  var cancel_expire_day_notif;
+  var cancel_notif_day;
+  try {
+    db.ref(`/${getUID()}/items/${key}/expire_day_notif_id`).on("value", (dataSnapshot) => {
+      let data = dataSnapshot.val() ? dataSnapshot.val() : {};
+      cancel_expire_day_notif = Object.values(data).join('');
+    });
+    db.ref(`/${getUID()}/items/${key}/days_before_notif_id`).on("value", (dataSnapshot) => {
+      let data = dataSnapshot.val() ? dataSnapshot.val() : {};
+      cancel_notif_day = Object.values(data).join('');
+    });
+  } catch (e) {
+    // console.log(e)
+  }
+  await Notifications.cancelScheduledNotificationAsync(cancel_expire_day_notif);
+  await Notifications.cancelScheduledNotificationAsync(cancel_notif_day);
   try {
     db.ref(`/${getUID()}/items/${key}`).remove();
-    db.ref(`/${getUID()}/users/${key}`).remove();
-    Alert.alert(`Cleared local data`);
+    // db.ref(`/${getUID()}/users/${key}`).remove();
+    // db.ref(`/users/${Constants.installationId}/${key}`).remove();
+    // Alert.alert(`Cleared local data`);
   } catch (e) {
     console.log("error occured during store data", e);
   }
@@ -169,16 +186,18 @@ export async function schedulePushNotification(
 ) {
   var cancel_expire_day_notif;
   var cancel_notif_day;
-  db.ref(`/${getUID()}/users`).on("value", (dataSnapshot) => {
-    let data = dataSnapshot.val() ? dataSnapshot.val() : {};
-    let users = Object.values(data);
-    try {
-      cancel_expire_day_notif = users[0][itemID]["expire_day_notif_id"];
-      cancel_notif_day = users[0][itemID]["days_before_notif_id"];
-    } catch (e) {
-      // console.log(e)
-    }
-  });
+  try {
+    db.ref(`/${getUID()}/items/${itemID}/expire_day_notif_id`).on("value", (dataSnapshot) => {
+      let data = dataSnapshot.val() ? dataSnapshot.val() : {};
+      cancel_expire_day_notif = Object.values(data).join('');
+    });
+    db.ref(`/${getUID()}/items/${itemID}/days_before_notif_id`).on("value", (dataSnapshot) => {
+      let data = dataSnapshot.val() ? dataSnapshot.val() : {};
+      cancel_notif_day = Object.values(data).join('');
+    });
+  } catch (e) {
+    // console.log(e)
+  }
   await Notifications.cancelScheduledNotificationAsync(cancel_expire_day_notif);
   await Notifications.cancelScheduledNotificationAsync(cancel_notif_day);
   const expire_day_notif = await Notifications.scheduleNotificationAsync({
@@ -191,9 +210,9 @@ export async function schedulePushNotification(
       year: notifDay.getFullYear(),
       month: notifDay.getMonth() + 1,
       day: notifDay.getDate(),
-      hour: 16,
-      minute: 41,
-      second: 30,
+      hour: 22,
+      minute: 32,
+      // second: 30,
     },
   });
   const days_before_notif = await Notifications.scheduleNotificationAsync({
@@ -206,18 +225,16 @@ export async function schedulePushNotification(
       year: expireDay.getFullYear(),
       month: expireDay.getMonth() + 1,
       day: expireDay.getDate(),
-      hour: 16,
-      minute: 41,
-      second: 30,
+      hour: 22,
+      minute: 32,
+      // second: 30,
     },
   });
-  db.ref("/users")
-    .child(Constants.installationId)
+  db.ref(`/${getUID()}/items`)
     .child(itemID)
     .child("expire_day_notif_id")
     .set(expire_day_notif);
-  db.ref("/users")
-    .child(Constants.installationId)
+  db.ref(`/${getUID()}/items`)
     .child(itemID)
     .child("days_before_notif_id")
     .set(days_before_notif);

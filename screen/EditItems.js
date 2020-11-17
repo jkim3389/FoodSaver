@@ -64,9 +64,9 @@ export default function EditItems({ route, navigation }) {
       notifDate.setDate(newDate.getDate() - 2);
       var expireDay = new Date();
       expireDay.setDate(newDate.getDate());
-      schedulePushNotification(notifDate, expireDay, data.productname, key);
       // storeData(key, data);
       fbStoreData(key, data);
+      schedulePushNotification(notifDate, expireDay, data.productname, key);
       Alert.alert(data.productname + " Saved");
       navigation.navigate("MyFridge");
     }

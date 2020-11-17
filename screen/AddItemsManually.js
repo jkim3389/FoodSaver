@@ -100,9 +100,9 @@ export default class AddItemsManually extends Component {
         expirationDay: formattedDate,
         image: this.state.image,
       };
-      schedulePushNotification(notifDate, expireDay, this.state.name, item.key);
     //   storeData(key, item);
       addNewItem(key, item);
+      schedulePushNotification(notifDate, expireDay, this.state.name, item.key);
       Alert.alert(this.state.name + " Added");
       this.props.navigation.navigate("Add Items");
     }

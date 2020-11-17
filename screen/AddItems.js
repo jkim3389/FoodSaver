@@ -96,7 +96,7 @@ export default function AddItems(props) {
                     );
                     const randomValue = Math.floor(Math.random() * 10)
                     var expirationDay = new Date()
-                    expirationDay.setDate((new Date(getToday())).getDate()+randomValue)
+                    expirationDay.setDate((new Date(getToday())).getDate()+randomValue+1)
                     return {
                         ...element,
                         image: cropped.uri,
