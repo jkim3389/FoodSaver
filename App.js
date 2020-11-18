@@ -9,9 +9,9 @@ import Colors from "./constants/Colors";
 import AppNavigation from "./Navigator/AppNavigation";
 
 LogBox.ignoreLogs([
-    "Non-serializable values were found in the navigation state",
+  "Non-serializable values were found in the navigation state",
 ]);
 
 export default function App() {
-    return <AppNavigation />;
+  return <AppNavigation />;
 }

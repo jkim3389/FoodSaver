@@ -10,7 +10,7 @@ import {
 import Background from "../components/Background";
 import ListView from "../components/ListView";
 import { Ionicons } from "@expo/vector-icons";
-import { storeData, addNewItem } from "../utils/storageManager";
+import { storeData, addNewItem, schedulePushNotification } from "../utils/storageManager";
 
 export default function SavingItems(props) {
     const [data, setData] = useState([...props.fetchingData])
@@ -38,7 +38,13 @@ export default function SavingItems(props) {
 
     const savingItem = (data)=>{
         data.map((item)=>{
-            addNewItem(item.key, item)            
+            var newDate = new Date(item.expirationDay)
+            var notifDate = new Date()
+            notifDate.setDate(newDate.getDate()-2)
+            var expireDay = new Date()
+            expireDay.setDate(newDate.getDate())
+            addNewItem(item.key, item)          
+            schedulePushNotification(notifDate, expireDay, item.productname, item.key)  
         })
         props.navigation.navigate("Home");
         Alert.alert("Items are saved in the Fridge")

@@ -126,8 +126,7 @@ export default function RecipeDetailsScreen(props) {
       const formattedInstructions = recipe.instructions.map(
         (itemInstruction) => {
           return {
-            name:
-              itemInstruction.name === "" ? "General" : itemInstruction.name,
+            name: itemInstruction.name === "" ? "" : itemInstruction.name,
             steps: itemInstruction.steps.map((step) => {
               return { number: step.number, detail: step.step };
             }),
@@ -139,9 +138,9 @@ export default function RecipeDetailsScreen(props) {
           <View style={styles.eachItem}>
             <Text style={styles.itemHeader}>{item.name}</Text>
             {/* <View style={styles.instructionsStepContainer}> */}
-            {item.steps.map((step) => {
+            {item.steps.map((step, index) => {
               return (
-                <View style={styles.instructionsStepContainer}>
+                <View key={index} style={styles.instructionsStepContainer}>
                   <Text style={styles.instructionHeader}>
                     STEP {step.number}
                   </Text>
@@ -294,7 +293,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   check: {
-    width: "50%",
+    width: "100%",
     fontSize: 16,
     lineHeight: 16,
     marginVertical: 5,
