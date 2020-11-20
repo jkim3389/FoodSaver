@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
         fontFamily: "Arial Rounded MT Bold",
     },
     emptyContainer: {
+        top:40,
         alignItems: 'center',
         
     },

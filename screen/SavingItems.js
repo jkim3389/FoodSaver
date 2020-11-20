@@ -65,7 +65,7 @@ export default function SavingItems(props) {
                     }
                 >
                     <View style={styles.button}>
-                        <Ionicons name="md-add" size={60} color="white" />
+                        <Ionicons name="md-add" size={60} color="black" />
                     </View>
                 </TouchableOpacity>
 
@@ -75,7 +75,7 @@ export default function SavingItems(props) {
                     onPress={()=>savingItem(data)}
                 >
                     <View style={styles.button}>
-                        <Ionicons name="md-save" size={60} color="white" />
+                        <Ionicons name="md-save" size={60} color="black" />
                     </View>
                 </TouchableOpacity>
             </View>
@@ -97,12 +97,11 @@ const styles = StyleSheet.create({
         marginHorizontal: 30,
     },
     button: {
-        borderWidth: 2,
+        // borderWidth: 2,
         width: 150,
         height: 75,
         backgroundColor: "rgba(190, 223, 83, 1)",
         borderRadius: 25,
-
         alignItems: "center",
         justifyContent: "center",
     },

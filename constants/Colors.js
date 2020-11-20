@@ -1,3 +1,3 @@
 export default {
-    primary: "rgba(190, 223, 83, .5)",
+    primary: "rgba(190, 223, 83, .8)",
 };

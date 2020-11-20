@@ -89,6 +89,7 @@ export default function Signin(props) {
 
 const styles = StyleSheet.create({
     contentContainerLogIn: {
+        top: -50,
         // flex: 2,
         // marginHorizontal: 30,
         alignSelf: "center",
@@ -97,8 +98,8 @@ const styles = StyleSheet.create({
         borderRadius: 24,
         backgroundColor: "rgba(255,255,255,0.5)",
         width: Dimensions.get("window").width * 0.9,
-        height: 250,
-        padding: 10,
+        height: 260,
+        padding: 15,
         // bottom: Dimensions.get("window").height * 0.10,
     },
     iconImageStyle: {
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
     buttonText: {
         fontWeight: "bold",
         fontFamily: "Arial Rounded MT Bold",
-        fontSize: 25,
+        fontSize: 23,
         color: "#FFFFFF",
         textAlign: "center",
         textTransform: "capitalize",

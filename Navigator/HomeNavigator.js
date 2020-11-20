@@ -27,7 +27,7 @@ const defaultOptions = {
     headerStyle: {
         backgroundColor: Colors.primary,
     },
-    headerTintColor: "white",
+    headerTintColor: "#1D1C1A",
 };
 const Stack = createStackNavigator();
 export default function HomeNavigator() {

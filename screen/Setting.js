@@ -23,7 +23,8 @@ export default function Settings() {
                 scrollIndicatorInsets={{ right: 1 }}
                 disableRightSwipe
                 rightOpenValue={-115}
-            /></View>
+            />
+            </View>
     </Background>;
 }
 
