@@ -8,27 +8,26 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import RNPickerSelect from "react-native-picker-select";
+import { fbUpdateCategory } from "../utils/storageManager";
 
 // need to add predefined date for each category
-export var categories = [
-    { label: "None", value: "None", default: true, predefined: { year: 0, month: 0, day: 0 } },
-    { label: "Fruit", value: "Fruit", default: true, predefined: { year: 0, month: 0, day: 0 } },
-    { label: "Vegetable", value: "Vegetable", default: true, predefined: { year: 0, month: 0, day: 0 } },
-    { label: "Dairy", value: "Diary", default: true, predefined: { year: 0, month: 0, day: 0 } },
-    { label: "Meat", value: "Meat", default: true, predefined: { year: 0, month: 0, day: 0 } },
-    { label: "Canned food", value: "Canned food", default: true, predefined: { year: 0, month: 0, day: 0 } },
-    { label: "Snack", value: "Snack", default: true, predefined: { year: 0, month: 0, day: 0 } },
+export var defaultCategories = [
+    { label: "None", value: "None", predefined: { year: 0, month: 0, day: 0 } },
+    { label: "Fruit", value: "Fruit", predefined: { year: 0, month: 1, day: 0 } },
+    { label: "Vegetable", value: "Vegetable", predefined: { year: 0, month: 0, day: 20 } },
+    { label: "Dairy", value: "Diary", predefined: { year: 0, month: 0, day: 10 } },
+    { label: "Meat", value: "Meat", predefined: { year: 0, month: 0, day: 14 } },
+    { label: "Canned food", value: "Canned food", predefined: { year: 2, month: 6, day: 0 } },
+    { label: "Snack", value: "Snack", predefined: { year: 1, month: 6, day: 0 } },
     { label: "new", predefined: { year: 0, month: 0, day: 0 } }
 ];
-
-// function setPredifned(label, predefined) {
-//     categories.filter(category => category.label == label)[0][predefined] = predefined;
-// }
 
 export default function Category(props) {
     const [year, setYear] = useState(props.category.predefined.year);
     const [month, setMonth] = useState(props.category.predefined.month);
     const [day, setDay] = useState(props.category.predefined.day);
+
+    var curr = props.category
 
     if (props.category.label == "None") {
         return null;
@@ -50,7 +49,11 @@ export default function Category(props) {
 
             <View style={styles.contentContainer2}>
                 <RNPickerSelect
-                    onValueChange={(n) => setYear(n)}
+                    onValueChange={(n) => {
+                        setYear(n)
+                        curr.predefined.year = n
+                        fbUpdateCategory(props.category.label, curr)
+                    }}
                     items={years}
                     value={year}
                     style={pickerSelectStyles}
@@ -60,7 +63,11 @@ export default function Category(props) {
 
             <View style={styles.contentContainer2}>
                 <RNPickerSelect
-                    onValueChange={(n) => setMonth(n)}
+                    onValueChange={(n) => {
+                        setMonth(n)
+                        curr.predefined.month = n
+                        fbUpdateCategory(props.category.label, curr)
+                    }}
                     items={months}
                     value={month}
                     style={pickerSelectStyles}
@@ -70,7 +77,11 @@ export default function Category(props) {
 
             <View style={styles.contentContainer2}>
                 <RNPickerSelect
-                    onValueChange={(n) => setDay(n)}
+                    onValueChange={(n) => {
+                        setDay(n)
+                        curr.predefined.day = n
+                        fbUpdateCategory(props.category.label, curr)
+                    }}
                     items={days}
                     value={day}
                     style={pickerSelectStyles}
@@ -80,7 +91,6 @@ export default function Category(props) {
         </View>
     );
 }
-
 
 const styles = StyleSheet.create({
     rowFront: {

@@ -105,21 +105,29 @@ export function fbRemoveDataByOne(key) {
 
 */
 
-export function getUID(){
-    return auth.currentUser.uid
+export function getUID() {
+  return auth.currentUser.uid
 
 }
 //V2 ------------ THIS IS FIREBASE VERSION UNDER USER ID
 
 export function fbStoreData(key, value) {
   try {
-      db.ref(`/${getUID()}/items`).child(key).set(value);
+    db.ref(`/${getUID()}/items`).child(key).set(value);
   } catch (e) {
-      console.log("error occured during store data", e);
-      return null;
+    console.log("error occured during store data", e);
+    return null;
   }
 }
 
+export function fbUpdateCategory(key, value) {
+  try {
+    db.ref(`/${getUID()}/categories`).child(key).set(value);
+  } catch (e) {
+    console.log("error occured during update categories", e);
+    return null;
+  }
+}
 
 export async function removeDataByOne(key) {
   var cancel_expire_day_notif;

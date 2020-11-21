@@ -1,35 +1,55 @@
 import Background from "../components/Background";
-import Category, { categories, setPredefined } from "../components/Categories"
+import Category, { defaultCategories } from "../components/Categories"
 import { SwipeListView } from 'react-native-swipe-list-view';
-import React from "react";
+import { getUID } from "../utils/storageManager"
+import { db } from "../utils/config";
+import React, { useEffect, useState } from "react";
 import {
     StyleSheet,
-    TouchableOpacity,
     View,
     Text,
-    TextInput,
-    Image,
-    Alert,
 } from "react-native";
 
 export default function Settings() {
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        var ref = db.ref(`/${getUID()}/categories`);
+        ref.on("value", (snapshot) => {
+            if (!snapshot.exists()) {
+                var c = []
+                defaultCategories.forEach((key, value) => {
+                    if (key.label != "new") {
+                        db.ref(`/${getUID()}/categories`).child(key.label).set(key);
+                        c.push(key)
+                    }
+                });
+            } else {
+                let data = snapshot.val() ? snapshot.val() : {};
+                var c = []
+                Object.values(data).forEach((key, value) => {
+                    c.push(key)
+                })
+            }
+            setCategories(c)
+        });
+    }, []);
 
     return <Background>
         <View style style={styles.container}>
-            <Text style={styles.title}>Category                    Fresh for</Text>
-            <SwipeListView
+            <Text style={styles.title}>Category                     Fresh for</Text>
+
+            {categories ? <SwipeListView
                 data={categories}
                 renderItem={renderCategory}
                 scrollIndicatorInsets={{ right: 1 }}
                 disableRightSwipe
                 rightOpenValue={-115}
-            />
-            </View>
+            /> : null}
+        </View>
     </Background>;
 }
-
 const renderCategory = (category, rowMap) => {
-    console.log(category.item)
     return <Category category={category.item} />;
 };
 
