@@ -46,7 +46,7 @@ export default function OverviewRecipeScreen(props) {
         .then(function (response) {
           const recipes = response.data.map((recipe) => {
             return {
-              id: recipe.id,
+              id: recipe.id.toString(),
               title: recipe.title,
               image: recipe.image,
               usedIngredients: recipe.usedIngredients.map(
@@ -88,6 +88,7 @@ export default function OverviewRecipeScreen(props) {
     fetchData();
   }, [data]);
   const onRenderItem = ({ item }) => {
+    console.log("onrender", typeof item.id);
     return (
       <RecipeItem
         imageUrl={item.imageUrl}

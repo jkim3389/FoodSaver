@@ -105,8 +105,6 @@ export function fbRemoveDataByOne(key) {
 
 */
 
-//V2 ------------ THIS IS FIREBASE VERSION UNDER USER ID
-
 export function getUID() {
   return auth.currentUser.uid;
 }
@@ -116,6 +114,15 @@ export function fbStoreData(key, value) {
     db.ref(`/${getUID()}/items`).child(key).set(value);
   } catch (e) {
     console.log("error occured during store data", e);
+    return null;
+  }
+}
+
+export function fbUpdateCategory(key, value) {
+  try {
+    db.ref(`/${getUID()}/categories`).child(key).set(value);
+  } catch (e) {
+    console.log("error occured during update categories", e);
     return null;
   }
 }

@@ -181,7 +181,7 @@ const getToday = () => {
 
 export const screenOptions = (navData) => {
     return {
-        headerTitle: "Adding Items..",
+        headerTitle: "Adding Items",
         headerLeft: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item
@@ -219,6 +219,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
     },
     button: {
+        top: 50,
         height: "35%",
         width: "70%",
         justifyContent: "space-evenly",
@@ -235,6 +236,7 @@ const styles = StyleSheet.create({
         textTransform: "capitalize",
     },
     text: {
+        top: 30,
         width: "90%",
         alignSelf: "center",
         fontSize: 30,

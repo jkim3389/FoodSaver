@@ -133,9 +133,9 @@ export default function RecipeDetailsScreen(props) {
           };
         }
       );
-      return formattedInstructions.map((item) => {
+      return formattedInstructions.map((item, index) => {
         return (
-          <View style={styles.eachItem}>
+          <View key={index} style={styles.eachItem}>
             <Text style={styles.itemHeader}>{item.name}</Text>
             {/* <View style={styles.instructionsStepContainer}> */}
             {item.steps.map((step, index) => {
@@ -337,6 +337,7 @@ export const screenOptions = (navData) => {
           onPress={() => {
             navData.navigation.goBack();
           }}
+          color="white"
         />
       </HeaderButtons>
     ),
