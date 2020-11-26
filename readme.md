@@ -18,6 +18,7 @@ Coded in Javascript and React-Native.
 > - Recipe Recommendation
 > - Push Notification of expiring item
 > - Login feature
+> - Setting for predefined expiration date
 >
 > #### Unsolved Issues
 >
