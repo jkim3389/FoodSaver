@@ -13,11 +13,11 @@ Coded in Javascript and React-Native.
 >
 > #### New Features
 >
-> -
->
-> #### Bug Fixes
->
-> -
+> - Add multiple items at the same time by image recognition
+> - Add item to my fridge manually
+> - Recipe Recommendation
+> - Push Notification of expiring item
+> - Login feature
 >
 > #### Unsolved Issues
 >
