@@ -75,10 +75,11 @@ $ npm run android
 ```
 
 > run with your device
+```
 1. Install Expo application on your device.
-2. In terminal, ``` $ npm start ```
+2. In terminal,  $ npm start 
 3. After running expo, scan the QR code using the camera on your device
-
+```
 
 ## Known Limitations
 
