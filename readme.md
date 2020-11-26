@@ -7,18 +7,17 @@ The FoodSaver team is developing a solution for helping people to reduce food wa
 
 Coded in Javascript and React-Native.
 
-## Release Notes
+## Relesae Notes
 
 > ## v1.0.0 (26/11/2020)
 >
 > #### New Features
 >
-> - Add multiple items at the same time by image recognition
-> - Add item to my fridge manually
-> - Recipe Recommendation
-> - Push Notification of expiring item
-> - Login feature
-> - Setting for predefined expiration date
+> -
+>
+> #### Bug Fixes
+>
+> -
 >
 > #### Unsolved Issues
 >
@@ -56,6 +55,8 @@ $ npm install
 
 #### Run
 
+To run the app in simulator, you should have installed XCode or Android Studio to run the simulator.
+
 > run with multiple options(iOS/Android/WebApps)
 
 ```shell
@@ -73,6 +74,12 @@ $ npm run ios
 ```shell
 $ npm run android
 ```
+
+> run with your device
+1. Install Expo application on your device.
+2. In terminal, ``` $ npm start ```
+3. After running expo, scan the QR code using the camera on your device
+
 
 ## Known Limitations
 
