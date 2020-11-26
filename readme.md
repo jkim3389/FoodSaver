@@ -7,7 +7,7 @@ The FoodSaver team is developing a solution for helping people to reduce food wa
 
 Coded in Javascript and React-Native.
 
-## Relesae Notes
+## Release Notes
 
 > ## v1.0.0 (26/11/2020)
 >
