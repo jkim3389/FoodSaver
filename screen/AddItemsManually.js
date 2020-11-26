@@ -9,6 +9,8 @@ import {
   Image,
   Alert,
 } from "react-native";
+import { getUID } from "../utils/storageManager"
+import { db } from "../utils/config";
 import RNPickerSelect from "react-native-picker-select";
 import DatePicker, { getFormatedDate } from "react-native-modern-datepicker";
 import {
@@ -18,7 +20,7 @@ import {
 } from "../utils/storageManager";
 import { v4 as uuidv4 } from "uuid";
 import * as ImagePicker from "expo-image-picker";
-import { categories } from "../components/Categories";
+import { defaultCategories } from "../components/Categories";
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
@@ -32,6 +34,7 @@ export default class AddItemsManually extends Component {
       category: "None",
       expiryDate: "",
       isDefaultImage: true,
+      // predefined: ""
     };
   }
   pickImage = async () => {
@@ -81,7 +84,6 @@ export default class AddItemsManually extends Component {
     if (this.state.name == "") {
       Alert.alert("Item name is required.");
     } else {
-      console.debug(this.state.image);
       const key = uuidv4();
       var newDate = new Date(this.state.expiryDate);
       var formattedDate = getFormatedDate(newDate, "YYYY/MM/DD");
@@ -100,14 +102,13 @@ export default class AddItemsManually extends Component {
         expirationDay: formattedDate,
         image: this.state.image,
       };
-      schedulePushNotification(notifDate, expireDay, this.state.name, item.key);
-    //   storeData(key, item);
+      //   storeData(key, item);
       addNewItem(key, item);
+      schedulePushNotification(notifDate, expireDay, this.state.name, item.key);
       Alert.alert(this.state.name + " Added");
       this.props.navigation.navigate("Add Items");
     }
   };
-
   render() {
     return (
       <Background>
@@ -146,8 +147,13 @@ export default class AddItemsManually extends Component {
 
           <Text style={styles.text}>Category</Text>
           <RNPickerSelect
-            onValueChange={(text) => this.setState({ category: text })}
-            items={categories}
+            onValueChange={(text) => {
+              this.setState({ category: text })
+              // this.setState({predefined: afterPeriod(
+              //   defaultCategories.filter((category) => category.label == "Vegetable")[0].predefined
+              // )})
+            }}
+            items={defaultCategories}
             value={this.state.category}
             placeholder={{
               label: "Select category...",
@@ -162,7 +168,7 @@ export default class AddItemsManually extends Component {
             onDateChange={(date) => this.setState({ expiryDate: date })}
             minimumDate={getToday()}
             mode="calendar"
-            selected={this.state.expiryDate}
+            selected={getToday()}
             options={{
               backgroundColor: "#DCE5A1",
               // textHeaderColor: '#FFA25B',
@@ -185,12 +191,18 @@ export default class AddItemsManually extends Component {
     );
   }
 }
+
 const getToday = () => {
-  var date = new Date().getDate(); //To get the Current Date
-  var month = new Date().getMonth() + 1; //To get the Current Month
-  var year = new Date().getFullYear(); //To get the Current Year
-  return year + "-" + month + "-" + date;
+  var d = new Date()
+  var month = d.getMonth() + 1; //To get the Current Month
+  return d.getFullYear() + "-" + month + "-" + d.getDate();
 };
+//Not working correctly
+// const afterPeriod = (period) => { 
+//   var today = new Date();
+//   var date = new Date(today.getFullYear() + period.year, today.getMonth() + period.month, today.getDate() + period.day) 
+//   return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+// }
 
 // const Required = () => <Text style={{color:"red", fontSize:10}}>Required</Text>
 

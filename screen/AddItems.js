@@ -10,6 +10,7 @@ import SavingItems from "./SavingItems";
 import Loading from "./Loading";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
+import { getFormatedDate } from "react-native-modern-datepicker";
 
 export default function AddItems(props) {
     const [data, setData] = useState([]);
@@ -20,7 +21,7 @@ export default function AddItems(props) {
         const grant = await (mode === "camera"
             ? ImagePicker.requestCameraRollPermissionsAsync()
             : ImagePicker.requestCameraPermissionsAsync());
-        console.log(grant);
+        // console.log(grant);
         if (grant) {
             // setIsLoading(true)
             const ImagePickerConfig = {
@@ -93,9 +94,14 @@ export default function AddItems(props) {
                         [{ crop: element.image }],
                         { compress: 1 }
                     );
+                    const randomValue = Math.floor(Math.random() * 10)
+                    var expirationDay = new Date()
+                    expirationDay.setDate((new Date(getToday())).getDate()+randomValue+1)
                     return {
                         ...element,
                         image: cropped.uri,
+                        expiryDate: randomValue,
+                        expirationDay: getFormatedDate(expirationDay, "YYYY/MM/DD"), 
                     };
                 })
             );
@@ -166,9 +172,16 @@ export default function AddItems(props) {
     return <Background>{content}</Background>;
 }
 
+const getToday = () => {
+    var date = new Date().getDate(); //To get the Current Date
+    var month = new Date().getMonth() + 1; //To get the Current Month
+    var year = new Date().getFullYear(); //To get the Current Year
+    return year + "-" + month + "-" + date;
+};
+
 export const screenOptions = (navData) => {
     return {
-        headerTitle: "Adding Items..",
+        headerTitle: "Adding Items",
         headerLeft: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item
@@ -206,6 +219,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
     },
     button: {
+        top: 50,
         height: "35%",
         width: "70%",
         justifyContent: "space-evenly",
@@ -222,6 +236,7 @@ const styles = StyleSheet.create({
         textTransform: "capitalize",
     },
     text: {
+        top: 30,
         width: "90%",
         alignSelf: "center",
         fontSize: 30,

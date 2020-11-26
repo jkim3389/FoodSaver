@@ -74,7 +74,7 @@ app.post('/addItems', upload.single('upload'), async (req, res)=>{
             image : imageBuffer
         }
     }))
-    console.log(converted)
+    // console.log(converted)
     res.send(response)
 }, (error, req, res, next)=>{
     res.status(400).send({Error:error.message})

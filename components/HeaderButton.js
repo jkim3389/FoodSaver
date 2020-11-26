@@ -9,7 +9,7 @@ export default function CustomHeaderButton(props) {
             {...props}
             IconComponent={Ionicons}
             iconSize={23}
-            color="white"
+            color="#1D1C1A"
         />
     );
 }
