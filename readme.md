@@ -96,7 +96,7 @@ Meet our team mates
   <tr>
     <td align="center"><a href="https://github.com/woonglae"><img src="https://avatars1.githubusercontent.com/u/13613663?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Woonglae Cho</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/joheeju"><img src="https://avatars1.githubusercontent.com/u/31485229?s=460&u=3a9ec697656d5171102d81d4fcd1e4dd89a666cd&v=4" width="100px;" alt=""/><br /><sub><b>Heejoo Cho</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/bpooser3"><img src="https://avatars1.githubusercontent.com/u/70162294?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Ben Pooser</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/BenPooser"><img src="https://avatars1.githubusercontent.com/u/43395373?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Ben Pooser</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/jkim3389"><img src="https://avatars0.githubusercontent.com/u/45981964?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Juntae Kim</b></sub></a><br /></td>
   </tr>
 </table>
